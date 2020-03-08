@@ -1,0 +1,56 @@
+version: "3.7"
+services:
+  meet_db:
+    build:
+      context: ./mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - backend
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    container_name: "meet_db"
+
+  meet_php:
+    build:
+      context: ./php
+    networks:
+      - backend
+    volumes:
+      - ${SRC_ROOT}/logs/php:/logs
+      - ${SRC_ROOT}:/var/www/html
+    depends_on:
+      - meet_db
+    container_name: "meet_php"
+
+  meet_nginx:
+    build:
+      context: ./nginx
+    depends_on:
+      - meet_php
+      - meet_db
+    links:
+      - meet_php
+    networks:
+      - backend
+      - frontend
+    ports:
+      - "${HOST_PORT}:80"
+    volumes:
+      - ${SRC_ROOT}/logs/nginx:/var/log/nginx
+      - ${SRC_ROOT}:/var/www/html
+      - ./nginx/meet.conf:/etc/nginx/conf.d/meet.conf
+    container_name: "meet_nginx"
+
+volumes:
+  phpsocket:
+  mysql_data:
+networks:
+  backend:
+  frontend:
