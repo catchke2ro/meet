@@ -1,0 +1,3 @@
+#!/bin/bash
+
+PHP_IDE_CONFIG="serverName=meet.docker" XDEBUG_CONFIG="remote_host=docker.for.mac.localhost remote_enable=on remote_autostart=1 remote_port=9000 idekey=ADAM" php yii "$@"
