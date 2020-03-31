@@ -1,0 +1,32 @@
+{
+  "name": "lutheran-meet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "clean": "rm dist/bundle.js",
+    "watch": "webpack -d --mode development -w",
+    "build-dev": "webpack -d --mode development",
+    "build-prod": "webpack -p --mode production"
+  },
+  "dependencies": {
+    "bootstrap": "^4.4.0",
+    "jquery": "^3.4.1",
+    "lodash": "^4.0.1",
+    "mini-css-extract-plugin": "^0.9.0",
+    "moment": "^2.0.0",
+    "popper.js": "^1.16.1"
+  },
+  "devDependencies": {
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11",
+    "css-loader": "^3.4.2",
+    "sass-loader": "^8.0.2",
+    "node-sass": "^4.13.1",
+    "style-loader": "^1.0.0",
+    "lodash-webpack-plugin": "^0.11.5"
+  }
+}

@@ -33,3 +33,6 @@ tests/_support/_generated
 /.vagrant
 
 /logs
+
+/node_modules
+/web/dist
