@@ -1,16 +1,17 @@
 <?php
 
 
-use app\controllers\QuestionController;
+use app\models\User;
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
 $config = [
+	'language'   => 'hu-HU',
 	'id'         => 'basic',
 	'basePath'   => dirname(__DIR__),
 	'bootstrap'  => ['log'],
-	'aliases' => [
+	'aliases'    => [
 		'@bower' => '@vendor/bower-asset',
 		'@npm'   => '@vendor/npm-asset',
 	],
@@ -22,8 +23,9 @@ $config = [
 			'class' => 'yii\caching\FileCache',
 		],
 		'user'         => [
-			'identityClass'   => 'app\models\User',
+			'identityClass'   => User::class,
 			'enableAutoLogin' => true,
+			'loginUrl' => ['user/login']
 		],
 		'errorHandler' => [
 			'errorAction' => 'site/error',
@@ -45,11 +47,15 @@ $config = [
 			],
 		],
 		'db'           => $db,
-		'urlManager' => [
+		'urlManager'   => [
 			'enablePrettyUrl' => true,
-			'showScriptName' => false,
-			'rules' => [
-				'/kerdesek' => 'question/index'
+			'showScriptName'  => false,
+			'rules'           => [
+				'/'             => 'site/home',
+				'/kerdesek'     => 'question/index',
+				'/regisztracio' => 'user/registration',
+				'/belepes'      => 'user/login',
+				'/kilepes'      => 'user/logout'
 			],
 		],
 	],

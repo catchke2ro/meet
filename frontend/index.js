@@ -9,6 +9,10 @@ import "bootstrap/js/dist/tooltip"
 $(function () {
 	$('[data-toggle="tooltip"]').tooltip({});
 
+	$(document).on('click', 'a.logoutLink', function() {
+		$('#logoutForm').submit();
+	});
+
 
 	const $conditionedCategories = $('div.questionCategory').filter((index, e) => parseInt($(e).data('condition-option')) > 0);
 	$conditionedCategories.each(function(index, e) {

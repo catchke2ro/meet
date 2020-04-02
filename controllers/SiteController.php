@@ -29,4 +29,14 @@ class SiteController extends Controller {
 	}
 
 
+	/**
+	 * Displays Home
+	 *
+	 * @return string
+	 */
+	public function actionHome() {
+		return $this->render('home');
+	}
+
+
 }
