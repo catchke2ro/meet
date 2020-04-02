@@ -7,10 +7,10 @@
 
 namespace app\commands;
 
-use app\models\Commitment;
+use app\models\CommitmentItem;
 use app\models\CommitmentCategory;
 use app\models\CommitmentOption;
-use app\models\Question;
+use app\models\QuestionItem;
 use app\models\QuestionCategory;
 use app\models\QuestionOption;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -169,7 +169,7 @@ class ImportController extends Controller {
 			$i = 0;
 			foreach ($questionCategoryQuestions as $id => $question) {
 				$i++;
-				$qModel = (new Question());
+				$qModel = (new QuestionItem());
 				$qModel->setAttributes([
 					'name' => $question,
 					'question_category_id' => $qcIdMap[$questionCategoryId],
@@ -216,7 +216,7 @@ class ImportController extends Controller {
 			$i = 0;
 			foreach ($commitmentCategoryCommitments as $id => $commitment) {
 				$i++;
-				$cModel = (new Commitment());
+				$cModel = (new CommitmentItem());
 				$cModel->setAttributes([
 					'name' => $commitment,
 					'commitment_category_id' => $ccIdMap[$commitmentCategoryId],

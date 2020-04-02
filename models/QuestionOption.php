@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use yii\db\ActiveQuery;
+use app\models\traits\WithItemTrait;
 use yii\db\ActiveRecord;
 use yii\web\Request;
 
@@ -11,14 +11,16 @@ use yii\web\Request;
  *
  * @package app\models
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
- * @property int      $id
- * @property string   $name
- * @property int      $order
- * @property bool     $is_custom_input
- * @property string   $description
- * @property Question $question
+ * @property int          $id
+ * @property string       $name
+ * @property int          $order
+ * @property bool         $is_custom_input
+ * @property string       $description
+ * @property QuestionItem $item
  */
 class QuestionOption extends ActiveRecord {
+
+	use WithItemTrait;
 
 
 	/**
@@ -26,14 +28,6 @@ class QuestionOption extends ActiveRecord {
 	 */
 	public static function tableName(): string {
 		return '{{question_options}}';
-	}
-
-
-	/**
-	 * @return ActiveQuery
-	 */
-	public function getQuestion() {
-		return $this->hasOne(Question::class, ['id' => 'question_id']);
 	}
 
 
@@ -46,16 +40,17 @@ class QuestionOption extends ActiveRecord {
 	 */
 	public function isChecked(Request $request, int $instance): bool {
 		$checked = false;
-		if ($this->question && $this->question->isOnlyCustomInput()) {
+		if ($this->item && $this->item->isOnlyCustomInput()) {
 			$checked = true;
 		}
 		if ($request->isPost &&
-			$this->question &&
+			$this->item &&
 			!empty($request->getBodyParam('options')) &&
-			!empty($request->getBodyParam('options')[$this->question->id][$this->id][$instance])
+			!empty($request->getBodyParam('options')[$this->item->id][$this->id][$instance])
 		) {
 			$checked = true;
 		}
+
 		return $checked;
 	}
 

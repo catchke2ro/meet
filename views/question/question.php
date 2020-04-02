@@ -1,10 +1,10 @@
 <?php
 
-use app\models\Question;
+use app\models\QuestionItem;
 use app\models\QuestionOption;
 
 /**
- * @var $question Question
+ * @var $question QuestionItem
  * @var $this     yii\web\View
  * @var $option   QuestionOption
  * @var $instance int
@@ -19,7 +19,7 @@ $catId = $questionCategory->id;
 	<div class="options">
 		<div class="btn-group btn-group-toggle" data-toggle="buttons">
 			<?php $customInputOptionId = null; ?>
-			<?php foreach ($question->questionOptions as $key => $option) { ?>
+			<?php foreach ($question->options as $key => $option) { ?>
 				<?php if ($option->is_custom_input) {
 					$customInputOptionId = $option->id;
 				} ?>

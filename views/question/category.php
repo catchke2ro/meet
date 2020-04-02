@@ -31,7 +31,7 @@ $hasInstances = $questionCategory->has_instances;
 				<div class="card categoryInstance" data-instance="<?=$inst;?>">
 					<div class="card-body">
 						<div class="instanceTitle"></div>
-						<?php foreach ($questionCategory->questions as $question) { ?>
+						<?php foreach ($questionCategory->items as $question) { ?>
 							<?=$this->render('question', ['question' => $question, 'instance' => $inst]);?>
 						<?php } ?>
 					</div>
