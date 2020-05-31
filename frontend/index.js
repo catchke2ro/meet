@@ -20,12 +20,23 @@ $(function () {
 		const optionId = parseInt($category.data('condition-option'));
 		const $option = $('.questionOption[data-id='+optionId+']');
 		if ($option.length) {
-			$(document).on('change', '.questionOption[name="'+$option.attr('name')+'"]', function() {
+			$(document).on('change', '.questionOption[data-qid="'+$option.data('qid')+'"]', function() {
 				$category.toggleClass('d-none', !$option.prop('checked'));
 			});
 		}
 	});
 	$('.questionOption').trigger('change');
+
+	$('div.customInput').each(function() {
+		const $customInput = $(this),
+			optionId = $customInput.data('optionid'),
+			$option = $('input[data-id='+optionId+']');
+		if ($option.length) {
+			$(document).on('change', '.questionOption[data-qid="'+$option.data('qid')+'"]', function() {
+				$customInput.toggleClass('d-none', !$option.prop('checked'));
+			});
+		}
+	});
 
 	const $instanceNumberFields = $('.instanceNumber');
 	$instanceNumberFields.each(function(index, e) {

@@ -30,9 +30,11 @@ $catId = $questionCategory->id;
 					<input type="radio"
 						   class="questionOption"
 						   data-id="<?=$option->id;?>"
+						   data-qid="<?=$question->id;?>"
 						   value="1"
 						   name="options[<?=$question->id;?>][<?=$option->id;?>][<?=$instance;?>]"
 						   id="opt<?=$question->id?>_<?=$option->id?>_<?=$instance;?>"
+						   data-custominput="<?=$option->is_custom_input ? 1 : 0;?>"
 						<?=$option->isChecked(Yii::$app->request, $instance) ? 'checked' : '';?>
 						   autocomplete="off">
 					<?=$option->name;?>
@@ -40,10 +42,10 @@ $catId = $questionCategory->id;
 			<?php } ?>
 		</div>
 		<?php if ($customInputOptionId) { ?>
-			<div class="customInput <?=$question->isOnlyCustomInput() ? '' : 'd-none';?>">
-			<textarea name="customInputs[<?=$question->id;?>][<?=$customInputOptionId;?>][<?=$instance;?>]" placeholder="Egyéni szöveg">
-				<?=$question->getCustomInputValue(Yii::$app->request);?>
-			</textarea>
+			<div class="customInput <?=$question->isOnlyCustomInput() ? '' : 'd-none';?>" data-optionid="<?=$customInputOptionId;?>">
+			<textarea name="customInputs[<?=$question->id;?>][<?=$customInputOptionId;?>][<?=$instance;?>]" placeholder="Egyéni szöveg"><?php
+				echo $question->getCustomInputValue(Yii::$app->request);
+			?></textarea>
 			</div>
 		<?php } ?>
 
