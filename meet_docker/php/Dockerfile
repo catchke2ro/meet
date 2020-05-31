@@ -10,12 +10,14 @@ RUN apt-get update
 RUN apt-get -y upgrade
 
 #Install some basic lpackages
-RUN apt-get -y install nano;
-RUN apt-get -y install libzip-dev;
+RUN apt-get -y install nano wget;
+RUN apt-get -y install libzip-dev libpng-dev;
 
 #Install and enable xdebug
 RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
 
 #Install and enable mysql and pdo libraries
-RUN docker-php-ext-install pdo pdo_mysql zip
+RUN docker-php-ext-install pdo pdo_mysql zip gd
+
+RUN wget https://getcomposer.org/installer -O - -q | php -- --quiet && mv composer.phar /usr/local/bin/composer

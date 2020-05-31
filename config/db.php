@@ -2,7 +2,7 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=meet_db;dbname=meet',
+    'dsn' => 'mysql:host=mysql;dbname=meet',
     'username' => 'meet',
     'password' => 'foT7B1ENKZ',
     'charset' => 'utf8',
