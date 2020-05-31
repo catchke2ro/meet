@@ -11,13 +11,14 @@ use yii\db\ActiveRecord;
  * @package app\models
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  *
- * @property int              $id
- * @property int              $user_question_fill_id
- * @property int              $question_option_id
- * @property int              $instance_number
- * @property string           $custom_input
- * @property UserQuestionFill $userQuestionFille
- * @property QuestionOption   $option
+ * @property int                   $id
+ * @property int                   $user_question_fill_id
+ * @property int                   $question_option_id
+ * @property int|null              $instance_id
+ * @property string                $custom_input
+ * @property UserQuestionFill      $userQuestionFill
+ * @property QuestionInstance|null $questionInstance
+ * @property QuestionOption        $option
  */
 class UserQuestionAnswer extends ActiveRecord {
 
@@ -35,6 +36,14 @@ class UserQuestionAnswer extends ActiveRecord {
 	 */
 	public function getUserQuestionFill() {
 		return $this->hasOne(UserQuestionFill::class, ['id' => 'user_question_fill_id']);
+	}
+
+
+	/**
+	 * @return ActiveQuery
+	 */
+	public function getQuestionInstance() {
+		return $this->hasOne(QuestionInstance::class, ['id' => 'instance_id']);
 	}
 
 

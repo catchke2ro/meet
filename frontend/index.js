@@ -54,6 +54,9 @@ $(function () {
 					$cloned.html($cloned.html().replace(/(name="options\[\d+\]\[\d+\]\[)(\d+)(\]")/g, function(match, p1, p2, p3) {
 						return p1 + (parseInt(p2) + 1) + p3;
 					}));
+					$cloned.html($cloned.html().replace(/(name="instanceNames\[\d+\]\[)(\d+)(\]")/g, function(match, p1, p2, p3) {
+						return p1 + (parseInt(p2) + 1) + p3;
+					}));
 					$cloned.html($cloned.html().replace(/(id\="opt\d+_\d+_)(\d+)(")/g, function(match, p1, p2, p3) {
 						return p1 + (parseInt(p2) + 1) + p3;
 					}));

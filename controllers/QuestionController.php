@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\QuestionCategory;
+use app\models\QuestionInstance;
 use app\models\UserQuestionAnswer;
 use app\models\UserQuestionFill;
 use DateTime;
@@ -59,9 +60,11 @@ class QuestionController extends Controller {
 			->with(['items', 'items.options'])
 			->orderBy('order ASC')->all();
 
+		$categoriesByQuestions = [];
 		/** @var QuestionCategory $questionCategory */
 		foreach ($questionCategories as $questionCategory) {
 			foreach ($questionCategory->items as $question) {
+				$categoriesByQuestions[$question->id] = $questionCategory->id;
 				$question->populateRelation('category', $questionCategory);
 				foreach ($question->options as $questionOption) {
 					$questionOption->populateRelation('question', $question);
@@ -70,7 +73,7 @@ class QuestionController extends Controller {
 		}
 		$request = Yii::$app->request;
 		if ($request->isPost) {
-			$this->save($request);
+			$this->save($request, $categoriesByQuestions);
 		}
 		return $this->render('index', compact(
 			'questionCategories'
@@ -83,10 +86,12 @@ class QuestionController extends Controller {
 	 *
 	 * @param Request $request
 	 *
+	 * @param array   $categoriesByQuestions
+	 *
 	 * @return string
 	 * @throws Exception
 	 */
-	protected function save(Request $request) {
+	protected function save(Request $request, array $categoriesByQuestions) {
 		try {
 			$transaction = Yii::$app->db->beginTransaction();
 			$fill = (new UserQuestionFill());
@@ -96,15 +101,30 @@ class QuestionController extends Controller {
 
 			$options = $request->getBodyParam('options') ?: [];
 			$customInputs = $request->getBodyParam('customInputs') ?: [];
+			$instanceNames = $request->getBodyParam('instanceNames') ?: [];
+
+			$instanceNumsToIds = [];
+			foreach ($instanceNames as $categoryId => $categoryInstances) {
+				foreach ($categoryInstances as $num => $instanceName) {
+					$instance = new QuestionInstance();
+					$instance->name = $instanceName ?: $num;
+					$instance->question_category_id = $categoryId;
+					$instance->save();
+					$instanceNumsToIds[$categoryId.'_'.$num] = $instance->id;
+				}
+			}
 			foreach ($options as $questionId => $questionOptions) {
 				foreach ($questionOptions ?: [] as $optionId => $instances) {
+					$categoryId = $categoriesByQuestions[$questionId] ?? null;
 					foreach ($instances ?: [] as $instanceNumber => $checked) {
 						if ($checked) {
 							$answer = new UserQuestionAnswer();
 							$answer->user_question_fill_id = $fill->id;
-							$answer->instance_number = $instanceNumber;
 							$answer->custom_input = $customInputs[$questionId][$optionId][$instanceNumber] ?: null;
 							$answer->question_option_id = $optionId;
+							if (isset($instanceNumsToIds[$categoryId.'_'.$instanceNumber])) {
+								$answer->instance_id = $instanceNumsToIds[$categoryId.'_'.$instanceNumber];
+							}
 							$answer->save();
 						}
 					}
