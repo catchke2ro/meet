@@ -53,6 +53,7 @@ $config = [
 			'rules'           => [
 				'/'             => 'site/home',
 				'/kerdesek'     => 'question/index',
+				'/vallalasok'   => 'commitment/index',
 				'/regisztracio' => 'user/registration',
 				'/belepes'      => 'user/login',
 				'/kilepes'      => 'user/logout'

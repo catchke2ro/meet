@@ -20,6 +20,8 @@ use yii\db\ActiveRecord;
  * @property bool                   $has_instances
  * @property array|CommitmentItem[] $items
  * @property CommitmentOption       $conditionOption
+ * @property int|null               $question_category_inst_id
+ * @property QuestionCategory       $questionCategoryInst
  */
 class CommitmentCategory extends ActiveRecord implements CategoryInterface {
 
@@ -40,6 +42,14 @@ class CommitmentCategory extends ActiveRecord implements CategoryInterface {
 	 */
 	public function getConditionOption() {
 		return $this->hasOne(CommitmentOption::class, ['id' => 'condition_commitment_option_id']);
+	}
+
+
+	/**
+	 * @return ActiveQuery
+	 */
+	public function getQuestionCategoryInst() {
+		return $this->hasOne(QuestionCategory::class, ['question_category_inst_id' => 'id']);
 	}
 
 

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\lib\TreeLib;
 use app\models\QuestionCategory;
 use app\models\QuestionInstance;
 use app\models\UserQuestionAnswer;
@@ -21,6 +22,24 @@ use yii\web\Request;
  */
 class QuestionController extends Controller {
 
+	/**
+	 * @var TreeLib
+	 */
+	private $treeLib;
+
+
+	/**
+	 * CommitmentController constructor.
+	 *
+	 * @param         $id
+	 * @param         $module
+	 * @param TreeLib $treeLib
+	 * @param array   $config
+	 */
+	public function __construct($id, $module, TreeLib $treeLib, $config = []) {
+		parent::__construct($id, $module, $config);
+		$this->treeLib = $treeLib;
+	}
 
 	/**
 	 * {@inheritdoc}
@@ -60,17 +79,8 @@ class QuestionController extends Controller {
 			->with(['items', 'items.options'])
 			->orderBy('order ASC')->all();
 
-		$categoriesByQuestions = [];
-		/** @var QuestionCategory $questionCategory */
-		foreach ($questionCategories as $questionCategory) {
-			foreach ($questionCategory->items as $question) {
-				$categoriesByQuestions[$question->id] = $questionCategory->id;
-				$question->populateRelation('category', $questionCategory);
-				foreach ($question->options as $questionOption) {
-					$questionOption->populateRelation('question', $question);
-				}
-			}
-		}
+		$categoriesByQuestions = $this->treeLib->populateTree($questionCategories);
+
 		$request = Yii::$app->request;
 		if ($request->isPost) {
 			$this->save($request, $categoriesByQuestions);

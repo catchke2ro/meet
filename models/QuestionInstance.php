@@ -36,4 +36,12 @@ class QuestionInstance extends ActiveRecord {
 		return $this->hasOne(QuestionCategory::class, ['id' => 'question_category_id']);
 	}
 
+
+	/**
+	 * @return ActiveQuery
+	 */
+	public function getQuestionAnswers() {
+		return $this->hasMany(UserQuestionAnswer::class, ['instance_id' => 'id']);
+	}
+
 }

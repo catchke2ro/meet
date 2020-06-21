@@ -2,14 +2,20 @@
 
 namespace app\controllers;
 
+use app\lib\TreeLib;
 use app\models\CommitmentCategory;
+use app\models\CommitmentInstance;
+use app\models\QuestionCategory;
 use app\models\UserCommitmentAnswer;
 use app\models\UserCommitmentFill;
+use app\models\UserCommitmentOption;
+use app\models\UserQuestionFill;
 use DateTime;
 use Exception;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\HttpException;
 use yii\web\Request;
 
 /**
@@ -19,6 +25,25 @@ use yii\web\Request;
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  */
 class CommitmentController extends Controller {
+
+	/**
+	 * @var TreeLib
+	 */
+	private $treeLib;
+
+
+	/**
+	 * CommitmentController constructor.
+	 *
+	 * @param         $id
+	 * @param         $module
+	 * @param TreeLib $treeLib
+	 * @param array   $config
+	 */
+	public function __construct($id, $module, TreeLib $treeLib, $config = []) {
+		parent::__construct($id, $module, $config);
+		$this->treeLib = $treeLib;
+	}
 
 
 	/**
@@ -55,25 +80,29 @@ class CommitmentController extends Controller {
 	 * @throws Exception
 	 */
 	public function actionIndex() {
-		$commitmentCategories = CommitmentCategory::find()
-			->with(['commitments', 'commitments.commitmentOptions'])
-			->orderBy('order ASC')->all();
-
-		/** @var CommitmentCategory $commitmentCategory */
-		foreach ($commitmentCategories as $commitmentCategory) {
-			foreach ($commitmentCategory->commitments as $commitment) {
-				$commitment->populateRelation('category', $commitmentCategory);
-				foreach ($commitment->commitmentOptions as $commitmentOption) {
-					$commitmentOption->populateRelation('commitment', $commitment);
-				}
+		$questionFill = null;
+		if (($questionFillId = Yii::$app->request->get('qf'))) {
+			$questionFill = UserQuestionFill::findOne(['id' => $questionFillId]);
+			if (!$questionFill) {
+				throw new HttpException(404);
 			}
 		}
+		$commitmentCategories = CommitmentCategory::find()->with(['items', 'items.options'])->orderBy('order ASC')->all();
+		$questionCategories = QuestionCategory::find()->with(['items', 'items.options'])->orderBy('order ASC')->all();
+
+		$categoriesByCommitments = $this->treeLib->populateTree($commitmentCategories);
+		$this->treeLib->populateTree($questionCategories);
+
+		$checkedCommitmentOptions = $questionFill->getCheckedCommitmentOptions();
+
 		$request = Yii::$app->request;
 		if ($request->isPost) {
-			$this->save($request);
+			$this->save($request, $categoriesByCommitments);
 		}
 		return $this->render('index', compact(
-			'commitmentCategories'
+			'commitmentCategories',
+			'questionFill',
+			'checkedCommitmentOptions'
 		));
 	}
 
@@ -83,10 +112,12 @@ class CommitmentController extends Controller {
 	 *
 	 * @param Request $request
 	 *
+	 * @param array   $categoriesByCommitments
+	 *
 	 * @return string
 	 * @throws Exception
 	 */
-	protected function save(Request $request) {
+	protected function save(Request $request, array $categoriesByCommitments) {
 		try {
 			$transaction = Yii::$app->db->beginTransaction();
 			$fill = (new UserCommitmentFill());
@@ -96,16 +127,33 @@ class CommitmentController extends Controller {
 
 			$options = $request->getBodyParam('options') ?: [];
 			$customInputs = $request->getBodyParam('customInputs') ?: [];
+			$instanceNames = $request->getBodyParam('instanceNames') ?: [];
+			$intervals = $request->getBodyParam('intervals') ?: [];
+
+			$instanceNumsToIds = [];
+			foreach ($instanceNames as $categoryId => $categoryInstances) {
+				foreach ($categoryInstances as $num => $instanceName) {
+					$instance = new CommitmentInstance();
+					$instance->name = $instanceName ?: $num;
+					$instance->commitment_category_id = $categoryId;
+					$instance->save();
+					$instanceNumsToIds[$categoryId.'_'.$num] = $instance->id;
+				}
+			}
 			foreach ($options as $commitmentId => $commitmentOptions) {
 				foreach ($commitmentOptions ?: [] as $optionId => $instances) {
+					$categoryId = $categoriesByCommitments[$commitmentId] ?? null;
 					foreach ($instances ?: [] as $instanceNumber => $checked) {
 						if ($checked) {
-							$answer = new UserCommitmentAnswer();
-							$answer->user_commitment_fill_id = $fill->id;
-							$answer->instance_number = $instanceNumber;
-							$answer->custom_input = $customInputs[$commitmentId][$optionId][$instanceNumber] ?: null;
-							$answer->commitment_option_id = $optionId;
-							$answer->save();
+							$fillOption = new UserCommitmentOption();
+							$fillOption->user_commitment_fill_id = $fill->id;
+							$fillOption->custom_input = $customInputs[$commitmentId][$optionId][$instanceNumber] ?: null;
+							$fillOption->commitment_option_id = $optionId;
+							$fillOption->months = $intervals[$commitmentId][$instanceNumber] ?? null;
+							if (isset($instanceNumsToIds[$categoryId.'_'.$instanceNumber])) {
+								$fillOption->instance_id = $instanceNumsToIds[$categoryId.'_'.$instanceNumber];
+							}
+							$fillOption->save();
 						}
 					}
 				}

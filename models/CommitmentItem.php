@@ -6,6 +6,7 @@ use app\models\interfaces\ItemInterface;
 use app\models\traits\WithCategoryTrait;
 use app\models\traits\WithOptionsTrait;
 use yii\db\ActiveRecord;
+use yii\web\Request;
 
 /**
  * Class CommitmentItem
@@ -19,6 +20,9 @@ use yii\db\ActiveRecord;
  * @property string                   $description
  * @property array|CommitmentOption[] $options
  * @property CommitmentCategory       $category
+ * @property int                      $month_step
+ * @property int                      $months_min
+ * @property int                      $months_max
  */
 class CommitmentItem extends ActiveRecord implements ItemInterface {
 
@@ -44,6 +48,25 @@ class CommitmentItem extends ActiveRecord implements ItemInterface {
 		}
 
 		return implode(' ', $classes);
+	}
+
+
+	/**
+	 * @param Request $request
+	 *
+	 * @param int     $instance
+	 *
+	 * @return bool
+	 */
+	public function getIntervalValue(Request $request, int $instance) {
+		$value = $this->months_min;
+		if ($request->isPost &&
+			!empty($request->getBodyParam('intervals')) &&
+			!empty($request->getBodyParam('options')[$this->id][$instance])
+		) {
+			$value = (int) $request->getBodyParam('options')[$this->id][$instance];
+		}
+		return $value;
 	}
 
 
