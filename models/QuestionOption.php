@@ -46,7 +46,8 @@ class QuestionOption extends ActiveRecord {
 		if ($request->isPost &&
 			$this->item &&
 			!empty($request->getBodyParam('options')) &&
-			!empty($request->getBodyParam('options')[$this->item->id][$this->id][$instance])
+			!empty($request->getBodyParam('options')[$this->item->id][$instance]) &&
+			$request->getBodyParam('options')[$this->item->id][$instance] == $this->id
 		) {
 			$checked = true;
 		}

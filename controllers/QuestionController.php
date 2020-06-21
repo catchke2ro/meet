@@ -83,7 +83,8 @@ class QuestionController extends Controller {
 
 		$request = Yii::$app->request;
 		if ($request->isPost) {
-			$this->save($request, $categoriesByQuestions);
+			$questionFillId = $this->save($request, $categoriesByQuestions);
+			$this->redirect('/vallalasok?qf='.$questionFillId);
 		}
 		return $this->render('index', compact(
 			'questionCategories'
@@ -123,24 +124,21 @@ class QuestionController extends Controller {
 					$instanceNumsToIds[$categoryId.'_'.$num] = $instance->id;
 				}
 			}
-			foreach ($options as $questionId => $questionOptions) {
-				foreach ($questionOptions ?: [] as $optionId => $instances) {
-					$categoryId = $categoriesByQuestions[$questionId] ?? null;
-					foreach ($instances ?: [] as $instanceNumber => $checked) {
-						if ($checked) {
-							$answer = new UserQuestionAnswer();
-							$answer->user_question_fill_id = $fill->id;
-							$answer->custom_input = $customInputs[$questionId][$optionId][$instanceNumber] ?: null;
-							$answer->question_option_id = $optionId;
-							if (isset($instanceNumsToIds[$categoryId.'_'.$instanceNumber])) {
-								$answer->instance_id = $instanceNumsToIds[$categoryId.'_'.$instanceNumber];
-							}
-							$answer->save();
-						}
+			foreach ($options as $questionId => $instances) {
+				$categoryId = $categoriesByQuestions[$questionId] ?? null;
+				foreach ($instances ?: [] as $instanceNumber => $optionId) {
+					$answer = new UserQuestionAnswer();
+					$answer->user_question_fill_id = $fill->id;
+					$answer->custom_input = $customInputs[$questionId][$optionId][$instanceNumber] ?: null;
+					$answer->question_option_id = $optionId;
+					if (isset($instanceNumsToIds[$categoryId.'_'.$instanceNumber])) {
+						$answer->instance_id = $instanceNumsToIds[$categoryId.'_'.$instanceNumber];
 					}
+					$answer->save();
 				}
 			}
 			$transaction->commit();
+			return $fill->id;
 		} catch (Exception $exception) {
 			$transaction->rollBack();
 			throw $exception;

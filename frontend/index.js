@@ -1,9 +1,8 @@
 import "./global.sass";
 
-import "jquery"
-import "bootstrap/js/dist/collapse"
-import "bootstrap/js/dist/button"
-import "bootstrap/js/dist/tooltip"
+import $ from "jquery"
+import "bootstrap/dist/js/bootstrap"
+import "admin-lte/dist/js/adminlte"
 
 
 $(function () {
@@ -13,6 +12,13 @@ $(function () {
 		$('#logoutForm').submit();
 	});
 
+
+	$(document).on('click', '.treeAccordion > .card > .card-header', function(event) {
+		if ($(event.target).is('input') || $(event.target).is('.card-title')) {
+			return;
+		}
+		$(event.target).closest('.card').find('.card-title').trigger('click');
+	});
 
 	const $conditionedCategories = $('div.questionCategory').filter((index, e) => parseInt($(e).data('condition-option')) > 0);
 	$conditionedCategories.each(function(index, e) {
@@ -51,13 +57,16 @@ $(function () {
 				} else if ($instances.length < instanceCount) {
 					const $cloned = $instances.last().clone();
 
-					$cloned.html($cloned.html().replace(/(name="options\[\d+\]\[\d+\]\[)(\d+)(\]")/g, function(match, p1, p2, p3) {
+					$cloned.html($cloned.html().replace(/(name="options\[\d+\]\[)(\d+)(\]")/g, function(match, p1, p2, p3) {
 						return p1 + (parseInt(p2) + 1) + p3;
 					}));
 					$cloned.html($cloned.html().replace(/(name="instanceNames\[\d+\]\[)(\d+)(\]")/g, function(match, p1, p2, p3) {
 						return p1 + (parseInt(p2) + 1) + p3;
 					}));
 					$cloned.html($cloned.html().replace(/(id\="opt\d+_\d+_)(\d+)(")/g, function(match, p1, p2, p3) {
+						return p1 + (parseInt(p2) + 1) + p3;
+					}));
+					$cloned.html($cloned.html().replace(/(for\="opt\d+_\d+_)(\d+)(")/g, function(match, p1, p2, p3) {
 						return p1 + (parseInt(p2) + 1) + p3;
 					}));
 

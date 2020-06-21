@@ -140,25 +140,22 @@ class CommitmentController extends Controller {
 					$instanceNumsToIds[$categoryId.'_'.$num] = $instance->id;
 				}
 			}
-			foreach ($options as $commitmentId => $commitmentOptions) {
-				foreach ($commitmentOptions ?: [] as $optionId => $instances) {
-					$categoryId = $categoriesByCommitments[$commitmentId] ?? null;
-					foreach ($instances ?: [] as $instanceNumber => $checked) {
-						if ($checked) {
-							$fillOption = new UserCommitmentOption();
-							$fillOption->user_commitment_fill_id = $fill->id;
-							$fillOption->custom_input = $customInputs[$commitmentId][$optionId][$instanceNumber] ?: null;
-							$fillOption->commitment_option_id = $optionId;
-							$fillOption->months = $intervals[$commitmentId][$instanceNumber] ?? null;
-							if (isset($instanceNumsToIds[$categoryId.'_'.$instanceNumber])) {
-								$fillOption->instance_id = $instanceNumsToIds[$categoryId.'_'.$instanceNumber];
-							}
-							$fillOption->save();
-						}
+			foreach ($options as $commitmentId => $instances) {
+				$categoryId = $categoriesByCommitments[$commitmentId] ?? null;
+				foreach ($instances ?: [] as $instanceNumber => $optionId) {
+					$fillOption = new UserCommitmentOption();
+					$fillOption->user_commitment_fill_id = $fill->id;
+					$fillOption->custom_input = $customInputs[$commitmentId][$optionId][$instanceNumber] ?: null;
+					$fillOption->commitment_option_id = $optionId;
+					$fillOption->months = $intervals[$commitmentId][$instanceNumber] ?? null;
+					if (isset($instanceNumsToIds[$categoryId.'_'.$instanceNumber])) {
+						$fillOption->instance_id = $instanceNumsToIds[$categoryId.'_'.$instanceNumber];
 					}
+					$fillOption->save();
 				}
 			}
 			$transaction->commit();
+			return $fill->id;
 		} catch (Exception $exception) {
 			$transaction->rollBack();
 			throw $exception;

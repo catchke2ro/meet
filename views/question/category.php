@@ -12,7 +12,7 @@ $catId = $questionCategory->id;
 $hasInstances = $questionCategory->has_instances;
 ?>
 
-<div class="card questionCategory <?=$hasInstances ? 'hasInstances' : null;?>"
+<div class="card card-primary questionCategory <?=$hasInstances ? 'hasInstances' : null;?>"
 	 data-category-id="<?=$questionCategory->id;?>"
 	 data-condition-option="<?=$questionCategory->conditionOption ? $questionCategory->conditionOption->id : null;?>">
 
@@ -20,7 +20,7 @@ $hasInstances = $questionCategory->has_instances;
 		<h3 class="card-title" data-toggle="collapse" data-target="#collapseCat<?=$catId;?>">
 			<a href="javascript:void(0)"><?=$questionCategory->name;?></a>
 		</h3>
-		<h6 class="card-subtitle mb-2 text-muted"><?=$questionCategory->description;?></h6>
+		<h6 class="card-subtitle mb-2"><?=$questionCategory->description;?></h6>
 		<?php if ($hasInstances) { ?>
 			<input class="instanceNumber" type="number" step="1" min="1" value="<?=$instanceCount;?>" />
 		<?php } ?>

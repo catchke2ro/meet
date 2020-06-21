@@ -59,7 +59,8 @@ class CommitmentOption extends ActiveRecord {
 		if ($request->isPost &&
 			$this->item &&
 			!empty($request->getBodyParam('options')) &&
-			!empty($request->getBodyParam('options')[$this->item->id][$this->id][$instanceNumber])
+			!empty($request->getBodyParam('options')[$this->item->id][$instanceNumber]) &&
+			$request->getBodyParam('options')[$this->item->id][$instance] == $this->id
 		) {
 			$checked = true;
 		} elseif (!empty($this->questionOptions)) {

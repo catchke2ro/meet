@@ -18,7 +18,7 @@ $instanceCountQuestion = $questionFill->getInstanceCountForCategory($commitmentC
 $instanceCount = max($instanceCountRequest, $instanceCountQuestion);
 ?>
 
-<div class="card commitmentCategory <?=$hasInstances ? 'hasInstances' : null;?>"
+<div class="card card-primary commitmentCategory <?=$hasInstances ? 'hasInstances' : null;?>"
 	 data-category-id="<?=$commitmentCategory->id;?>"
 	 data-condition-option="<?=$commitmentCategory->conditionOption ? $commitmentCategory->conditionOption->id : null;?>">
 
@@ -26,7 +26,7 @@ $instanceCount = max($instanceCountRequest, $instanceCountQuestion);
 		<h3 class="card-title" data-toggle="collapse" data-target="#collapseCat<?=$catId;?>">
 			<a href="javascript:void(0)"><?=$commitmentCategory->name;?></a>
 		</h3>
-		<h6 class="card-subtitle mb-2 text-muted"><?=$commitmentCategory->description;?></h6>
+		<h6 class="card-subtitle mb-2"><?=$commitmentCategory->description;?></h6>
 		<?php if ($hasInstances) { ?>
 			<input class="instanceNumber" type="number" step="1" min="1" value="<?=$instanceCount;?>" />
 		<?php } ?>

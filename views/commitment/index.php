@@ -16,7 +16,7 @@ $this->title = 'Vállalások';
 
 <form method="post" action="">
 	<input type="hidden" name="_csrf" value="<?=Yii::$app->request->getCsrfToken()?>" />
-	<div class="accordion" id="commitmentsAccordion">
+	<div class="accordion treeAccordion mt-5 mb-5" id="commitmentsAccordion">
 		<?php
 		foreach ($commitmentCategories as $commitmentCategory) {
 			echo $this->render('category', [

@@ -6,17 +6,26 @@ use yii\helpers\Html;
 $this->title = 'Belépés';
 ?>
 
-<div class="site-signup">
-	<h1><?=Html::encode($this->title)?></h1>
-	<div class="row">
-		<div class="col-lg-5">
-			<?php $form = ActiveForm::begin(['id' => 'form-login', 'enableClientScript' => false]); ?>
-			<?=$form->field($model, 'email')->label('E-mail cím')->textInput(['autofocus' => true])?>
-			<?=$form->field($model, 'password')->label('Jelszó')->passwordInput()?>
-			<div class="form-group">
-				<?=Html::submitButton('Belépés', ['class' => 'btn btn-primary', 'name' => 'signup-button'])?>
+<div class="site-signin pt-5">
+
+	<div class="row justify-content-center">
+		<div class="col-md-6">
+			<div class="card card-primary">
+				<div class="card-header">
+					<h1 class="card-title"><?=Html::encode($this->title)?></h1>
+				</div>
+				<?php $form = ActiveForm::begin(['id' => 'form-login', 'enableClientScript' => false]); ?>
+				<div class="card-body">
+					<?=$form->field($model, 'email')->label('E-mail cím')->textInput(['autofocus' => true])?>
+					<?=$form->field($model, 'password')->label('Jelszó')->passwordInput()?>
+				</div>
+				<div class="card-footer">
+					<?=Html::submitButton('Belépés', ['class' => 'btn btn-primary', 'name' => 'signup-button'])?>
+				</div>
+				<?php ActiveForm::end(); ?>
 			</div>
-			<?php ActiveForm::end(); ?>
 		</div>
 	</div>
+
+
 </div>

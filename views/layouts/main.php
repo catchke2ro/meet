@@ -21,34 +21,32 @@ AppAsset::register($this);
 	<title><?=Html::encode($this->title)?></title>
 	<?php $this->head() ?>
 </head>
-<body>
+<body class="hold-transition layout-fixed layout-top-nav">
 <?php $this->beginBody() ?>
 
-<?php NavBar::begin(['brandLabel' => 'MEET', 'brandUrl' => '/']); ?>
+<div class="wrapper">
 
-<?php
-$menuItems = [
-	['label' => 'Főoldal', 'url' => ['/']]
-];
-if (Yii::$app->user->isGuest) {
-	$menuItems[] = ['label' => 'Belépés', 'url' => ['/user/login']];
-	$menuItems[] = ['label' => 'Regisztráció', 'url' => ['/user/registration']];
-} else {
-	$menuItems[] = Html::beginForm(['/user/logout'], 'post', ['id' => 'logoutForm']) . Html::endForm();
-	$menuItems[] = ['label' => 'Kérdések', 'url' => ['/question/index']];
-	$menuItems[] = ['label' => 'Kilépés', 'url' => 'javascript:void(0)', 'linkOptions' => ['class' => 'logoutLink']];
-}
-?>
-<?=Nav::widget([
-	'items' => $menuItems
-]);?>
+	<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+		<!-- Left navbar links -->
+		<ul class="navbar-nav">
+			<li class="nav-item d-none d-sm-inline-block"><a href="/" class="nav-link">Főoldal</a></li>
+			<?php if (Yii::$app->user->isGuest) { ?>
+				<li class="nav-item"><a href="/user/login" class="nav-link">Belépés</a></li>
+				<li class="nav-item"><a href="/user/registration" class="nav-link">Regisztráció</a></li>
+			<?php } else { ?>
+				<?php Html::beginForm(['/user/logout'], 'post', ['id' => 'logoutForm']) . Html::endForm(); ?>
+				<li class="nav-item"><a href="/question/index" class="nav-link">Kérdések</a></li>
+				<li class="nav-item"><a href="javascript:void(0)" class="nav-link logoutLink">Kilépés</a></li>
+			<?php } ?>
 
-<?php NavBar::end();?>
+		</ul>
+	</nav>
 
-<div class="container-fluid">
-	<?=$content;?>
+	<div class="content-wrapper container-fluid">
+		<?=$content;?>
+	</div>
+
 </div>
-
 <?php $this->endBody() ?>
 </body>
 </html>

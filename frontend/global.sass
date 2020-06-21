@@ -1,10 +1,33 @@
 // Your variable overrides
 
 // Bootstrap and its default variables
-@import "~bootstrap"
+//@import "~bootstrap"
+
+// Bootstrap
+// ---------------------------------------------------
+@import '~bootstrap/scss/functions'
+@import '~admin-lte/build/scss/bootstrap-variables'
+@import '~bootstrap/scss/bootstrap'
+
+// Variables and Mixins
+// ---------------------------------------------------
+@import '~admin-lte/build/scss/variables'
+@import '~admin-lte/build/scss/mixins'
+
+@import '~admin-lte/build/scss/parts/core'
+@import '~admin-lte/build/scss/parts/components'
+@import '~admin-lte/build/scss/parts/extra-components'
+@import '~admin-lte/build/scss/parts/pages'
+@import '~admin-lte/build/scss/parts/plugins'
+@import '~admin-lte/build/scss/parts/miscellaneous'
+
+@import '~admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.css'
+
+@import "~font-awesome/scss/font-awesome.scss"
+//@import "~admin-lte/dist/css/adminlte.css"
 
 div.question.onlyCustomInput
-	.options .btn-group
+	.options .form-group.options
 		display: none
 
 .questionCategory
@@ -14,3 +37,14 @@ div.question.onlyCustomInput
 	&.hasInstances
 		.instanceName
 			display: block
+
+.treeAccordion
+
+	& > .card
+		cursor: pointer
+		margin-bottom: 0px
+		.card-title
+			float: none
+		.card-subtitle
+			margin: 0
+			color: $white
