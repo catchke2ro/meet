@@ -56,7 +56,8 @@ $config = [
 				'/vallalasok'   => 'commitment/index',
 				'/regisztracio' => 'user/registration',
 				'/belepes'      => 'user/login',
-				'/kilepes'      => 'user/logout'
+				'/kilepes'      => 'user/logout',
+				'/vallalasok/pontok'   => 'commitment/score'
 			],
 		],
 	],

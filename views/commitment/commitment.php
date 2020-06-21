@@ -34,7 +34,7 @@ $catId = $commitmentCategory->id;
 						} ?>
 						<div class="icheck-greensea">
 							<input type="radio"
-								   class="commitmentOption"
+								   class="commitmentOption qcOption"
 								   data-id="<?=$option->id;?>"
 								   data-qid="<?=$commitment->id;?>"
 								   value="<?=$option->id;?>"

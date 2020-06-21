@@ -18,7 +18,7 @@ $instanceCountQuestion = $questionFill->getInstanceCountForCategory($commitmentC
 $instanceCount = max($instanceCountRequest, $instanceCountQuestion);
 ?>
 
-<div class="card card-primary commitmentCategory <?=$hasInstances ? 'hasInstances' : null;?>"
+<div class="card card-primary qcCategory commitmentCategory <?=$hasInstances ? 'hasInstances' : null;?>"
 	 data-category-id="<?=$commitmentCategory->id;?>"
 	 data-condition-option="<?=$commitmentCategory->conditionOption ? $commitmentCategory->conditionOption->id : null;?>">
 

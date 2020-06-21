@@ -16,6 +16,7 @@ use yii\web\Request;
  * @property int                    $order
  * @property bool                   $is_custom_input
  * @property string                 $description
+ * @property int                    $score
  * @property CommitmentItem         $item
  * @property array|QuestionOption[] $questionOptions
  */
@@ -67,8 +68,10 @@ class CommitmentOption extends ActiveRecord {
 			foreach ($this->questionOptions as $questionOption) {
 				$questionFill;
 			}
+
 			return $checked;
 		}
+
 		return $checked;
 	}
 

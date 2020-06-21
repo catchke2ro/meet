@@ -12,7 +12,7 @@ $catId = $questionCategory->id;
 $hasInstances = $questionCategory->has_instances;
 ?>
 
-<div class="card card-primary questionCategory <?=$hasInstances ? 'hasInstances' : null;?>"
+<div class="card card-primary qcCategory questionCategory <?=$hasInstances ? 'hasInstances' : null;?>"
 	 data-category-id="<?=$questionCategory->id;?>"
 	 data-condition-option="<?=$questionCategory->conditionOption ? $questionCategory->conditionOption->id : null;?>">
 

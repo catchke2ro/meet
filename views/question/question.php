@@ -25,7 +25,7 @@ $catId = $questionCategory->id;
 				} ?>
 				<div class="icheck-greensea">
 					<input type="radio"
-						   class="questionOption"
+						   class="questionOption qcOption"
 						   data-id="<?=$option->id;?>"
 						   data-qid="<?=$question->id;?>"
 						   value="<?=$option->id;?>"

@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\lib\TreeLib;
 use app\models\CommitmentCategory;
 use app\models\CommitmentInstance;
+use app\models\CommitmentOption;
 use app\models\QuestionCategory;
 use app\models\UserCommitmentAnswer;
 use app\models\UserCommitmentFill;
@@ -17,6 +18,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\web\Request;
+use yii\web\Response;
 
 /**
  * Class CommitmentController
@@ -55,7 +57,7 @@ class CommitmentController extends Controller {
 				'class' => AccessControl::className(),
 				'rules' => [
 					[
-						'actions' => ['index'],
+						'actions' => ['index', 'score'],
 						'allow' => true,
 						'roles' => ['@'],
 					],
@@ -160,6 +162,33 @@ class CommitmentController extends Controller {
 			$transaction->rollBack();
 			throw $exception;
 		}
+	}
+
+
+	/**
+	 */
+	public function actionScore() {
+		$request = Yii::$app->request;
+		$postedOptions = $request->getBodyParam('options') ?: [];
+		/** @var CommitmentOption[] $dbOptions */
+		$dbOptions = CommitmentOption::find()->all();
+		$dbOptionsByIds = [];
+		foreach ($dbOptions as $dbOption) {
+			$dbOptionsByIds[$dbOption->id] = $dbOption;
+		}
+
+		$score = 0;
+		foreach ($postedOptions as $commitmentId => $instances) {
+			foreach ($instances ?: [] as $instanceNumber => $optionId) {
+				if (isset($dbOptionsByIds[$optionId])) {
+					$score += (int) $dbOptionsByIds[$optionId]->score;
+				}
+			}
+		}
+
+		$response = Yii::$app->response;
+		$response->format = \yii\web\Response::FORMAT_JSON;
+		$response->data = ['score' => $score];
 	}
 
 

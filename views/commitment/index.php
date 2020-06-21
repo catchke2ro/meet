@@ -14,8 +14,12 @@ $this->title = 'Vállalások';
 
 ?>
 
-<form method="post" action="">
+<form method="post" action="" class="commitmentsForm">
 	<input type="hidden" name="_csrf" value="<?=Yii::$app->request->getCsrfToken()?>" />
+	<div class="commitmentScore">
+		<p>Pontszám:</p>
+		<span class="score"></span>
+	</div>
 	<div class="accordion treeAccordion mt-5 mb-5" id="commitmentsAccordion">
 		<?php
 		foreach ($commitmentCategories as $commitmentCategory) {
