@@ -69,6 +69,7 @@ class UserController extends Controller {
 			}
 		}
 
+		Yii::$app->view->params['pageClass'] = 'registration';
 		return $this->render('registration', [
 			'model' => $model,
 		]);
@@ -89,6 +90,7 @@ class UserController extends Controller {
 			return $this->goBack();
 		}
 
+		Yii::$app->view->params['pageClass'] = 'login';
 		return $this->render('login', [
 			'model' => $model,
 		]);

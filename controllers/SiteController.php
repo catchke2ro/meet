@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use Yii;
 use yii\web\Controller;
 
 /**
@@ -35,6 +36,8 @@ class SiteController extends Controller {
 	 * @return string
 	 */
 	public function actionHome() {
+
+		Yii::$app->view->params['pageClass'] = 'home';
 		return $this->render('home');
 	}
 

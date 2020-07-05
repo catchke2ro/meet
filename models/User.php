@@ -20,6 +20,7 @@ use yii\web\IdentityInterface;
  * @property string       $password
  * @property string       $password_reset_token
  * @property string       $email
+ * @property string       $name
  * @property string       $auth_key
  * @property integer      $status
  * @property string       $organization_id

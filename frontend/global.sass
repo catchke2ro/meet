@@ -6,6 +6,7 @@
 // Bootstrap
 // ---------------------------------------------------
 @import '~bootstrap/scss/functions'
+@import 'variables'
 @import '~admin-lte/build/scss/bootstrap-variables'
 @import '~bootstrap/scss/bootstrap'
 
@@ -25,6 +26,20 @@
 
 @import "~font-awesome/scss/font-awesome.scss"
 //@import "~admin-lte/dist/css/adminlte.css"
+
+@import "variables"
+@import "layout"
+@import "header"
+@import "sites/home"
+@import "sites/loginReg"
+
+
+.btn-primary
+	color: $white
+.btn-sm
+	border-radius: $border-radius
+	padding-top: 0
+	padding-bottom: 0
 
 div.question.onlyCustomInput
 	.options .form-group.options

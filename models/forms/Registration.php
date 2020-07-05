@@ -28,6 +28,11 @@ class Registration extends Model {
 	public $email;
 
 	/**
+	 * @var string
+	 */
+	public $name;
+
+	/**
 	 * @var  string
 	 */
 	public $password;
@@ -80,6 +85,7 @@ class Registration extends Model {
 			['email', 'trim'],
 			['email', 'required'],
 			['email', 'email'],
+			['email', 'name'],
 			['email', 'string', 'max' => 255],
 			['email', 'unique', 'targetClass' => User::class, 'message' => 'Az e-mail címmel már van regisztráció'],
 			['password', 'required'],
@@ -121,6 +127,7 @@ class Registration extends Model {
 
 			$user = new User();
 			$user->email = $this->email;
+			$user->name = $this->name;
 			$user->setPassword($this->password);
 			$user->organization_id = $organization->id;
 			$user->generateAuthKey();

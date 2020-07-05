@@ -1,0 +1,48 @@
+.content-wrapper.home
+	.hero
+		width: 100%
+		padding-top: 43%
+		position: relative
+		overflow: hidden
+		border-radius: $border-radius-lg
+	img
+		position: absolute
+		top: 0px
+		left: 0px
+		max-width: 100%
+
+
+	.teasers
+		display: flex
+		justify-content: space-between
+		margin-top: 2.4rem
+		.teaser
+			flex: calc(#{percentage(1/3)} - 1.8rem) 0 0
+			.imgWrapper
+				position: relative
+				width: 100%
+				padding-top: 60%
+				border-top-left-radius: $border-radius-lg
+				border-top-right-radius: $border-radius-lg
+				overflow: hidden
+				img
+					position: absolute
+					top: 0px
+					left: 0px
+					max-width: 100%
+			h3
+				text-align: center
+				font-weight: bold
+				padding: 1rem
+				font-size: 1.2rem
+				color: $primary
+				background-color: $gray-100
+			.teaserText
+				hyphens: auto
+				text-align: justify
+
+			.moreLink
+				display: block
+				text-align: right
+				font-weight: 600
+				font-size: $font-size-sm

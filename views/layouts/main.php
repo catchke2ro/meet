@@ -21,30 +21,46 @@ AppAsset::register($this);
 	<title><?=Html::encode($this->title)?></title>
 	<?php $this->head() ?>
 </head>
-<body class="hold-transition layout-fixed layout-top-nav">
+<body class="hold-transition layout-fixed layout-top-nav layout-frontend">
 <?php $this->beginBody() ?>
 
 <div class="wrapper">
 
-	<nav class="main-header navbar navbar-expand navbar-white navbar-light">
-		<!-- Left navbar links -->
-		<ul class="navbar-nav">
-			<li class="nav-item d-none d-sm-inline-block"><a href="/" class="nav-link">Főoldal</a></li>
-			<?php if (Yii::$app->user->isGuest) { ?>
-				<li class="nav-item"><a href="/user/login" class="nav-link">Belépés</a></li>
-				<li class="nav-item"><a href="/user/registration" class="nav-link">Regisztráció</a></li>
-			<?php } else { ?>
-				<?php Html::beginForm(['/user/logout'], 'post', ['id' => 'logoutForm']) . Html::endForm(); ?>
-				<li class="nav-item"><a href="/question/index" class="nav-link">Kérdések</a></li>
-				<li class="nav-item"><a href="javascript:void(0)" class="nav-link logoutLink">Kilépés</a></li>
+	<header>
+		<div class="headerTop">
+			<div class="logo"><img src="/assets/img/meet_logo_webre_fektetett.png" alt="MEET"/></div>
+			<?php if (Yii::$app->getUser()) { ?>
+				<div class="user">
+					<p class="text-small loggedInName">Belépve: <?=Yii::$app->getUser()->getIdentity()->name;?></p>
+					<?php Html::beginForm(['/user/logout'], 'post', ['id' => 'logoutForm']) . Html::endForm(); ?>
+					<a href="javascript:void(0)" class="btn btn-sm btn-primary logoutLink">Kilépés</a>
+				</div>
 			<?php } ?>
+		</div>
 
-		</ul>
-	</nav>
+		<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+			<!-- Left navbar links -->
+			<ul class="navbar-nav">
+				<li class="nav-item d-none d-sm-inline-block"><a href="/" class="nav-link">Főoldal</a></li>
+				<?php if (Yii::$app->user->isGuest) { ?>
+					<li class="nav-item"><a href="/user/login" class="nav-link">Belépés</a></li>
+					<li class="nav-item"><a href="/user/registration" class="nav-link">Regisztráció</a></li>
+				<?php } else { ?>
+					<li class="nav-item"><a href="/question/index" class="nav-link">Kérdések</a></li>
+				<?php } ?>
+			</ul>
+		</nav>
+	</header>
 
-	<div class="content-wrapper container-fluid">
+
+
+	<div class="content-wrapper container-fluid <?=$this->params['pageClass'] ?? '';?>">
 		<?=$content;?>
 	</div>
+
+	<footer>
+		<p><span>Copyright @2020</span>&nbsp;|&nbsp;<a href="/">Impresszum</a></p>
+	</footer>
 
 </div>
 <?php $this->endBody() ?>
