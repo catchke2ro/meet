@@ -4,10 +4,13 @@ const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const config = {
-	entry: './frontend/index.js',
+	entry: {
+		app: './frontend/app.js',
+		admin: './frontend/admin.js'
+	},
 	output: {
 		path: path.resolve(__dirname, 'web/dist'),
-		filename: 'scripts.js',
+		filename: '[name].js',
 	},
 	module: {
 		rules: [

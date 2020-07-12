@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\components\TimestampBehavior;
+use app\models\interfaces\DataTableModelInterface;
 use Yii;
 use yii\base\Exception;
 use yii\base\NotSupportedException;
@@ -22,13 +23,15 @@ use yii\web\IdentityInterface;
  * @property string       $email
  * @property string       $name
  * @property string       $auth_key
- * @property integer      $status
+ * @property bool         $is_approved_admin
+ * @property bool         $is_approved_boss
  * @property string       $organization_id
  * @property Organization $organization
+ * @property bool         $is_admin
  * @property string       $created_at
  * @property string       $updated_at
  */
-class User extends ActiveRecord implements IdentityInterface {
+class User extends ActiveRecord implements IdentityInterface, DataTableModelInterface {
 
 
 	/**
@@ -108,6 +111,14 @@ class User extends ActiveRecord implements IdentityInterface {
 
 
 	/**
+	 * @return bool
+	 */
+	public function isAdmin(): bool {
+		return $this->is_admin;
+	}
+
+
+	/**
 	 * @return string|void
 	 */
 	public function getAuthKey() {
@@ -155,6 +166,63 @@ class User extends ActiveRecord implements IdentityInterface {
 	 */
 	public function generateAuthKey() {
 		$this->auth_key = Yii::$app->security->generateRandomString();
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function toDataTableArray(): array {
+		return [
+			'id'                => $this->id,
+			'email'             => $this->email,
+			'name'              => $this->name,
+			'is_approved_admin' => $this->is_approved_admin,
+			'is_approved_boss'  => $this->is_approved_boss,
+			'organization_id'   => $this->organization_id,
+			'organization'      => $this->organization,
+			'is_admin'          => $this->is_admin,
+			'created_at'        => $this->created_at,
+			'updated_at'        => $this->updated_at,
+		];
+	}
+
+
+	/**
+	 * @return array|string[]
+	 */
+	public function getDataTableActions(): array {
+		return [
+			'edit' => '<a href="/admin/users/edit/'.$this->id.'" class="fa fa-pencil" title="Szereksztés"></a>',
+			'delete' => '<a href="/admin/users/delete/'.$this->id.'" class="fa fa-trash" title="Szereksztés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
+		];
+	}
+
+
+	/**
+	 * @return array|string[]
+	 */
+	public static function getTextSearchColumns(): array {
+		return [
+			'email',
+			'name'
+		];
+	}
+
+
+	/**
+	 * @return array|string[]
+	 */
+	public static function getOrderableColumns(): array {
+		return [
+			'id',
+			'email',
+			'name',
+			'is_approved_admin',
+			'is_approved_boss',
+			'created_at',
+			'updated_at'
+		];
 	}
 
 

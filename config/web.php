@@ -25,7 +25,7 @@ $config = [
 		'user'         => [
 			'identityClass'   => User::class,
 			'enableAutoLogin' => true,
-			'loginUrl' => ['user/login']
+			'loginUrl'        => ['user/login']
 		],
 		'errorHandler' => [
 			'errorAction' => 'site/error',
@@ -51,13 +51,19 @@ $config = [
 			'enablePrettyUrl' => true,
 			'showScriptName'  => false,
 			'rules'           => [
-				'/'             => 'site/home',
-				'/kerdesek'     => 'question/index',
-				'/vallalasok'   => 'commitment/index',
-				'/regisztracio' => 'user/registration',
-				'/belepes'      => 'user/login',
-				'/kilepes'      => 'user/logout',
-				'/vallalasok/pontok'   => 'commitment/score'
+				'/'                  => 'site/home',
+				'/kerdesek'          => 'question/index',
+				'/vallalasok'        => 'commitment/index',
+				'/regisztracio'      => 'user/registration',
+				'/belepes'           => 'user/login',
+				'/kilepes'           => 'user/logout',
+				'/vallalasok/pontok' => 'commitment/score',
+
+				'/admin/users'                 => 'admin/users/index',
+				'/admin/users/create'          => 'admin/users/create',
+				'/admin/users/edit/<id:\d+>'   => 'admin/users/edit',
+				'/admin/users/delete/<id:\d+>' => 'admin/users/delete',
+
 			],
 		],
 	],

@@ -1,4 +1,4 @@
-import "./global.sass";
+import "./app.sass";
 
 import $ from "jquery"
 import "bootstrap/dist/js/bootstrap"
