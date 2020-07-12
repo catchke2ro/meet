@@ -21,11 +21,11 @@ $catId = $commitmentCategory->id;
 ?>
 
 <div class="commitment pb-2 <?=$commitment->getCssClass();?>">
-	<p class="mb-0"><?=$commitment->name;?></p>
+	<p class="mb-0 qcTitle"><?=$commitment->name;?></p>
 	<div class="description"><?=$commitment->description;?></div>
 	<div class="row">
 		<div class="col-md-6">
-			<div class="options">
+			<div class="optionsWrapper">
 				<div class="form-group options">
 					<?php $customInputOptionId = null; ?>
 					<?php foreach ($commitment->options as $key => $option) { ?>

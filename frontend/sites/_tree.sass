@@ -1,0 +1,102 @@
+.treeAccordion
+	.card.qcCategory
+		margin-bottom: 1rem
+		border-radius: $border-radius-lg
+		border: none
+		box-shadow: none
+		& > .card-header
+			border: none
+			cursor: pointer
+			display: flex
+			& > .arrowIcons
+				flex: 50px 0 0
+				span
+					color: $white
+					font-size: 2rem
+			& > .titles
+				flex: auto 1 0
+				.card-title, .card-subtitle
+					display: block
+					float: none
+				.card-title,
+					a
+						font-weight: bold
+						color: $white
+						line-height: 2rem
+				.card-subtitle
+					color: $gray-100
+					font-weight: lighter
+			& > .instanceNumberWrapper
+				flex: auto 0 1
+				padding-top: 0.4rem
+				label
+					color: $white
+					font-weight: lighter
+					margin-right: 10px
+				input
+					width: 50px
+					border: none
+					color: $primary
+					font-weight: bold
+					text-align: center
+					border-radius: $border-radius-lg
+			&:not(.collapsed)
+				.arrowIcons .down
+					display: none
+			&.collapsed
+				.arrowIcons .up
+					display: none
+		& > .card-body-wrapper
+			border: 1px solid $green
+			border-bottom-left-radius: $border-radius-lg
+			border-bottom-right-radius: $border-radius-lg
+
+	.card.categoryInstance
+		box-shadow: none
+		.qcTitle
+			font-weight: 600
+			color: $primary
+			position: relative
+			padding-left: 50px
+			margin-bottom: 1rem
+			&:before
+				content: ""
+				display: block
+				position: absolute
+				top: 0px
+				left: 0px
+				background-image: url("/assets/img/leaf.png")
+				width: 30px
+				height: 100%
+				background-size: contain
+				background-repeat: no-repeat
+				background-position: left center
+		.optionsWrapper
+			padding-left: 50px
+
+	.card.qcCategory.hasInstances
+		.card.categoryInstance
+			border: 1px solid $gray-500
+			box-shadow: 0px 0px 5px $gray-500
+
+		.instanceTitle
+			input
+				color: $primary
+				font-weight: bold
+				border-radius: $border-radius-lg
+				width: 100%
+				font-size: 1.2rem
+				line-height: 2
+				padding: 0px 1rem
+				border: 1px solid $primary
+
+
+	div.onlyCustomInput
+		.optionsWrapper .form-group.options
+			display: none
+
+	textarea
+		resize: none
+
+
+

@@ -14,11 +14,22 @@ $(function () {
 
 
 	$(document).on('click', '.treeAccordion > .card > .card-header', function (event) {
-		if ($(event.target).is('input') || $(event.target).is('.card-title')) {
+		if ($(event.target).is('input') || $(event.target).is('.titles')) {
 			return;
 		}
-		$(event.target).closest('.card').find('.card-title').trigger('click');
+		$(event.target).closest('.card').find('.titles').trigger('click');
 	});
+
+	$(document).on('click', '.instanceNumberWrapper', function(ev) {
+		ev.stopPropagation();
+	})
+	/*$(document).on('show.bs.collapse hide.bs.collapse', function(ev) {
+		if ($(ev.target).is('input')) {
+			return false;
+		}
+	});*/
+
+
 
 	const $conditionedCategories = $('div.qcCategory').filter((index, e) => parseInt($(e).data('condition-option')) > 0);
 	$conditionedCategories.each(function (index, e) {

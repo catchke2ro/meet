@@ -14,9 +14,9 @@ $catId = $questionCategory->id;
 ?>
 
 <div class="question pb-2 <?=$question->getCssClass();?>">
-	<p class="mb-0"><?=$question->name;?></p>
+	<p class="mb-0 qcTitle"><?=$question->name;?></p>
 	<div class="description"><?=$question->description;?></div>
-	<div class="options">
+	<div class="optionsWrapper">
 		<div class="form-group options">
 			<?php $customInputOptionId = null; ?>
 			<?php foreach ($question->options as $key => $option) { ?>

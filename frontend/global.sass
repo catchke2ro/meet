@@ -32,6 +32,7 @@
 @import "header"
 @import "sites/home"
 @import "sites/loginReg"
+@import "sites/tree"
 
 
 .btn-primary
@@ -41,9 +42,8 @@
 	padding-top: 0
 	padding-bottom: 0
 
-div.question.onlyCustomInput
-	.options .form-group.options
-		display: none
+input:focus, textarea:focus, button:focus
+	outline: none
 
 .questionCategory
 	.instanceName
@@ -53,13 +53,10 @@ div.question.onlyCustomInput
 		.instanceName
 			display: block
 
-.treeAccordion
+.icheck-greensea
+	& > input:first-child:checked + label:before
+		border-color: $gray-100
 
-	& > .card
-		cursor: pointer
-		margin-bottom: 0px
-		.card-title
-			float: none
-		.card-subtitle
-			margin: 0
-			color: $white
+	& > input:first-child:checked + label::before
+		background-color: $primary
+		border-color: $primary
