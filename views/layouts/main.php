@@ -29,10 +29,13 @@ AppAsset::register($this);
 	<header>
 		<div class="headerTop">
 			<div class="logo"><img src="/assets/img/meet_logo_webre_fektetett.png" alt="MEET"/></div>
-			<?php if (Yii::$app->getUser()) { ?>
+			<?php if (!Yii::$app->getUser()->isGuest) { ?>
 				<div class="user">
 					<p class="text-small loggedInName">Belépve: <?=Yii::$app->getUser()->getIdentity()->name;?></p>
 					<?php Html::beginForm(['/user/logout'], 'post', ['id' => 'logoutForm']) . Html::endForm(); ?>
+					<?php if (Yii::$app->getUser()->getIdentity()->isAdmin()) { ?>
+						<a href="/admin" class="btn btn-sm btn-secondary">Admin</a>
+					<?php } ?>
 					<a href="javascript:void(0)" class="btn btn-sm btn-primary logoutLink">Kilépés</a>
 				</div>
 			<?php } ?>

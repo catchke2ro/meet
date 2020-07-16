@@ -59,6 +59,7 @@ $config = [
 				'/kilepes'           => 'user/logout',
 				'/vallalasok/pontok' => 'commitment/score',
 
+				'/admin'                       => 'admin/index/index',
 				'/admin/users'                 => 'admin/users/index',
 				'/admin/users/create'          => 'admin/users/create',
 				'/admin/users/edit/<id:\d+>'   => 'admin/users/edit',
