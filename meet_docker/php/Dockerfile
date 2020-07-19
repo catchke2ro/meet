@@ -21,3 +21,7 @@ RUN docker-php-ext-enable xdebug
 RUN docker-php-ext-install pdo pdo_mysql zip gd
 
 RUN wget https://getcomposer.org/installer -O - -q | php -- --quiet && mv composer.phar /usr/local/bin/composer
+
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y nodejs
+RUN npm install npm@latest -g

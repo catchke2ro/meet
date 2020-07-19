@@ -49,8 +49,6 @@ services:
     container_name: "meet_nginx"
 
 volumes:
-  meet-sync:
-    external: true
   phpsocket:
   mysql_data:
 networks:
