@@ -54,5 +54,10 @@
       "type": "composer",
       "url": "https://asset-packagist.org"
     }
-  ]
+  ],
+  "autoload": {
+    "files": [
+      "lib/global_functions.php"
+    ]
+  }
 }

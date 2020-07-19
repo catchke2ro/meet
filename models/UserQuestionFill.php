@@ -2,10 +2,13 @@
 
 namespace app\models;
 
+use app\models\interfaces\FillInterface;
+use app\models\interfaces\ItemInterface;
 use PDO;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\web\Request;
 
 /**
  * Class UserQuestionFill
@@ -19,7 +22,7 @@ use yii\db\ActiveRecord;
  * @property User                 $user
  * @property UserQuestionAnswer[] $answers
  */
-class UserQuestionFill extends ActiveRecord {
+class UserQuestionFill extends ActiveRecord implements FillInterface {
 
 
 	/**
@@ -69,7 +72,7 @@ class UserQuestionFill extends ActiveRecord {
 	 *
 	 * @return QuestionInstance|null
 	 */
-	public function getInstance(CommitmentCategory $commitmentCategory, int $instanceNum): ?QuestionInstance {
+	public function getInstance(CommitmentCategory $commitmentCategory, int $instanceNum): ?ActiveRecord {
 		$instance = null;
 		if ($commitmentCategory->question_category_inst_id) {
 			$instances = QuestionInstance::find()
@@ -101,5 +104,40 @@ class UserQuestionFill extends ActiveRecord {
 		$checkedCommitmentOptions = $command->queryAll(PDO::FETCH_COLUMN);
 		return $checkedCommitmentOptions ?: null;
 	}
+
+
+	/**
+	 * @param ItemInterface $item
+	 *
+	 * @return string|null
+	 */
+	public function getCustomInputValue(ItemInterface $item): ?string {
+		/** @var UserQuestionAnswer|null $option */
+		$option = $this->getAnswers()
+			->innerJoinWith('option as option')
+			->where(['option.is_custom_input' => 1, 'option.question_id' => $item->id])
+			->one();
+		return $option ? $option->custom_input : null;
+	}
+
+
+	/**
+	 * @param CommitmentItem $commitment
+	 * @param int            $instance
+	 *
+	 * @return int
+	 */
+	public function getIntervalValue(CommitmentItem $commitment, int $instance): int {
+		$request = Yii::$app->request;
+		$value = $commitment->months_min;
+		if ($request->isPost &&
+			!empty($request->getBodyParam('intervals')) &&
+			!empty($request->getBodyParam('options')[$commitment->id][$instance])
+		) {
+			$value = (int) $request->getBodyParam('options')[$commitment->id][$instance];
+		}
+		return $value;
+	}
+
 
 }

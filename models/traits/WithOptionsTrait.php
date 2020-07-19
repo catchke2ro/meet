@@ -2,6 +2,7 @@
 
 namespace app\models\traits;
 
+use app\models\interfaces\FillInterface;
 use ReflectionClass;
 use yii\db\ActiveQuery;
 use yii\web\Request;
@@ -28,16 +29,22 @@ trait WithOptionsTrait {
 
 
 	/**
-	 * @param Request $request
+	 * @param Request       $request
+	 *
+	 * @param FillInterface $fill
 	 *
 	 * @return string
 	 */
-	public function getCustomInputValue(Request $request): string {
+	public function getCustomInputValue(Request $request, FillInterface $fill = null): string {
 		if ($request->isPost &&
 			!empty($request->getBodyParam('options')) &&
 			!empty($request->getBodyParam('options')[$this->id]['__cI'])
 		) {
 			return $request->getBodyParam('options')[$this->id]['__cI'];
+		}
+
+		if (!is_null($fill)) {
+			return $fill->getCustomInputValue($this) ?: '';
 		}
 
 		return '';

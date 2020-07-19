@@ -46,10 +46,13 @@ AppAsset::register($this);
 			<ul class="navbar-nav">
 				<li class="nav-item d-none d-sm-inline-block"><a href="/" class="nav-link">Főoldal</a></li>
 				<?php if (Yii::$app->user->isGuest) { ?>
-					<li class="nav-item"><a href="/user/login" class="nav-link">Belépés</a></li>
-					<li class="nav-item"><a href="/user/registration" class="nav-link">Regisztráció</a></li>
+					<li class="nav-item"><a href="/belepes" class="nav-link">Belépés</a></li>
+					<li class="nav-item"><a href="/regisztracio" class="nav-link">Regisztráció</a></li>
 				<?php } else { ?>
-					<li class="nav-item"><a href="/question/index" class="nav-link">Kérdések</a></li>
+					<li class="nav-item"><a href="/kerdesek" class="nav-link">Kérdések</a></li>
+					<?php if (Yii::$app->user->getIdentity()->hasCommitmentFill()) {?>
+						<li class="nav-item"><a href="/vallalasok" class="nav-link">Vállalásaim</a></li>
+					<?php } ?>
 				<?php } ?>
 			</ul>
 		</nav>
@@ -58,6 +61,7 @@ AppAsset::register($this);
 
 
 	<div class="content-wrapper container-fluid <?=$this->params['pageClass'] ?? '';?>">
+		<?php include __DIR__.'/flash-messages.php';?>
 		<?=$content;?>
 	</div>
 

@@ -1,11 +1,12 @@
 <?php
 
 use app\models\CommitmentCategory;
+use app\models\interfaces\FillInterface;
 use app\models\UserQuestionFill;
 
 /**
  * @var $commitmentCategory                       CommitmentCategory
- * @var $questionFill                             UserQuestionFill
+ * @var $fill                                     FillInterface
  * @var $this                                     yii\web\View
  * @var $checkedCommitmentOptions                 array
  */
@@ -14,7 +15,7 @@ $catId = $commitmentCategory->id;
 $hasInstances = $commitmentCategory->has_instances;
 
 $instanceCountRequest = $commitmentCategory->getInstanceCount(Yii::$app->request);
-$instanceCountQuestion = $questionFill->getInstanceCountForCategory($commitmentCategory);
+$instanceCountQuestion = $fill->getInstanceCountForCategory($commitmentCategory);
 $instanceCount = max($instanceCountRequest, $instanceCountQuestion);
 ?>
 
@@ -43,7 +44,7 @@ $instanceCount = max($instanceCountRequest, $instanceCountQuestion);
 	<div id="collapseCat<?=$catId;?>" class="collapse card-body-wrapper" data-parent="#commitmentsAccordion">
 		<div class="card-body">
 			<?php for ($inst = 0; $inst < $instanceCount; $inst ++) { ?>
-				<?php $instance = $questionFill->getInstance($commitmentCategory, $inst); ?>
+				<?php $instance = $fill->getInstance($commitmentCategory, $inst); ?>
 				<div class="card categoryInstance" data-instance="<?=$inst;?>">
 					<?php if ($hasInstances) { ?>
 						<div class="card-header">
@@ -59,7 +60,7 @@ $instanceCount = max($instanceCountRequest, $instanceCountQuestion);
 								'commitment'               => $commitment,
 								'instanceNumber'           => $inst,
 								'instance'                 => $instance,
-								'questionFill'             => $questionFill,
+								'fill'                     => $fill,
 								'checkedCommitmentOptions' => $checkedCommitmentOptions
 							]);?>
 						<?php } ?>

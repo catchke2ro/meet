@@ -20,6 +20,7 @@ use yii\db\ActiveRecord;
  * @property bool                   $has_instances
  * @property array|CommitmentItem[] $items
  * @property CommitmentOption       $conditionOption
+ * @property bool					$special_points
  * @property int|null               $question_category_inst_id
  * @property QuestionCategory       $questionCategoryInst
  */

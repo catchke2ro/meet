@@ -17,19 +17,20 @@ use yii\web\IdentityInterface;
  * @package app\models
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  *
- * @property int          $id
- * @property string       $password
- * @property string       $password_reset_token
- * @property string       $email
- * @property string       $name
- * @property string       $auth_key
- * @property bool         $is_approved_admin
- * @property bool         $is_approved_boss
- * @property string       $organization_id
- * @property Organization $organization
- * @property bool         $is_admin
- * @property string       $created_at
- * @property string       $updated_at
+ * @property int                  $id
+ * @property string               $password
+ * @property string               $password_reset_token
+ * @property string               $email
+ * @property string               $name
+ * @property string               $auth_key
+ * @property bool                 $is_approved_admin
+ * @property bool                 $is_approved_boss
+ * @property string               $organization_id
+ * @property Organization         $organization
+ * @property bool                 $is_admin
+ * @property string               $created_at
+ * @property string               $updated_at
+ * @property UserCommitmentFill[] $commitmentFills
  */
 class User extends ActiveRecord implements IdentityInterface, DataTableModelInterface {
 
@@ -65,6 +66,30 @@ class User extends ActiveRecord implements IdentityInterface, DataTableModelInte
 	 */
 	public function getOrganization() {
 		return $this->hasOne(Organization::class, ['id' => 'organization_id']);
+	}
+
+
+	/**
+	 * @return ActiveQuery
+	 */
+	public function getCommitmentFills() {
+		return $this->hasMany(UserCommitmentFill::class, ['user_id' => 'id']);
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function hasCommitmentFill(): bool {
+		return count($this->commitmentFills) > 0;
+	}
+
+
+	/**
+	 * @return UserCommitmentFill|null
+	 */
+	public function getLatestCommitmentFill(): ?UserCommitmentFill {
+		return $this->getCommitmentFills()->orderBy('date DESC')->limit(1)->one();
 	}
 
 
@@ -193,8 +218,8 @@ class User extends ActiveRecord implements IdentityInterface, DataTableModelInte
 	 */
 	public function getDataTableActions(): array {
 		return [
-			'edit' => '<a href="/admin/users/edit/'.$this->id.'" class="fa fa-pencil" title="Szereksztés"></a>',
-			'delete' => '<a href="/admin/users/delete/'.$this->id.'" class="fa fa-trash" title="Szereksztés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
+			'edit'   => '<a href="/admin/users/edit/' . $this->id . '" class="fa fa-pencil" title="Szereksztés"></a>',
+			'delete' => '<a href="/admin/users/delete/' . $this->id . '" class="fa fa-trash" title="Szereksztés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
 		];
 	}
 

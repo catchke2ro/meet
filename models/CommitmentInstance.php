@@ -11,10 +11,11 @@ use yii\db\ActiveRecord;
  *
  * @package app\models
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
- * @property int                $id
- * @property string             $name
- * @property int                $commitment_category_id
- * @property CommitmentCategory $commitmentCategory
+ * @property int                  $id
+ * @property string               $name
+ * @property int                  $commitment_category_id
+ * @property CommitmentCategory   $commitmentCategory
+ * @property UserCommitmentOption $userCommitmentOptions
  */
 class CommitmentInstance extends ActiveRecord {
 
@@ -35,5 +36,14 @@ class CommitmentInstance extends ActiveRecord {
 	public function getCommitmentCategory() {
 		return $this->hasOne(CommitmentCategory::class, ['id' => 'commitment_category_id']);
 	}
+
+
+	/**
+	 * @return ActiveQuery
+	 */
+	public function getUserCommitmentOptions() {
+		return $this->hasMany(UserCommitmentOption::class, ['instance_id' => 'id']);
+	}
+
 
 }

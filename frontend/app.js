@@ -99,6 +99,18 @@ $(function () {
 				if (typeof data.score !== 'undefined') {
 					$('.commitmentScore span.score').text(data.score);
 				}
+				if (typeof data.scoreWithSpecial !== 'undefined') {
+					$('.commitmentScore span.scoreWithSpecial').text(data.scoreWithSpecial);
+				}
+				if (typeof data.currentLevel !== 'undefined') {
+					$('.commitmentScore span.currentLevel').text(data.currentLevel);
+				}
+				if (typeof data.nextLevel !== 'undefined') {
+					$('.commitmentScore span.nextLevel').text(data.nextLevel);
+				}
+				if (typeof data.nextLevelPercentage !== 'undefined') {
+					$('.commitmentScore span.nextLevelPercentage').text(data.nextLevelPercentage);
+				}
 			},
 			error: function(data) {
 				console.log('An error occured.', data);
@@ -115,5 +127,33 @@ $(function () {
 		}, 500)
 	});
 	updateScore($('form.commitmentsForm'));
+
+
+	const $historyModal = $('#historyModal');
+	$historyModal.on('show.bs.modal', function (event) {
+		const $a = $(event.relatedTarget);
+		const commitmentId = $a.data('commitmentid');
+		const commitmentName = $a.data('commitment');
+		const modal = $(this);
+
+		modal.find('.modal-header p').html(commitmentName);
+		modal.find('.modal-body').html(modal.find('.modal-loader').html());
+
+		$.ajax({
+			url: '/vallalasok/history',
+			method: 'GET',
+			data: {
+				commitmentId: commitmentId
+			},
+			success: function (data) {
+				modal.find('.modal-body').html(data);
+			}
+		});
+	});
+	$historyModal.on('hidden.bs.modal', function (event) {
+		const modal = $(this);
+		modal.find('.modal-header h3').html('');
+		modal.find('.modal-body').html('');
+	});
 
 });

@@ -3,10 +3,14 @@
 namespace app\controllers;
 
 use app\lib\TreeLib;
+use app\models\Badge;
 use app\models\CommitmentCategory;
 use app\models\CommitmentInstance;
+use app\models\CommitmentItem;
 use app\models\CommitmentOption;
+use app\models\interfaces\FillInterface;
 use app\models\QuestionCategory;
+use app\models\User;
 use app\models\UserCommitmentAnswer;
 use app\models\UserCommitmentFill;
 use app\models\UserCommitmentOption;
@@ -57,9 +61,9 @@ class CommitmentController extends Controller {
 				'class' => AccessControl::className(),
 				'rules' => [
 					[
-						'actions' => ['index', 'score'],
-						'allow' => true,
-						'roles' => ['@'],
+						'actions' => ['index', 'score', 'history'],
+						'allow'   => true,
+						'roles'   => ['@'],
 					],
 				],
 			],
@@ -82,28 +86,43 @@ class CommitmentController extends Controller {
 	 * @throws Exception
 	 */
 	public function actionIndex() {
-		$questionFill = null;
+		/** @var FillInterface $fill */
+		$fill = null;
+		/** @var User $user */
+		$user = Yii::$app->user->getIdentity();
 		if (($questionFillId = Yii::$app->request->get('qf'))) {
-			$questionFill = UserQuestionFill::findOne(['id' => $questionFillId]);
-			if (!$questionFill) {
+			$fill = UserQuestionFill::findOne(['id' => $questionFillId]);
+			if (!$fill) {
 				throw new HttpException(404);
 			}
+		} elseif ($user->hasCommitmentFill()) {
+			$fill = $user->getLatestCommitmentFill();
+		} else {
+			return $this->redirect('/');
 		}
+
+		$checkedCommitmentOptions = $fill->getCheckedCommitmentOptions();
+
 		$commitmentCategories = CommitmentCategory::find()->with(['items', 'items.options'])->orderBy('order ASC')->all();
 		$questionCategories = QuestionCategory::find()->with(['items', 'items.options'])->orderBy('order ASC')->all();
 
 		$categoriesByCommitments = $this->treeLib->populateTree($commitmentCategories);
 		$this->treeLib->populateTree($questionCategories);
 
-		$checkedCommitmentOptions = $questionFill->getCheckedCommitmentOptions();
 
 		$request = Yii::$app->request;
 		if ($request->isPost) {
-			$this->save($request, $categoriesByCommitments);
+			try {
+				$this->save($request, $categoriesByCommitments);
+				Yii::$app->session->setFlash('success', 'Köszönjük a vállalásokat! Feldolgozzuk a beérkezett adatokat, és hamarosan visszajelzünk.');
+			} catch (Exception $e) {
+				Yii::$app->session->setFlash('error', 'Hiba történt a mentés során.');
+			}
 		}
+
 		return $this->render('index', compact(
 			'commitmentCategories',
-			'questionFill',
+			'fill',
 			'checkedCommitmentOptions'
 		));
 	}
@@ -139,7 +158,7 @@ class CommitmentController extends Controller {
 					$instance->name = $instanceName ?: $num;
 					$instance->commitment_category_id = $categoryId;
 					$instance->save();
-					$instanceNumsToIds[$categoryId.'_'.$num] = $instance->id;
+					$instanceNumsToIds[$categoryId . '_' . $num] = $instance->id;
 				}
 			}
 			foreach ($options as $commitmentId => $instances) {
@@ -150,13 +169,14 @@ class CommitmentController extends Controller {
 					$fillOption->custom_input = $customInputs[$commitmentId][$optionId][$instanceNumber] ?: null;
 					$fillOption->commitment_option_id = $optionId;
 					$fillOption->months = $intervals[$commitmentId][$instanceNumber] ?? null;
-					if (isset($instanceNumsToIds[$categoryId.'_'.$instanceNumber])) {
-						$fillOption->instance_id = $instanceNumsToIds[$categoryId.'_'.$instanceNumber];
+					if (isset($instanceNumsToIds[$categoryId . '_' . $instanceNumber])) {
+						$fillOption->instance_id = $instanceNumsToIds[$categoryId . '_' . $instanceNumber];
 					}
 					$fillOption->save();
 				}
 			}
 			$transaction->commit();
+
 			return $fill->id;
 		} catch (Exception $exception) {
 			$transaction->rollBack();
@@ -169,6 +189,20 @@ class CommitmentController extends Controller {
 	 */
 	public function actionScore() {
 		$request = Yii::$app->request;
+
+		/** @var CommitmentCategory[] $commitmentCategories */
+		$specialPointCategoryIds = [];
+		$commitmentCategories = CommitmentCategory::find()->with(['items', 'items.options'])->orderBy('order ASC')->all();
+		foreach ($commitmentCategories as $commitmentCategory) {
+			if ($commitmentCategory->special_points) {
+				$specialPointCategoryIds[] = $commitmentCategory->id;
+			}
+		}
+		$categoriesByCommitments = $this->treeLib->populateTree($commitmentCategories);
+
+		/** @var Badge[] $badges */
+		$badges = Badge::find()->orderBy('threshold ASC')->all();
+
 		$postedOptions = $request->getBodyParam('options') ?: [];
 		/** @var CommitmentOption[] $dbOptions */
 		$dbOptions = CommitmentOption::find()->all();
@@ -177,18 +211,94 @@ class CommitmentController extends Controller {
 			$dbOptionsByIds[$dbOption->id] = $dbOption;
 		}
 
-		$score = 0;
+		$score = $scoreWithSpecial = 0;
 		foreach ($postedOptions as $commitmentId => $instances) {
+			$categoryId = $categoriesByCommitments[$commitmentId] ?? null;
 			foreach ($instances ?: [] as $instanceNumber => $optionId) {
 				if (isset($dbOptionsByIds[$optionId])) {
-					$score += (int) $dbOptionsByIds[$optionId]->score;
+					$scoreWithSpecial += (int) $dbOptionsByIds[$optionId]->score;
+					if (!in_array($categoryId, $specialPointCategoryIds)) {
+						$score += (int) $dbOptionsByIds[$optionId]->score;
+					}
 				}
 			}
 		}
 
+		$currentBadge = $nextBadge = null;
+		foreach ($badges as $badge) {
+			if ($score >= $badge->threshold) {
+				$currentBadge = $badge;
+				$nextBadge = next($badges) ?: null;
+				break;
+			}
+		}
+
+		$nextBadgePercentage = null;
+		if ($currentBadge && $nextBadge) {
+			$nextBadgePercentage = round((($nextBadge->threshold - $currentBadge->threshold) / $score) * 100, 0);
+		}
+
+
 		$response = Yii::$app->response;
 		$response->format = \yii\web\Response::FORMAT_JSON;
-		$response->data = ['score' => $score];
+		$response->format = \yii\web\Response::FORMAT_JSON;
+		$response->data = [
+			'score'               => $score,
+			'scoreWithSpecial'    => $scoreWithSpecial,
+			'currentLevel'        => $currentBadge ? $currentBadge->name : null,
+			'nextLevel'           => $nextBadge ? $nextBadge->name : null,
+			'nextLevelPercentage' => $nextBadgePercentage
+		];
+	}
+
+
+	/**
+	 * @param $commitmentId
+	 *
+	 * @return string
+	 * @throws HttpException
+	 * @throws \Throwable
+	 * @throws \yii\db\Exception
+	 */
+	public function actionHistory($commitmentId) {
+		/** @var User $user */
+		$user = Yii::$app->user->getIdentity();
+		if (!($user && $user->hasCommitmentFill() && ($commitment = CommitmentItem::findOne(['id' => $commitmentId])))) {
+			throw new HttpException(404);
+		}
+
+		/** @var UserCommitmentFill[] $fills */
+		$fillIds = $user->getCommitmentFills()->orderBy('date DESC')->select('id')->column();
+
+		$historyValues = UserCommitmentOption::find()
+			->alias('commitmentOption')
+			->innerJoinWith('option as option')
+			->innerJoinWith('userCommitmentFill as fill')
+			->andWhere(['in', 'commitmentOption.user_commitment_fill_id', $fillIds])
+			->andWhere(['option.commitment_id' => $commitmentId])
+			->orderBy('fill.date DESC')
+			->select([
+				'fill.date as fillDate',
+				'commitmentOption.months as months',
+				'commitmentOption.custom_input as customInputValue',
+				'option.id as optionId',
+				'option.name as optionName',
+				'option.is_custom_input as optionIsCustomInput'
+			])
+			->createCommand()->queryAll();
+
+		$historyRows = [];
+		foreach ($historyValues as $value) {
+			$historyRows[] = [
+				'date'   => (new DateTime($value['fillDate']))->format('Y. m. d. H:i'),
+				'name'   => !empty($value['optionIsCustomInput']) ? ($value['customInputValue'] ?? null) : ($value['optionName'] ?? null),
+				'months' => $value['months'] ? reduceMonths($value['months']) : null
+			];
+		}
+
+		$this->layout = false;
+
+		return $this->render('history', compact('historyRows', 'commitment'));
 	}
 
 

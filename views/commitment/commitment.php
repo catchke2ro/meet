@@ -4,10 +4,10 @@ use app\models\CommitmentCategory;
 use app\models\CommitmentItem;
 use app\models\CommitmentOption;
 use app\models\QuestionInstance;
-use app\models\UserQuestionFill;
+use app\models\UserCommitmentFill;use app\models\UserQuestionFill;
 
 /**
- * @var $questionFill                             UserQuestionFill
+ * @var $fill                                     UserQuestionFill
  * @var $commitmentCategory                       CommitmentCategory
  * @var $commitment                               CommitmentItem
  * @var $this                                     yii\web\View
@@ -52,10 +52,12 @@ $catId = $commitmentCategory->id;
 					<?php } ?>
 				</div>
 				<?php if ($customInputOptionId) { ?>
-					<div class="form-group customInput <?=$commitment->isOnlyCustomInput() ? '' : 'd-none';?>" data-optionid="<?=$customInputOptionId;?>">
-						<textarea name="customInputs[<?=$commitment->id;?>][<?=$customInputOptionId;?>][<?=$instance;?>]" placeholder="Egyéni szöveg" class="form-control"><?php
-							echo $commitment->getCustomInputValue(Yii::$app->request);
-						?></textarea>
+					<div class="form-group customInput <?=$commitment->isOnlyCustomInput() ? '' : 'd-none';?>"
+						 data-optionid="<?=$customInputOptionId;?>">
+						<textarea name="customInputs[<?=$commitment->id;?>][<?=$customInputOptionId;?>][<?=$instanceNumber;?>]" placeholder="Egyéni szöveg"
+								  class="form-control"><?php
+							echo $commitment->getCustomInputValue(Yii::$app->request, $fill);
+							?></textarea>
 					</div>
 				<?php } ?>
 			</div>
@@ -73,12 +75,22 @@ $catId = $commitmentCategory->id;
 							   step="<?=$commitment->month_step;?>"
 							   min="<?=$commitment->months_min;?>"
 							   max="<?=$commitment->months_max;?>"
-							   value="<?=$commitment->getIntervalValue(Yii::$app->request, $instanceNumber);?>"/>
+							   value="<?=$fill->getIntervalValue($commitment, $instanceNumber);?>" />
 						<div class="input-group-append">
 							<span class="input-group-text">hónap</span>
 						</div>
 					</div>
 				</div>
+			<?php } ?>
+
+			<?php if ($fill instanceof UserCommitmentFill) { ?>
+				<a href="javascript:void(0)"
+				   class="btn btn-sm btn-secondary"
+				   data-toggle="modal"
+				   data-target="#historyModal"
+				   data-commitmentid="<?=$commitment->id;?>"
+				   data-commitment="<?=$commitment->name;?>"
+				>Korábbi vállalások</a>
 			<?php } ?>
 		</div>
 	</div>
