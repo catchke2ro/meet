@@ -76,6 +76,7 @@ class QuestionController extends Controller {
 	 */
 	public function actionIndex() {
 		$questionCategories = QuestionCategory::find()
+			->innerJoinWith(['orgTypes as orgTypes'])->andWhere(['orgTypes.org_type_id' => Yii::$app->user->getIdentity()->getOrgTypeId()])
 			->with(['items', 'items.options'])
 			->orderBy('order ASC')->all();
 

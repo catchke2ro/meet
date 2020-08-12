@@ -60,12 +60,27 @@ $config = [
 				'/vallalasok/pontok'  => 'commitment/score',
 				'/vallalasok/history' => 'commitment/history',
 
-				'/admin'                       => 'admin/index/index',
+				'/admin' => 'admin/index/index',
+
 				'/admin/users'                 => 'admin/users/index',
 				'/admin/users/create'          => 'admin/users/create',
 				'/admin/users/edit/<id:\d+>'   => 'admin/users/edit',
 				'/admin/users/delete/<id:\d+>' => 'admin/users/delete',
 
+				'/admin/question-categories'                 => 'admin/question-categories/index',
+				'/admin/question-categories/create'          => 'admin/question-categories/create',
+				'/admin/question-categories/edit/<id:\d+>'   => 'admin/question-categories/edit',
+				'/admin/question-categories/delete/<id:\d+>' => 'admin/question-categories/delete',
+
+				'/admin/question-items/<categoryId:\d+>'        => 'admin/question-items/index',
+				'/admin/question-items/create/<categoryId:\d+>' => 'admin/question-items/create',
+				'/admin/question-items/edit/<id:\d+>'           => 'admin/question-items/edit',
+				'/admin/question-items/delete/<id:\d+>'         => 'admin/question-items/delete',
+
+				'/admin/question-options/<itemId:\d+>'        => 'admin/question-options/index',
+				'/admin/question-options/create/<itemId:\d+>' => 'admin/question-options/create',
+				'/admin/question-options/edit/<id:\d+>'       => 'admin/question-options/edit',
+				'/admin/question-options/delete/<id:\d+>'     => 'admin/question-options/delete',
 			],
 		],
 	],

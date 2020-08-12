@@ -103,8 +103,13 @@ class CommitmentController extends Controller {
 
 		$checkedCommitmentOptions = $fill->getCheckedCommitmentOptions();
 
-		$commitmentCategories = CommitmentCategory::find()->with(['items', 'items.options'])->orderBy('order ASC')->all();
-		$questionCategories = QuestionCategory::find()->with(['items', 'items.options'])->orderBy('order ASC')->all();
+		$commitmentCategories = CommitmentCategory::find()
+			->innerJoinWith(['orgTypes as orgTypes'])->andWhere(['orgTypes.org_type_id' => Yii::$app->user->getIdentity()->getOrgTypeId()])
+			->with(['items', 'items.options'])->orderBy('order ASC')->all();
+		$questionCategories = QuestionCategory::find()
+			->innerJoinWith(['orgTypes as orgTypes'])->andWhere(['orgTypes.org_type_id' => Yii::$app->user->getIdentity()->getOrgTypeId()])
+			->with(['items', 'items.options'])
+			->orderBy('order ASC')->all();
 
 		$categoriesByCommitments = $this->treeLib->populateTree($commitmentCategories);
 		$this->treeLib->populateTree($questionCategories);
@@ -192,7 +197,9 @@ class CommitmentController extends Controller {
 
 		/** @var CommitmentCategory[] $commitmentCategories */
 		$specialPointCategoryIds = [];
-		$commitmentCategories = CommitmentCategory::find()->with(['items', 'items.options'])->orderBy('order ASC')->all();
+		$commitmentCategories = CommitmentCategory::find()
+			->innerJoinWith(['orgTypes as orgTypes'])->andWhere(['orgTypes.org_type_id' => Yii::$app->user->getIdentity()->getOrgTypeId()])
+			->with(['items', 'items.options'])->orderBy('order ASC')->all();
 		foreach ($commitmentCategories as $commitmentCategory) {
 			if ($commitmentCategory->special_points) {
 				$specialPointCategoryIds[] = $commitmentCategory->id;

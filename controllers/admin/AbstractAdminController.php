@@ -4,6 +4,7 @@ namespace app\controllers\admin;
 
 use app\models\interfaces\DataTableModelInterface;
 use app\models\User;
+use Closure;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -50,7 +51,7 @@ abstract class AbstractAdminController extends Controller {
 	 *
 	 * @return Response
 	 */
-	protected function handlaDTAjax(string $className) {
+	protected function handlaDTAjax(string $className, Closure $qbCallback = null) {
 		$request = Yii::$app->request;
 
 		/** @var User $className */
@@ -75,6 +76,10 @@ abstract class AbstractAdminController extends Controller {
 				$likeConditions[] = ['like', $searchColumn, $searchValue];
 			}
 			$qb->andWhere($likeConditions);
+		}
+
+		if ($qbCallback) {
+			$qbCallback($qb);
 		}
 
 		$results = $qb->all();

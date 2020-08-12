@@ -13,16 +13,18 @@ use yii\db\ActiveRecord;
  *
  * @package app\models
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
- * @property int                    $id
- * @property string                 $name
- * @property int                    $order
- * @property string                 $description
- * @property bool                   $has_instances
- * @property array|CommitmentItem[] $items
- * @property CommitmentOption       $conditionOption
- * @property bool					$special_points
- * @property int|null               $question_category_inst_id
- * @property QuestionCategory       $questionCategoryInst
+ * @property int                             $id
+ * @property string                          $name
+ * @property int                             $order
+ * @property int                             $org_type_id
+ * @property string                          $description
+ * @property bool                            $has_instances
+ * @property array|CommitmentItem[]          $items
+ * @property CommitmentOption                $conditionOption
+ * @property bool                            $special_points
+ * @property int|null                        $question_category_inst_id
+ * @property QuestionCategory                $questionCategoryInst
+ * @property array|QuestionCategoryOrgType[] $orgTypes
  */
 class CommitmentCategory extends ActiveRecord implements CategoryInterface {
 
@@ -51,6 +53,14 @@ class CommitmentCategory extends ActiveRecord implements CategoryInterface {
 	 */
 	public function getQuestionCategoryInst() {
 		return $this->hasOne(QuestionCategory::class, ['question_category_inst_id' => 'id']);
+	}
+
+
+	/**
+	 * @return ActiveQuery
+	 */
+	public function getOrgTypes() {
+		return $this->hasMany(CommitmentCategoryOrgType::class, ['commitment_category_id' => 'id']);
 	}
 
 

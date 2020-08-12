@@ -60,6 +60,9 @@ class User extends ActiveRecord implements IdentityInterface, DataTableModelInte
 		return [];
 	}
 
+	public function getOrgTypeId() {
+		return 1;
+	}
 
 	/**
 	 * @return ActiveQuery

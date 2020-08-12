@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\lib\OrgTypes;
+use app\models\interfaces\DataTableModelInterface;
 use app\models\interfaces\ItemInterface;
 use app\models\traits\WithCategoryTrait;
 use app\models\traits\WithOptionsTrait;
@@ -19,8 +21,9 @@ use yii\db\ActiveRecord;
  * @property string                 $description
  * @property array|QuestionOption[] $options
  * @property QuestionCategory       $category
+ * @property int                    $question_category_id
  */
-class QuestionItem extends ActiveRecord implements ItemInterface {
+class QuestionItem extends ActiveRecord implements ItemInterface, DataTableModelInterface {
 
 	use WithOptionsTrait;
 	use WithCategoryTrait;
@@ -44,6 +47,53 @@ class QuestionItem extends ActiveRecord implements ItemInterface {
 		}
 
 		return implode(' ', $classes);
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function toDataTableArray(): array {
+
+		return [
+			'id'          => $this->id,
+			'name'        => $this->name,
+			'description' => $this->description,
+			'order'       => $this->order
+		];
+	}
+
+
+	/**
+	 * @return array|string[]
+	 */
+	public function getDataTableActions(): array {
+		return [
+			'items'  => '<a href="/admin/question-options/' . $this->id . '" class="fa fa-list" title="Opciók"></a>',
+			'edit'   => '<a href="/admin/question-items/edit/' . $this->id . '" class="fa fa-pencil" title="Szereksztés"></a>',
+			'delete' => '<a href="/admin/question-items/delete/' . $this->id . '" class="fa fa-trash" title="Törlés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
+		];
+	}
+
+
+	/**
+	 * @return array|string[]
+	 */
+	public static function getTextSearchColumns(): array {
+		return [
+			'name',
+		];
+	}
+
+
+	/**
+	 * @return array|string[]
+	 */
+	public static function getOrderableColumns(): array {
+		return [
+			'name',
+			'order'
+		];
 	}
 
 
