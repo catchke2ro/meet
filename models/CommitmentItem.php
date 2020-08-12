@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\models\interfaces\DataTableModelInterface;
 use app\models\interfaces\ItemInterface;
 use app\models\traits\WithCategoryTrait;
 use app\models\traits\WithOptionsTrait;
@@ -20,11 +21,12 @@ use yii\web\Request;
  * @property string                   $description
  * @property array|CommitmentOption[] $options
  * @property CommitmentCategory       $category
+ * @property int                      $commitment_category_id
  * @property int                      $month_step
  * @property int                      $months_min
  * @property int                      $months_max
  */
-class CommitmentItem extends ActiveRecord implements ItemInterface {
+class CommitmentItem extends ActiveRecord implements ItemInterface, DataTableModelInterface {
 
 	use WithOptionsTrait;
 	use WithCategoryTrait;
@@ -66,7 +68,55 @@ class CommitmentItem extends ActiveRecord implements ItemInterface {
 		) {
 			$value = (int) $request->getBodyParam('options')[$this->id][$instance];
 		}
+
 		return $value;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function toDataTableArray(): array {
+
+		return [
+			'id'          => $this->id,
+			'name'        => $this->name,
+			'description' => $this->description,
+			'order'       => $this->order
+		];
+	}
+
+
+	/**
+	 * @return array|string[]
+	 */
+	public function getDataTableActions(): array {
+		return [
+			'items'  => '<a href="/admin/commitment-options/' . $this->id . '" class="fa fa-list" title="Opciók"></a>',
+			'edit'   => '<a href="/admin/commitment-items/edit/' . $this->id . '" class="fa fa-pencil" title="Szerkesztés"></a>',
+			'delete' => '<a href="/admin/commitment-items/delete/' . $this->id . '" class="fa fa-trash" title="Törlés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
+		];
+	}
+
+
+	/**
+	 * @return array|string[]
+	 */
+	public static function getTextSearchColumns(): array {
+		return [
+			'name',
+		];
+	}
+
+
+	/**
+	 * @return array|string[]
+	 */
+	public static function getOrderableColumns(): array {
+		return [
+			'name',
+			'order'
+		];
 	}
 
 

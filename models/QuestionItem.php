@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use app\lib\OrgTypes;
 use app\models\interfaces\DataTableModelInterface;
 use app\models\interfaces\ItemInterface;
 use app\models\traits\WithCategoryTrait;

@@ -81,6 +81,21 @@ $config = [
 				'/admin/question-options/create/<itemId:\d+>' => 'admin/question-options/create',
 				'/admin/question-options/edit/<id:\d+>'       => 'admin/question-options/edit',
 				'/admin/question-options/delete/<id:\d+>'     => 'admin/question-options/delete',
+
+				'/admin/commitment-categories'                 => 'admin/commitment-categories/index',
+				'/admin/commitment-categories/create'          => 'admin/commitment-categories/create',
+				'/admin/commitment-categories/edit/<id:\d+>'   => 'admin/commitment-categories/edit',
+				'/admin/commitment-categories/delete/<id:\d+>' => 'admin/commitment-categories/delete',
+
+				'/admin/commitment-items/<categoryId:\d+>'        => 'admin/commitment-items/index',
+				'/admin/commitment-items/create/<categoryId:\d+>' => 'admin/commitment-items/create',
+				'/admin/commitment-items/edit/<id:\d+>'           => 'admin/commitment-items/edit',
+				'/admin/commitment-items/delete/<id:\d+>'         => 'admin/commitment-items/delete',
+
+				'/admin/commitment-options/<itemId:\d+>'        => 'admin/commitment-options/index',
+				'/admin/commitment-options/create/<itemId:\d+>' => 'admin/commitment-options/create',
+				'/admin/commitment-options/edit/<id:\d+>'       => 'admin/commitment-options/edit',
+				'/admin/commitment-options/delete/<id:\d+>'     => 'admin/commitment-options/delete',
 			],
 		],
 	],

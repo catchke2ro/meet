@@ -82,6 +82,16 @@ abstract class AbstractAdminController extends Controller {
 			$qbCallback($qb);
 		}
 
+		$count = $qb->count();
+
+		if (!is_null(($offset = $request->getQueryParam('start')))) {
+			$qb->offset($offset);
+		}
+
+		if (!is_null(($limit = $request->getQueryParam('length')))) {
+			$qb->limit($limit);
+		}
+
 		$results = $qb->all();
 
 		//Map results to array with actions
@@ -94,8 +104,8 @@ abstract class AbstractAdminController extends Controller {
 		//Datatables response
 		return $this->asJson([
 			'draw'            => $request->getQueryParam('draw'),
-			'recordsTotal'    => count($results),
-			'recordsFiltered' => count($results),
+			'recordsTotal'    => $count,
+			'recordsFiltered' => $count,
 			'data'            => $results
 		]);
 	}
