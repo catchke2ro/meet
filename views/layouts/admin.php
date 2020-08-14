@@ -52,6 +52,12 @@ AppAsset::register($this);
 						</ul>
 					</li>
 					<li class="nav-item">
+						<a href="/admin/modules" class="nav-link">
+							<i class="fa fa-database nav-icon"></i>
+							<p>Modulok</p>
+						</a>
+					</li>
+					<li class="nav-item">
 						<a href="/admin/question-categories" class="nav-link">
 							<i class="fa fa-question nav-icon"></i>
 							<p>Kérdések</p>

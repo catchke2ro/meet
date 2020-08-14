@@ -96,6 +96,12 @@ $config = [
 				'/admin/commitment-options/create/<itemId:\d+>' => 'admin/commitment-options/create',
 				'/admin/commitment-options/edit/<id:\d+>'       => 'admin/commitment-options/edit',
 				'/admin/commitment-options/delete/<id:\d+>'     => 'admin/commitment-options/delete',
+
+				'/admin/modules'                 => 'admin/modules/index',
+				'/admin/modules/create'          => 'admin/modules/create',
+				'/admin/modules/edit/<id:\d+>'   => 'admin/modules/edit',
+				'/admin/modules/delete/<id:\d+>' => 'admin/modules/delete',
+
 			],
 		],
 	],
