@@ -35,7 +35,7 @@ trait WithOptionsTrait {
 	 *
 	 * @return string
 	 */
-	public function getCustomInputValue(Request $request, FillInterface $fill = null): string {
+	public function getCustomInputValue(Request $request, ?FillInterface $fill = null): string {
 		if ($request->isPost &&
 			!empty($request->getBodyParam('options')) &&
 			!empty($request->getBodyParam('options')[$this->id]['__cI'])

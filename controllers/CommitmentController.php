@@ -9,6 +9,7 @@ use app\models\CommitmentInstance;
 use app\models\CommitmentItem;
 use app\models\CommitmentOption;
 use app\models\interfaces\FillInterface;
+use app\models\Module;
 use app\models\QuestionCategory;
 use app\models\User;
 use app\models\UserCommitmentAnswer;
@@ -97,11 +98,9 @@ class CommitmentController extends Controller {
 			}
 		} elseif ($user->hasCommitmentFill()) {
 			$fill = $user->getLatestCommitmentFill();
-		} else {
-			return $this->redirect('/');
 		}
 
-		$checkedCommitmentOptions = $fill->getCheckedCommitmentOptions();
+		$checkedCommitmentOptions = $fill ? $fill->getCheckedCommitmentOptions() : null;
 
 		$commitmentCategories = CommitmentCategory::find()
 			->innerJoinWith(['orgTypes as orgTypes'])->andWhere(['orgTypes.org_type_id' => Yii::$app->user->getIdentity()->getOrgTypeId()])
@@ -125,9 +124,12 @@ class CommitmentController extends Controller {
 			}
 		}
 
+		$modules = Module::find()->orderBy('threshold ASC')->all();
+
 		return $this->render('index', compact(
 			'commitmentCategories',
 			'fill',
+			'modules',
 			'checkedCommitmentOptions'
 		));
 	}
@@ -195,20 +197,13 @@ class CommitmentController extends Controller {
 	public function actionScore() {
 		$request = Yii::$app->request;
 
-		/** @var CommitmentCategory[] $commitmentCategories */
-		$specialPointCategoryIds = [];
 		$commitmentCategories = CommitmentCategory::find()
 			->innerJoinWith(['orgTypes as orgTypes'])->andWhere(['orgTypes.org_type_id' => Yii::$app->user->getIdentity()->getOrgTypeId()])
 			->with(['items', 'items.options'])->orderBy('order ASC')->all();
-		foreach ($commitmentCategories as $commitmentCategory) {
-			if ($commitmentCategory->special_points) {
-				$specialPointCategoryIds[] = $commitmentCategory->id;
-			}
-		}
 		$categoriesByCommitments = $this->treeLib->populateTree($commitmentCategories);
 
-		/** @var Badge[] $badges */
-		$badges = Badge::find()->orderBy('threshold ASC')->all();
+		/** @var Module[] $modules */
+		$modules = Module::find()->orderBy('threshold ASC')->all();
 
 		$postedOptions = $request->getBodyParam('options') ?: [];
 		/** @var CommitmentOption[] $dbOptions */
@@ -218,31 +213,37 @@ class CommitmentController extends Controller {
 			$dbOptionsByIds[$dbOption->id] = $dbOption;
 		}
 
-		$score = $scoreWithSpecial = 0;
+
+		$score = 0;
 		foreach ($postedOptions as $commitmentId => $instances) {
-			$categoryId = $categoriesByCommitments[$commitmentId] ?? null;
 			foreach ($instances ?: [] as $instanceNumber => $optionId) {
 				if (isset($dbOptionsByIds[$optionId])) {
-					$scoreWithSpecial += (int) $dbOptionsByIds[$optionId]->score;
-					if (!in_array($categoryId, $specialPointCategoryIds)) {
-						$score += (int) $dbOptionsByIds[$optionId]->score;
-					}
+					$score += (int) $dbOptionsByIds[$optionId]->score;
 				}
 			}
 		}
 
-		$currentBadge = $nextBadge = null;
-		foreach ($badges as $badge) {
-			if ($score >= $badge->threshold) {
-				$currentBadge = $badge;
-				$nextBadge = next($badges) ?: null;
+		$targetModuleId = $request->getBodyParam('module');
+		$targetModulePercentage = null;
+		if ($targetModuleId && ($targetModule = Module::findOne(['id' => $targetModuleId]))) {
+			$targetModulePercentage = 100;
+			if ($targetModule->threshold !== 0) {
+				$targetModulePercentage = min(100, round(($score / $targetModule->threshold) * 100, 0));
+			}
+		}
+
+		$currentModule = $nextModule = null;
+		foreach ($modules as $module) {
+			if ($score >= $module->threshold) {
+				$currentModule = $module;
+				$nextModule = next($modules) ?: null;
 				break;
 			}
 		}
 
-		$nextBadgePercentage = null;
-		if ($currentBadge && $nextBadge) {
-			$nextBadgePercentage = round((($nextBadge->threshold - $currentBadge->threshold) / $score) * 100, 0);
+		$nextModulePercentage = null;
+		if ($currentModule && $nextModule) {
+			$nextModulePercentage = round((($nextModule->threshold - $currentModule->threshold) / $score) * 100, 0);
 		}
 
 
@@ -250,11 +251,11 @@ class CommitmentController extends Controller {
 		$response->format = \yii\web\Response::FORMAT_JSON;
 		$response->format = \yii\web\Response::FORMAT_JSON;
 		$response->data = [
-			'score'               => $score,
-			'scoreWithSpecial'    => $scoreWithSpecial,
-			'currentLevel'        => $currentBadge ? $currentBadge->name : null,
-			'nextLevel'           => $nextBadge ? $nextBadge->name : null,
-			'nextLevelPercentage' => $nextBadgePercentage
+			'score'                  => $score,
+			'currentModule'          => $currentModule ? $currentModule->name : null,
+			'nextModule'             => $nextModule ? $nextModule->name : null,
+			'nextModulePercentage'   => $nextModulePercentage,
+			'targetModulePercentage' => $targetModulePercentage
 		];
 	}
 

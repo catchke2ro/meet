@@ -1,4 +1,6 @@
 .treeAccordion
+	width: 95%
+	margin: auto
 	.card.qcCategory
 		margin-bottom: 1rem
 		border-radius: $border-radius-lg
@@ -97,6 +99,103 @@
 
 	textarea
 		resize: none
+
+
+.card.modules
+	h3
+		text-align: center
+
+	.card-body
+		transition: padding 0.5s
+
+	.moduleProgress .progress
+		border-radius: $progress-height / 2
+
+	ul.moduleList
+		list-style-type: none
+		display: flex
+		justify-content: space-evenly
+		padding: 0px
+		margin-bottom: 0px
+
+		li
+			padding: 10px
+			flex: 1 0 0
+
+			h5
+				color: $green
+				margin-top: 1rem
+				margin-bottom: 0
+				text-align: center
+
+			a
+				text-align: center
+				display: block
+
+				&:hover
+					img.notSelected
+						opacity: 1
+
+			&.active
+				a .imgWrapper
+					img.selected
+						opacity: 1
+
+			.imgWrapper
+				position: relative
+				width: 100%
+				padding-top: 100%
+				transition: padding-top 0.5s
+				img
+					position: absolute
+					display: block
+					width: 100%
+					top: 0px
+					left: 0px
+					transition: opacity 0.2s, transform 0.5s
+					&.selected
+						opacity: 0
+					&.notSelected
+						opacity: 0.8
+
+	&.stuck
+		z-index: 100
+		background-color: $white
+		box-shadow: 0px 7px 5px -6px $gray-800 !important
+
+		h3
+			display: none
+
+		.card-body
+			padding: 0.5rem
+
+		ul.moduleList
+			li
+				a.moduleInfo
+					display: none
+				h5
+					display: none
+				.imgWrapper
+					padding-top: 40%
+					img
+						transform-origin: top center
+						transform: scale(0.4)
+
+
+
+
+
+
+.moduleModal
+	.modal-body
+		img
+			display: block
+			width: 100px
+			margin: 0 1rem 1rem 0
+			float: left
+
+
+
 
 
 

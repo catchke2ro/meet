@@ -15,7 +15,7 @@ $catId = $commitmentCategory->id;
 $hasInstances = $commitmentCategory->has_instances;
 
 $instanceCountRequest = $commitmentCategory->getInstanceCount(Yii::$app->request);
-$instanceCountQuestion = $fill->getInstanceCountForCategory($commitmentCategory);
+$instanceCountQuestion = $fill ? $fill->getInstanceCountForCategory($commitmentCategory) : 1;
 $instanceCount = max($instanceCountRequest, $instanceCountQuestion);
 ?>
 
@@ -44,7 +44,7 @@ $instanceCount = max($instanceCountRequest, $instanceCountQuestion);
 	<div id="collapseCat<?=$catId;?>" class="collapse card-body-wrapper" data-parent="#commitmentsAccordion">
 		<div class="card-body">
 			<?php for ($inst = 0; $inst < $instanceCount; $inst ++) { ?>
-				<?php $instance = $fill->getInstance($commitmentCategory, $inst); ?>
+				<?php $instance = $fill ? $fill->getInstance($commitmentCategory, $inst) : null; ?>
 				<div class="card categoryInstance" data-instance="<?=$inst;?>">
 					<?php if ($hasInstances) { ?>
 						<div class="card-header">

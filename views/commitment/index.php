@@ -1,12 +1,14 @@
 <?php
 
 use app\models\CommitmentCategory;
+use app\models\Module;
 use app\models\UserQuestionFill;
 
 /**
  * @var $commitmentCategories                     CommitmentCategory[]
  * @var $fill                                     UserQuestionFill[]
  * @var $this                                     yii\web\View
+ * @var $modules                                  array|Module[]
  * @var $checkedCommitmentOptions                 array
  */
 
@@ -16,6 +18,51 @@ $this->title = 'Vállalások';
 
 <form method="post" action="" class="commitmentsForm">
 	<input type="hidden" name="_csrf" value="<?=Yii::$app->request->getCsrfToken()?>" />
+
+	<?php if (!$fill) {?>
+		<p class="text-center">
+			<span>Amennyiben nem vagy biztos a lenti válaszokban, segítségül válaszolj meg pár kérdést:</span><br />
+			<a href="/kerdesek" class="btn btn-secondary mt-1">Kérdések</a>
+		</p>
+	<?php } ?>
+
+	<?=$this->render('/parts/module-modals', [
+			'modules'       => $modules,
+	]);?>
+	<div class="card modules shadow-none">
+		<input type="hidden" name="module" id="selectedModule" value="" />
+		<div class="card-body">
+			<h3>Válassz modult, kitűzött célt!</h3>
+			<ul class="moduleList">
+				<?php foreach ($modules as $module) {?>
+					<li>
+						<?php if ($module->threshold === 0) {?>
+							<div class="imgWrapper">
+								<img src="/assets/img/modules/meet_modul_<?=$module->slug;?>_szines_kicsi.png" alt="<?=$module->name;?>"/>
+							</div>
+							<h5><?=$module->name;?></h5>
+						<?php } else { ?>
+							<a href="javascript:void(0)" class="selectModule" data-moduleid="<?=$module->id;?>">
+								<div class="imgWrapper">
+									<img src="/assets/img/modules/meet_modul_<?=$module->slug;?>_feher_kicsi.png" alt="<?=$module->name;?>" class="notSelected"/>
+									<img src="/assets/img/modules/meet_modul_<?=$module->slug;?>_szines_kicsi.png" alt="<?=$module->name;?>" class="selected"/>
+								</div>
+								<h5><?=$module->name;?></h5>
+							</a>
+						<?php } ?>
+						<a href="javascript:void(0)" class="moduleInfo fa fa-question-circle" data-toggle="modal" data-target="#moduleModal<?=$module->id;?>"></a>
+					</li>
+				<?php } ?>
+			</ul>
+			<div class="moduleProgress d-none">
+				<div class="progress">
+					<div class="progress-bar bg-secondary" role="progressbar"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--
 	<div class="card">
 		<div class="card-header bg-primary">
 			Kiértékelés
@@ -24,12 +71,14 @@ $this->title = 'Vállalások';
 			<div class="commitmentScore">
 				<p>Pontszám: <span class="score"></span></p>
 				<p>Összpontszám: <span class="scoreWithSpecial"></span></p>
-				<p>Aktuális szint: <span class="currentLevel"></span></p>
-				<p>Következő szint: <span class="nextLevel"></span></p>
-				<p>Százalék a következő szintig: <span class="nextLevelPercentage"></span>%</p>
+				<p>Aktuális szint: <span class="currentModule"></span></p>
+				<p>Következő szint: <span class="nextModule"></span></p>
+				<p>Százalék a következő szintig: <span class="nextModulePercentage"></span>%</p>
+				<p>Százalék a cél szintig: <span class="targetModulePercentage"></span>%</p>
 			</div>
 		</div>
 	</div>
+	-->
 
 	<div class="accordion treeAccordion mt-5 mb-5" id="commitmentsAccordion">
 		<?php
@@ -43,7 +92,9 @@ $this->title = 'Vállalások';
 		?>
 	</div>
 
-	<button type="submit" class="btn btn-primary">Submit</button>
+	<div class="text-center">
+		<button type="submit" class="btn btn-secondary">Elküldöm a vállalásokat</button>
+	</div>
 </form>
 
 

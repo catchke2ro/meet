@@ -75,7 +75,7 @@ $catId = $commitmentCategory->id;
 							   step="<?=$commitment->month_step;?>"
 							   min="<?=$commitment->months_min;?>"
 							   max="<?=$commitment->months_max;?>"
-							   value="<?=$fill->getIntervalValue($commitment, $instanceNumber);?>" />
+							   value="<?=$fill ? $fill->getIntervalValue($commitment, $instanceNumber) : null;?>" />
 						<div class="input-group-append">
 							<span class="input-group-text">hónap</span>
 						</div>

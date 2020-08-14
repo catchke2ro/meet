@@ -3,6 +3,7 @@ import "./app.sass";
 import $ from "jquery"
 import "bootstrap/dist/js/bootstrap"
 import "admin-lte/dist/js/adminlte"
+import Sticky from "sticky-js"
 
 
 $(function () {
@@ -11,7 +12,6 @@ $(function () {
 	$(document).on('click', 'a.logoutLink', function () {
 		$('#logoutForm').submit();
 	});
-
 
 	$(document).on('click', '.treeAccordion > .card > .card-header', function (event) {
 		if ($(event.target).is('input') || $(event.target).is('.titles')) {
@@ -99,17 +99,29 @@ $(function () {
 				if (typeof data.score !== 'undefined') {
 					$('.commitmentScore span.score').text(data.score);
 				}
-				if (typeof data.scoreWithSpecial !== 'undefined') {
-					$('.commitmentScore span.scoreWithSpecial').text(data.scoreWithSpecial);
+				if (typeof data.currentModule !== 'undefined') {
+					$('.commitmentScore span.currentModule').text(data.currentModule);
 				}
-				if (typeof data.currentLevel !== 'undefined') {
-					$('.commitmentScore span.currentLevel').text(data.currentLevel);
+				if (typeof data.nextModule !== 'undefined') {
+					$('.commitmentScore span.nextModule').text(data.nextModule);
 				}
-				if (typeof data.nextLevel !== 'undefined') {
-					$('.commitmentScore span.nextLevel').text(data.nextLevel);
+				if (typeof data.targetModulePercentage !== 'undefined') {
+					$('.commitmentScore span.targetModulePercentage').text(data.targetModulePercentage);
 				}
-				if (typeof data.nextLevelPercentage !== 'undefined') {
-					$('.commitmentScore span.nextLevelPercentage').text(data.nextLevelPercentage);
+				if (typeof data.nextModulePercentage !== 'undefined') {
+					$('.commitmentScore span.nextModulePercentage').text(data.nextModulePercentage);
+				}
+
+				if (typeof data.targetModulePercentage !== 'undefined') {
+					const percentage = parseInt(data.targetModulePercentage);
+					const $progressBar = $('div.moduleProgress');
+					if (percentage > 0) {
+						$progressBar.removeClass('d-none');
+						$progressBar.find('.progress-bar').width(percentage+'%');
+					} else {
+						$progressBar.addClass('d-none');
+						$progressBar.find('.progress-bar').width(0);
+					}
 				}
 			},
 			error: function(data) {
@@ -155,5 +167,31 @@ $(function () {
 		modal.find('.modal-header h3').html('');
 		modal.find('.modal-body').html('');
 	});
+
+
+	const $treeModules = $('.card.modules');
+	if ($treeModules.length) {
+
+		const sticky = new Sticky('.card.modules', {
+			wrap: true,
+			stickyClass: 'stuck'
+		});
+
+		const $treeModuleList = $treeModules.find('ul.moduleList');
+
+		$treeModuleList.on('click', 'a.selectModule', function() {
+			const	$a = $(this),
+				$li = $a.closest('li'),
+				$allLis = $li.closest('ul').find('li'),
+				$actives = $li.prevAll().add($li);
+
+			$allLis.removeClass('active');
+			$actives.addClass('active');
+
+			$('input#selectedModule').val($a.data('moduleid'));
+
+			updateScore($('form.commitmentsForm'));
+		});
+	}
 
 });
