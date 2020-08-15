@@ -69,15 +69,18 @@ $catId = $commitmentCategory->id;
 						<div class="input-group-prepend">
 							<span class="input-group-text">Vállalás időtartama:</span>
 						</div>
+						<input type="hidden"
+							   name="intervalMultipliers[<?=$commitment->id;?>][<?=$instanceNumber;?>]"
+							   value="<?=getIntervalMultiplier($commitment->month_step);?>"/>
 						<input type="number"
 							   class="form-control"
 							   name="intervals[<?=$commitment->id;?>][<?=$instanceNumber;?>]"
-							   step="<?=$commitment->month_step;?>"
-							   min="<?=$commitment->months_min;?>"
-							   max="<?=$commitment->months_max;?>"
-							   value="<?=$fill ? $fill->getIntervalValue($commitment, $instanceNumber) : null;?>" />
+							   step="<?=getIntervalStep($commitment->month_step);?>"
+							   min="<?=getIntervalThreshold($commitment->months_min, $commitment->month_step);?>"
+							   max="<?=getIntervalThreshold($commitment->months_max, $commitment->month_step);?>"
+							   value="<?=$fill ? convertIntervalValue($fill->getIntervalValue($commitment, $instanceNumber), $commitment->month_step) : null;?>" />
 						<div class="input-group-append">
-							<span class="input-group-text">hónap</span>
+							<span class="input-group-text"><?=getIntervalName($commitment->month_step);?></span>
 						</div>
 					</div>
 				</div>

@@ -24,3 +24,84 @@ function reduceMonths(int $months): ?string {
 
 	return null;
 }
+
+/**
+ * @param $step
+ *
+ * @return int
+ */
+function getIntervalMultiplier($step): int {
+	switch ($step) {
+		case 12:
+		case 6:
+		case 3:
+			return $step;
+		default:
+			return 1;
+	}
+}
+
+/**
+ * @param int $step
+ *
+ * @return int
+ */
+function getIntervalStep(int $step): int {
+	switch ($step) {
+		case 12:
+		case 6:
+		case 3:
+			return 1;
+		default:
+			return $step;
+	}
+}
+
+/**
+ * @param int $threshold
+ * @param int $step
+ *
+ * @return float|int
+ */
+function getIntervalThreshold(int $threshold, int $step) {
+	switch ($step) {
+		case 12:
+		case 6:
+		case 3:
+			return $threshold / $step;
+		default:
+			return $threshold;
+	}
+}
+
+/**
+ * @param $step
+ *
+ * @return string
+ */
+function getIntervalName(int $step): string {
+	switch ($step) {
+		case 12:
+			return 'év';
+		case 6:
+			return 'félév';
+		case 3:
+			return 'negyedév';
+		default:
+			return 'hónap';
+	}
+}
+
+/**
+ * @param int|null $value
+ * @param int      $step
+ *
+ * @return int
+ */
+function convertIntervalValue(?int $value, int $step): int {
+	if (!$value) {
+		return $value;
+	}
+
+	return round($value / $step);
+}

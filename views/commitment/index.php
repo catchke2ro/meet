@@ -30,7 +30,7 @@ $this->title = 'Vállalások';
 			'modules'       => $modules,
 	]);?>
 	<div class="card modules shadow-none">
-		<input type="hidden" name="module" id="selectedModule" value="" />
+		<input type="hidden" name="targetModule" id="selectedModule" value="" />
 		<div class="card-body">
 			<h3>Válassz modult, kitűzött célt!</h3>
 			<ul class="moduleList">

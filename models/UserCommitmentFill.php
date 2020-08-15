@@ -17,8 +17,10 @@ use yii\db\ActiveRecord;
  *
  * @property int                    $id
  * @property int                    $user_id
+ * @property int                    $target_module_id
  * @property \DateTime              $date
  * @property User                   $user
+ * @property Module|null            $targetModule
  * @property UserCommitmentOption[] $options
  */
 class UserCommitmentFill extends ActiveRecord implements FillInterface {
@@ -43,6 +45,14 @@ class UserCommitmentFill extends ActiveRecord implements FillInterface {
 	/**
 	 * @return ActiveQuery
 	 */
+	public function getTargetModule() {
+		return $this->hasOne(Module::class, ['id' => 'target_module_id']);
+	}
+
+
+	/**
+	 * @return ActiveQuery
+	 */
 	public function getOptions() {
 		return $this->hasMany(UserCommitmentOption::class, ['user_commitment_fill_id' => 'id']);
 	}
@@ -58,6 +68,7 @@ class UserCommitmentFill extends ActiveRecord implements FillInterface {
 		foreach ($this->getOptions()->all() as $option) {
 			$questionOptionIds[] = $option->commitment_option_id;
 		}
+
 		return $questionOptionIds ?: null;
 	}
 
@@ -94,6 +105,7 @@ class UserCommitmentFill extends ActiveRecord implements FillInterface {
 		if ($instances && isset($instances[$instanceNum])) {
 			$instance = $instances[$instanceNum];
 		}
+
 		return $instance;
 	}
 
@@ -109,6 +121,7 @@ class UserCommitmentFill extends ActiveRecord implements FillInterface {
 			->innerJoinWith('option as option')
 			->where(['option.is_custom_input' => 1, 'option.commitment_id' => $item->id])
 			->one();
+
 		return $option ? $option->custom_input : null;
 	}
 

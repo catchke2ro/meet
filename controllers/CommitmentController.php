@@ -148,8 +148,13 @@ class CommitmentController extends Controller {
 	protected function save(Request $request, array $categoriesByCommitments) {
 		try {
 			$transaction = Yii::$app->db->beginTransaction();
+
+			$targetModuleId = $request->getBodyParam('targetModule');
+			$targetModule = Module::findOne(['id' => $targetModuleId]) ?: Module::find()->orderBy('threshold ASC')->one();
+
 			$fill = (new UserCommitmentFill());
 			$fill->user_id = 1;
+			$fill->target_module_id = $targetModule->id;
 			$fill->date = (new DateTime())->format('Y-m-d H:i:s');
 			$fill->save();
 
@@ -157,6 +162,9 @@ class CommitmentController extends Controller {
 			$customInputs = $request->getBodyParam('customInputs') ?: [];
 			$instanceNames = $request->getBodyParam('instanceNames') ?: [];
 			$intervals = $request->getBodyParam('intervals') ?: [];
+			$intervalMultipliers = $request->getBodyParam('intervalMultipliers') ?: [];
+
+
 
 			$instanceNumsToIds = [];
 			foreach ($instanceNames as $categoryId => $categoryInstances) {
@@ -175,7 +183,11 @@ class CommitmentController extends Controller {
 					$fillOption->user_commitment_fill_id = $fill->id;
 					$fillOption->custom_input = $customInputs[$commitmentId][$optionId][$instanceNumber] ?: null;
 					$fillOption->commitment_option_id = $optionId;
+
 					$fillOption->months = $intervals[$commitmentId][$instanceNumber] ?? null;
+					if ($fillOption->months && isset($intervalMultipliers[$commitmentId][$instanceNumber])) {
+						$fillOption->months *= $intervalMultipliers[$commitmentId][$instanceNumber];
+					}
 					if (isset($instanceNumsToIds[$categoryId . '_' . $instanceNumber])) {
 						$fillOption->instance_id = $instanceNumsToIds[$categoryId . '_' . $instanceNumber];
 					}
@@ -223,7 +235,7 @@ class CommitmentController extends Controller {
 			}
 		}
 
-		$targetModuleId = $request->getBodyParam('module');
+		$targetModuleId = $request->getBodyParam('targetModule');
 		$targetModulePercentage = null;
 		if ($targetModuleId && ($targetModule = Module::findOne(['id' => $targetModuleId]))) {
 			$targetModulePercentage = 100;
