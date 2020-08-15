@@ -4,7 +4,32 @@ $this->title = 'Főoldal';
 ?>
 
 <div class="hero">
-	<img src="/assets/img/meet_slider_01.jpg" alt="MEET">
+	<div class="heroInner">
+		<div id="heroSlider" class="carousel slide" data-ride="carousel">
+			<ol class="carousel-indicators">
+				<?php for ($i = 0; $i < 8; $i ++) { ?>
+					<li data-target="#heroSliderIndicators" data-slide-to="<?=$i;?>" <?php if ($i === 0) { ?>class="active"<?php } ?>></li>
+				<?php } ?>
+			</ol>
+			<div class="carousel-inner">
+				<?php for ($i = 0; $i < 8; $i ++) { ?>
+					<div class="carousel-item <?php if ($i === 0) { ?>active<?php } ?>">
+						<img class="d-block w-100"
+							 src="/assets/img/meet_slider_<?=str_pad($i + 1, 2, '0', STR_PAD_LEFT);?>.jpg"
+							 alt="MEET" />
+					</div>
+				<?php } ?>
+			</div>
+			<a class="carousel-control-prev" href="#heroSlider" role="button" data-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="sr-only">Előző</span>
+			</a>
+			<a class="carousel-control-next" href="#heroSlider" role="button" data-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="sr-only">Következő</span>
+			</a>
+		</div>
+	</div>
 </div>
 
 <div class="teasers">

@@ -7,6 +7,9 @@ import Sticky from "sticky-js"
 
 
 $(function () {
+
+	$('#heroSlider').carousel();
+
 	$('[data-toggle="tooltip"]').tooltip({});
 
 	$(document).on('click', 'a.logoutLink', function () {
