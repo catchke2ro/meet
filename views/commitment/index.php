@@ -18,6 +18,8 @@ $this->title = 'Vállalások';
 
 <form method="post" action="" class="commitmentsForm">
 	<input type="hidden" name="_csrf" value="<?=Yii::$app->request->getCsrfToken()?>" />
+	<input type="hidden" name="orgType" value="<?=Yii::$app->user->getIdentity()->getOrgTypeId();?>" />
+
 
 	<?php if (!$fill) {?>
 		<p class="text-center">

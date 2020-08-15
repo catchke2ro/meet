@@ -18,7 +18,7 @@ use yii\db\ActiveRecord;
  * @property string                  $custom_input
  * @property UserCommitmentFill      $userCommitmentFill
  * @property CommitmentInstance|null $commitmentInstance
- * @property CommitmentOption        $option
+ * @property CommitmentOption        $commitmentOption
  * @property int                     $months
  */
 class UserCommitmentOption extends ActiveRecord {
@@ -51,7 +51,7 @@ class UserCommitmentOption extends ActiveRecord {
 	/**
 	 * @return ActiveQuery
 	 */
-	public function getOption() {
+	public function getCommitmentOption() {
 		return $this->hasOne(CommitmentOption::class, ['id' => 'commitment_option_id']);
 	}
 

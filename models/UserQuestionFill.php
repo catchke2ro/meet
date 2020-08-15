@@ -18,6 +18,7 @@ use yii\web\Request;
  *
  * @property int                  $id
  * @property int                  $user_id
+ * @property int                  $org_type
  * @property \DateTime            $date
  * @property User                 $user
  * @property UserQuestionAnswer[] $answers

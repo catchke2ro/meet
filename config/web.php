@@ -102,6 +102,9 @@ $config = [
 				'/admin/modules/edit/<id:\d+>'   => 'admin/modules/edit',
 				'/admin/modules/delete/<id:\d+>' => 'admin/modules/delete',
 
+				'/admin/user-commitments'          => 'admin/user-commitments/index',
+				'/admin/user-commitments/<id:\d+>' => 'admin/user-commitments/view',
+
 			],
 		],
 	],

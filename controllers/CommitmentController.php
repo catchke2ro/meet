@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\lib\OrgTypes;
 use app\lib\TreeLib;
 use app\models\Badge;
 use app\models\CommitmentCategory;
@@ -18,6 +19,7 @@ use app\models\UserCommitmentOption;
 use app\models\UserQuestionFill;
 use DateTime;
 use Exception;
+use http\Exception\InvalidArgumentException;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -152,10 +154,16 @@ class CommitmentController extends Controller {
 			$targetModuleId = $request->getBodyParam('targetModule');
 			$targetModule = Module::findOne(['id' => $targetModuleId]) ?: Module::find()->orderBy('threshold ASC')->one();
 
+			$orgType = $request->getBodyParam('orgType');
+			if (!($orgType && OrgTypes::getInstance()->offsetExists($orgType))) {
+				throw new InvalidArgumentException('Invalid input parameters');
+			}
+
 			$fill = (new UserCommitmentFill());
 			$fill->user_id = 1;
 			$fill->target_module_id = $targetModule->id;
 			$fill->date = (new DateTime())->format('Y-m-d H:i:s');
+			$fill->org_type = $orgType;
 			$fill->save();
 
 			$options = $request->getBodyParam('options') ?: [];
@@ -292,7 +300,7 @@ class CommitmentController extends Controller {
 
 		$historyValues = UserCommitmentOption::find()
 			->alias('commitmentOption')
-			->innerJoinWith('option as option')
+			->innerJoinWith('commitmentOption as option')
 			->innerJoinWith('userCommitmentFill as fill')
 			->andWhere(['in', 'commitmentOption.user_commitment_fill_id', $fillIds])
 			->andWhere(['option.commitment_id' => $commitmentId])

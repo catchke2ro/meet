@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\lib\OrgTypes;
 use app\lib\TreeLib;
 use app\models\QuestionCategory;
 use app\models\QuestionInstance;
@@ -9,6 +10,7 @@ use app\models\UserQuestionAnswer;
 use app\models\UserQuestionFill;
 use DateTime;
 use Exception;
+use http\Exception\InvalidArgumentException;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -106,8 +108,15 @@ class QuestionController extends Controller {
 	protected function save(Request $request, array $categoriesByQuestions) {
 		try {
 			$transaction = Yii::$app->db->beginTransaction();
+
+			$orgType = $request->getBodyParam('orgType');
+			if (!($orgType && OrgTypes::getInstance()->offsetExists($orgType))) {
+				throw new InvalidArgumentException('Invalid input parameters');
+			}
+
 			$fill = (new UserQuestionFill());
 			$fill->user_id = 1;
+			$fill->org_type = $orgType;
 			$fill->date = (new DateTime())->format('Y-m-d H:i:s');
 			$fill->save();
 
