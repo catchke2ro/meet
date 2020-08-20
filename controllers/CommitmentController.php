@@ -4,7 +4,6 @@ namespace app\controllers;
 
 use app\lib\OrgTypes;
 use app\lib\TreeLib;
-use app\models\Badge;
 use app\models\CommitmentCategory;
 use app\models\CommitmentInstance;
 use app\models\CommitmentItem;
@@ -13,7 +12,6 @@ use app\models\interfaces\FillInterface;
 use app\models\Module;
 use app\models\QuestionCategory;
 use app\models\User;
-use app\models\UserCommitmentAnswer;
 use app\models\UserCommitmentFill;
 use app\models\UserCommitmentOption;
 use app\models\UserQuestionFill;
@@ -102,7 +100,7 @@ class CommitmentController extends Controller {
 			$fill = $user->getLatestCommitmentFill();
 		}
 
-		$checkedCommitmentOptions = $fill ? $fill->getCheckedCommitmentOptions() : null;
+		$checkedCommitmentOptions = $fill ? $fill->getCheckedCommitmentOptions() : [];
 
 		$commitmentCategories = CommitmentCategory::find()
 			->innerJoinWith(['orgTypes as orgTypes'])->andWhere(['orgTypes.org_type_id' => Yii::$app->user->getIdentity()->getOrgTypeId()])

@@ -49,9 +49,7 @@ AppAsset::register($this);
 					<li class="nav-item"><a href="/belepes" class="nav-link">Belépés</a></li>
 					<li class="nav-item"><a href="/regisztracio" class="nav-link">Regisztráció</a></li>
 				<?php } else { ?>
-					<?php if (Yii::$app->user->getIdentity()->hasCommitmentFill()) {?>
-						<li class="nav-item"><a href="/vallalasok" class="nav-link">Vállalásaim</a></li>
-					<?php } ?>
+					<li class="nav-item"><a href="/vallalasok" class="nav-link">Vállalás</a></li>
 				<?php } ?>
 			</ul>
 		</nav>

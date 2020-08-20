@@ -41,7 +41,7 @@ $catId = $commitmentCategory->id;
 								   name="options[<?=$commitment->id;?>][<?=$instanceNumber;?>]"
 								   id="opt<?=$commitment->id?>_<?=$option->id?>_<?=$instanceNumber;?>"
 								   data-custominput="<?=$option->is_custom_input ? 1 : 0;?>"
-								<?=in_array($option->id, $checkedCommitmentOptions) ? 'checked' : '';?>
+								<?=in_array($option->id, $checkedCommitmentOptions ?: []) ? 'checked' : '';?>
 								   autocomplete="off">
 							<label for="opt<?=$commitment->id?>_<?=$option->id?>_<?=$instanceNumber;?>"
 								   data-toggle="tooltip"
