@@ -28,7 +28,7 @@ class UserCommitmentOption extends ActiveRecord {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return '{{user_commitment_options}}';
+		return '{{meet_user_commitment_options}}';
 	}
 
 

@@ -29,7 +29,7 @@ class Organization extends ActiveRecord {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return '{{organizations}}';
+		return '{{meet_organizations}}';
 	}
 
 

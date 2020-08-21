@@ -24,7 +24,7 @@ class Module extends ActiveRecord implements DataTableModelInterface {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return '{{modules}}';
+		return '{{meet_modules}}';
 	}
 
 

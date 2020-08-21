@@ -27,7 +27,7 @@ class UserQuestionAnswer extends ActiveRecord {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return '{{user_question_answers}}';
+		return '{{meet_user_question_answers}}';
 	}
 
 

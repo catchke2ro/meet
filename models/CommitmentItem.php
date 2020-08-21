@@ -36,7 +36,7 @@ class CommitmentItem extends ActiveRecord implements ItemInterface, DataTableMod
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return '{{commitments}}';
+		return '{{meet_commitments}}';
 	}
 
 

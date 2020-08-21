@@ -31,7 +31,7 @@ class CommitmentOption extends ActiveRecord implements DataTableModelInterface {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return '{{commitment_options}}';
+		return '{{meet_commitment_options}}';
 	}
 
 
@@ -41,7 +41,7 @@ class CommitmentOption extends ActiveRecord implements DataTableModelInterface {
 	 */
 	public function getQuestionOptions() {
 		return $this->hasMany(QuestionOption::class, ['id' => 'commitment_option_id'])
-			->viaTable('commitments_by_questions', ['question_option_id' => 'id']);
+			->viaTable('meet_commitments_by_questions', ['question_option_id' => 'id']);
 	}
 
 

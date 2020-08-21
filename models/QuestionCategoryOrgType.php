@@ -19,7 +19,7 @@ class QuestionCategoryOrgType extends ActiveRecord {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return '{{question_category_org_types}}';
+		return '{{meet_question_category_org_types}}';
 	}
 
 

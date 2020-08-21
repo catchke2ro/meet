@@ -30,7 +30,7 @@ class UserQuestionFill extends ActiveRecord implements FillInterface {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return '{{user_question_fills}}';
+		return '{{meet_user_question_fills}}';
 	}
 
 
@@ -101,7 +101,7 @@ class UserQuestionFill extends ActiveRecord implements FillInterface {
 		}
 
 		$command = Yii::$app->db
-			->createCommand('SELECT commitment_option_id FROM commitments_by_questions WHERE question_option_id IN ('.implode(',', $questionOptionIds).')');
+			->createCommand('SELECT commitment_option_id FROM meet_commitments_by_questions WHERE question_option_id IN ('.implode(',', $questionOptionIds).')');
 		$checkedCommitmentOptions = $command->queryAll(PDO::FETCH_COLUMN);
 		return $checkedCommitmentOptions ?: null;
 	}

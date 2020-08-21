@@ -36,7 +36,7 @@ class QuestionCategory extends ActiveRecord implements CategoryInterface, DataTa
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return '{{question_categories}}';
+		return '{{meet_question_categories}}';
 	}
 
 

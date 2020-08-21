@@ -39,7 +39,7 @@ class UserCommitmentFill extends ActiveRecord implements FillInterface, DataTabl
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return '{{user_commitment_fills}}';
+		return '{{meet_user_commitment_fills}}';
 	}
 
 

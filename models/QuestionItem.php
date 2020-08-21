@@ -32,7 +32,7 @@ class QuestionItem extends ActiveRecord implements ItemInterface, DataTableModel
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return '{{questions}}';
+		return '{{meet_uestions}}';
 	}
 
 

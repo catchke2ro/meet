@@ -19,7 +19,7 @@ class CommitmentCategoryOrgType extends ActiveRecord {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return '{{commitment_category_org_types}}';
+		return '{{meet_commitment_category_org_types}}';
 	}
 
 

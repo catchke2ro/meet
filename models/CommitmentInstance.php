@@ -26,7 +26,7 @@ class CommitmentInstance extends ActiveRecord {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return '{{user_commitment_option_instances}}';
+		return '{{meet_user_commitment_option_instances}}';
 	}
 
 

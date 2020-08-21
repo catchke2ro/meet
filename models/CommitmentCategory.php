@@ -38,7 +38,7 @@ class CommitmentCategory extends ActiveRecord implements CategoryInterface, Data
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return '{{commitment_categories}}';
+		return '{{meet_commitment_categories}}';
 	}
 
 

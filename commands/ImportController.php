@@ -253,7 +253,7 @@ class ImportController extends Controller {
 
 		foreach ($connections as $connection) {
 			if (isset($qoIdMap[$connection['question']]) && isset($coIdMap[$connection['commitment']])) {
-				Yii::$app->db->createCommand()->insert('commitments_by_questions', [
+				Yii::$app->db->createCommand()->insert('meet_commitments_by_questions', [
 					'question_option_id' => $qoIdMap[$connection['question']],
 					'commitment_option_id' => $coIdMap[$connection['commitment']]
 				])->execute();

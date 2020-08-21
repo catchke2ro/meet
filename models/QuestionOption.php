@@ -29,7 +29,7 @@ class QuestionOption extends ActiveRecord implements DataTableModelInterface {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return '{{question_options}}';
+		return '{{meet_question_options}}';
 	}
 
 
