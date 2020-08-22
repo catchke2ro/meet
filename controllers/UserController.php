@@ -69,12 +69,12 @@ class UserController extends Controller {
 				$person = Person::findOne(['id' => $personId]);
 				$email = $person->getEmail();
 
-				Yii::$app->mailer->compose('new_registration', [
+				/*Yii::$app->mailer->compose('new_registration', [
 					'person' => $person
 				])
 					->setTo($email)
 					->setSubject('MEET - Új regisztráció')
-					->send();
+					->send();*/
 
 				return $this->redirect(Url::to('user/login'));
 			}

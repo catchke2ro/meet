@@ -124,7 +124,7 @@ abstract class User extends ActiveRecord implements IdentityInterface {
 			->andOnCondition([
 				'ref_tipus_id' => Yii::$app->params['event_type_pozicio'],
 				'ref2_id'      => Yii::$app->params['position_meet_referer'],
-				'erv_allapot'  => Yii::$app->params['org_valid_erv_allapot']
+				'erv_allapot'  => Yii::$app->params['org_position_valid_erv_allapot']
 			]);
 
 		return $qb->all() ?: [];
@@ -208,7 +208,7 @@ abstract class User extends ActiveRecord implements IdentityInterface {
 	 * @return void|IdentityInterface|null
 	 */
 	public static function findIdentity($id) {
-		return self::findOne(['id' => $id]);
+		return self::findOne(['vuid' => $id]);
 	}
 
 

@@ -32,7 +32,7 @@ AppAsset::register($this);
 			<?php if (!Yii::$app->getUser()->isGuest) { ?>
 				<div class="user">
 					<p class="text-small loggedInName">Belépve: <?=Yii::$app->getUser()->getIdentity()->name;?></p>
-					<?php Html::beginForm(['/user/logout'], 'post', ['id' => 'logoutForm']) . Html::endForm(); ?>
+					<?php echo Html::beginForm(['/user/logout'], 'post', ['id' => 'logoutForm']) . Html::endForm(); ?>
 					<a href="javascript:void(0)" class="btn btn-sm btn-primary logoutLink">Kilépés</a>
 				</div>
 			<?php } ?>
