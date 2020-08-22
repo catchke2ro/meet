@@ -7,21 +7,21 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
- * Class UserQuestionAnswer
+ * Class OrgQuestionAnswer
  *
  * @package app\models
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  *
  * @property int                   $id
- * @property int                   $user_question_fill_id
+ * @property int                   $org_question_fill_id
  * @property int                   $question_option_id
  * @property int|null              $instance_id
  * @property string                $custom_input
- * @property UserQuestionFill      $userQuestionFill
+ * @property OrgQuestionFill      $orgQuestionFill
  * @property QuestionInstance|null $questionInstance
  * @property QuestionOption        $option
  */
-abstract class UserQuestionAnswer extends ActiveRecord {
+abstract class OrgQuestionAnswer extends ActiveRecord {
 
 	use SharedModelTrait;
 
@@ -29,15 +29,15 @@ abstract class UserQuestionAnswer extends ActiveRecord {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_user_question_answers';
+		return 'meet_org_question_answers';
 	}
 
 
 	/**
 	 * @return ActiveQuery
 	 */
-	public function getUserQuestionFill() {
-		return $this->hasOne($this->getModelClass(UserQuestionFill::class), ['id' => 'user_question_fill_id']);
+	public function getOrgQuestionFill() {
+		return $this->hasOne($this->getModelClass(OrgQuestionFill::class), ['id' => 'org_question_fill_id']);
 	}
 
 

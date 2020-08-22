@@ -2,19 +2,19 @@
 
 namespace app\controllers;
 
-use app\lib\OrgTypes;
 use app\lib\TreeLib;
 use app\models\CommitmentCategory;
 use app\models\CommitmentInstance;
 use app\models\CommitmentItem;
 use app\models\CommitmentOption;
 use app\models\interfaces\FillInterface;
+use app\models\lutheran\Organization;
 use app\models\Module;
 use app\models\QuestionCategory;
 use app\models\lutheran\User;
-use app\models\UserCommitmentFill;
-use app\models\UserCommitmentOption;
-use app\models\UserQuestionFill;
+use app\models\OrgCommitmentFill;
+use app\models\OrgCommitmentOption;
+use app\models\OrgQuestionFill;
 use DateTime;
 use Exception;
 use http\Exception\InvalidArgumentException;
@@ -22,8 +22,8 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 use yii\web\Request;
-use yii\web\Response;
 
 /**
  * Class CommitmentController
@@ -62,7 +62,7 @@ class CommitmentController extends Controller {
 				'class' => AccessControl::className(),
 				'rules' => [
 					[
-						'actions' => ['index', 'score', 'history'],
+						'actions' => ['index', 'score', 'history', 'end'],
 						'allow'   => true,
 						'roles'   => ['@'],
 					],
@@ -91,13 +91,21 @@ class CommitmentController extends Controller {
 		$fill = null;
 		/** @var User $user */
 		$user = Yii::$app->user->getIdentity();
+		if (!($user && ($organization = $user->getOrganization()))) {
+			throw new NotFoundHttpException();
+		}
 		if (($questionFillId = Yii::$app->request->get('qf'))) {
-			$fill = UserQuestionFill::findOne(['id' => $questionFillId]);
+			$fill = OrgQuestionFill::findOne(['id' => $questionFillId]);
 			if (!$fill) {
 				throw new HttpException(404);
 			}
-		} elseif ($user->hasCommitmentFill()) {
-			$fill = $user->getLatestCommitmentFill();
+		} elseif ($organization->hasCommitmentFill()) {
+			$fill = $organization->getLatestCommitmentFill();
+			if (!$fill->approved) {
+				return $this->render('pendingfill', compact(
+					'fill'
+				));
+			}
 		}
 
 		$checkedCommitmentOptions = $fill ? $fill->getCheckedCommitmentOptions() : [];
@@ -118,7 +126,7 @@ class CommitmentController extends Controller {
 		if ($request->isPost) {
 			try {
 				$this->save($request, $categoriesByCommitments);
-				Yii::$app->session->setFlash('success', 'Köszönjük a vállalásokat! Feldolgozzuk a beérkezett adatokat, és hamarosan visszajelzünk.');
+				return $this->redirect('/vallalasok/vege');
 			} catch (Exception $e) {
 				Yii::$app->session->setFlash('error', 'Hiba történt a mentés során.');
 			}
@@ -132,6 +140,17 @@ class CommitmentController extends Controller {
 			'modules',
 			'checkedCommitmentOptions'
 		));
+	}
+
+
+	/**
+	 * Displays commitment form
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	public function actionEnd() {
+		return $this->render('end');
 	}
 
 
@@ -152,13 +171,20 @@ class CommitmentController extends Controller {
 			$targetModuleId = $request->getBodyParam('targetModule');
 			$targetModule = Module::findOne(['id' => $targetModuleId]) ?: Module::find()->orderBy('threshold ASC')->one();
 
+			/** @var \meetbase\models\lutheran\User $user */
+			/** @var Organization $organization */
+			$user = Yii::$app->user->getIdentity();
+			if (!($user && ($organization = $user->getOrganization()))) {
+				throw new NotFoundHttpException();
+			}
+
 			$orgType = $request->getBodyParam('orgType');
-			if (!($orgType && OrgTypes::getInstance()->offsetExists($orgType))) {
+			if (!($orgType && $orgType == $organization->orgType->id)) {
 				throw new InvalidArgumentException('Invalid input parameters');
 			}
 
-			$fill = (new UserCommitmentFill());
-			$fill->user_id = 1;
+			$fill = (new OrgCommitmentFill());
+			$fill->org_id = $organization->id;
 			$fill->target_module_id = $targetModule->id;
 			$fill->date = (new DateTime())->format('Y-m-d H:i:s');
 			$fill->org_type = $orgType;
@@ -185,8 +211,8 @@ class CommitmentController extends Controller {
 			foreach ($options as $commitmentId => $instances) {
 				$categoryId = $categoriesByCommitments[$commitmentId] ?? null;
 				foreach ($instances ?: [] as $instanceNumber => $optionId) {
-					$fillOption = new UserCommitmentOption();
-					$fillOption->user_commitment_fill_id = $fill->id;
+					$fillOption = new OrgCommitmentOption();
+					$fillOption->org_commitment_fill_id = $fill->id;
 					$fillOption->custom_input = $customInputs[$commitmentId][$optionId][$instanceNumber] ?: null;
 					$fillOption->commitment_option_id = $optionId;
 
@@ -293,13 +319,13 @@ class CommitmentController extends Controller {
 			throw new HttpException(404);
 		}
 
-		/** @var UserCommitmentFill[] $fills */
+		/** @var OrgCommitmentFill[] $fills */
 		$fillIds = $user->getCommitmentFills()->orderBy('date DESC')->select('id')->column();
 
-		$historyValues = UserCommitmentOption::find()
+		$historyValues = OrgCommitmentOption::find()
 			->alias('commitmentOption')
 			->innerJoinWith('commitmentOption as option')
-			->innerJoinWith('userCommitmentFill as fill')
+			->innerJoinWith('orgCommitmentFill as fill')
 			->andWhere(['in', 'commitmentOption.user_commitment_fill_id', $fillIds])
 			->andWhere(['option.commitment_id' => $commitmentId])
 			->orderBy('fill.date DESC')

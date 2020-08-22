@@ -5,7 +5,7 @@ namespace meetbase\models;
 use meetbase\models\CommitmentCategory;
 use meetbase\models\traits\SharedModelTrait;
 use meetbase\models\traits\WithItemTrait;
-use meetbase\models\UserCommitmentOption;
+use meetbase\models\OrgCommitmentOption;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -18,7 +18,7 @@ use yii\db\ActiveRecord;
  * @property string               $name
  * @property int                  $commitment_category_id
  * @property CommitmentCategory   $commitmentCategory
- * @property UserCommitmentOption $userCommitmentOptions
+ * @property OrgCommitmentOption $orgCommitmentOptions
  */
 abstract class CommitmentInstance extends ActiveRecord {
 
@@ -30,7 +30,7 @@ abstract class CommitmentInstance extends ActiveRecord {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_user_commitment_option_instances';
+		return 'meet_org_commitment_option_instances';
 	}
 
 
@@ -45,8 +45,8 @@ abstract class CommitmentInstance extends ActiveRecord {
 	/**
 	 * @return ActiveQuery
 	 */
-	public function getUserCommitmentOptions() {
-		return $this->hasMany($this->getModelClass(UserCommitmentOption::class), ['instance_id' => 'id']);
+	public function getOrgCommitmentOptions() {
+		return $this->hasMany($this->getModelClass(OrgCommitmentOption::class), ['instance_id' => 'id']);
 	}
 
 

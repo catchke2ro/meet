@@ -4,6 +4,7 @@ namespace meetbase\models;
 
 use meetbase\models\interfaces\FillInterface;
 use meetbase\models\interfaces\ItemInterface;
+use meetbase\models\lutheran\Organization;
 use meetbase\models\traits\SharedModelTrait;
 use PDO;
 use Yii;
@@ -11,19 +12,19 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
- * Class UserQuestionFill
+ * Class OrgQuestionFill
  *
  * @package app\models
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  *
  * @property int                  $id
- * @property int                  $user_id
+ * @property int                  $org_id
  * @property int                  $org_type
  * @property \DateTime            $date
- * @property User                 $user
- * @property UserQuestionAnswer[] $answers
+ * @property Organization         $organization
+ * @property OrgQuestionAnswer[] $answers
  */
-abstract class UserQuestionFill extends ActiveRecord implements FillInterface {
+abstract class OrgQuestionFill extends ActiveRecord implements FillInterface {
 
 	use SharedModelTrait;
 
@@ -31,15 +32,15 @@ abstract class UserQuestionFill extends ActiveRecord implements FillInterface {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_user_question_fills';
+		return 'meet_org_question_fills';
 	}
 
 
 	/**
 	 * @return ActiveQuery
 	 */
-	public function getUser() {
-		return $this->hasOne($this->getModelClass(User::class), ['id' => 'user_id']);
+	public function getOrganization() {
+		return $this->hasOne($this->getModelClass(Organization::class), ['id' => 'org_id']);
 	}
 
 
@@ -47,7 +48,7 @@ abstract class UserQuestionFill extends ActiveRecord implements FillInterface {
 	 * @return ActiveQuery
 	 */
 	public function getAnswers() {
-		return $this->hasMany($this->getModelClass(UserQuestionAnswer::class), ['user_question_fill_id' => 'id']);
+		return $this->hasMany($this->getModelClass(OrgQuestionAnswer::class), ['org_question_fill_id' => 'id']);
 	}
 
 
@@ -78,9 +79,9 @@ abstract class UserQuestionFill extends ActiveRecord implements FillInterface {
 	public function getInstance(CommitmentCategory $commitmentCategory, int $instanceNum): ?ActiveRecord {
 		$instance = null;
 		if ($commitmentCategory->question_category_inst_id) {
-			$instances = QuestionInstance::find()
+			$instances = $this->getModelClass(QuestionInstance::class)::find()
 				->innerJoinWith('questionAnswers as questionAnswers')
-				->innerJoinWith('questionAnswers.userQuestionFill as questionFill')
+				->innerJoinWith('questionAnswers.orgQuestionFill as questionFill')
 				->where(['questionFill.id' => $this->id])
 				->all();
 			if ($instances && isset($instances[$instanceNum])) {
@@ -97,7 +98,7 @@ abstract class UserQuestionFill extends ActiveRecord implements FillInterface {
 	 * @throws \yii\db\Exception
 	 */
 	public function getCheckedCommitmentOptions(): ?array {
-		/** @var UserQuestionAnswer $answer */
+		/** @var OrgQuestionAnswer $answer */
 		$questionOptionIds = [];
 		foreach ($this->getAnswers()->all() as $answer) {
 			$questionOptionIds[] = $answer->question_option_id;
@@ -117,7 +118,7 @@ abstract class UserQuestionFill extends ActiveRecord implements FillInterface {
 	 * @return string|null
 	 */
 	public function getCustomInputValue(ItemInterface $item): ?string {
-		/** @var UserQuestionAnswer|null $option */
+		/** @var OrgQuestionAnswer|null $option */
 		$option = $this->getAnswers()
 			->innerJoinWith('option as option')
 			->where(['option.is_custom_input' => 1, 'option.question_id' => $item->id])

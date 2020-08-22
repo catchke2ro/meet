@@ -13,6 +13,7 @@ $this->title = 'Kérdések';
 
 <form method="post" action="">
 	<input type="hidden" name="_csrf" value="<?=Yii::$app->request->getCsrfToken()?>" />
+	<input type="hidden" name="orgType" value="<?=Yii::$app->user->getIdentity()->getOrgTypeId();?>" />
 
 	<div class="accordion treeAccordion mt-5 mb-5" id="questionsAccordion">
 		<?php

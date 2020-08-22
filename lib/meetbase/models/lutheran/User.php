@@ -16,18 +16,22 @@ use yii\web\IdentityInterface;
  * @package app\models
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  *
- * @property int                  $vuid
- * @property string               $id
- * @property string               $crypt
- * @property string               $email
- * @property string               $name
- * @property Organization         $organization
- * @property Person               $person
- * @property UserCommitmentFill[] $commitmentFills
+ * @property int                 $vuid
+ * @property string              $id
+ * @property string              $crypt
+ * @property string              $email
+ * @property string              $name
+ * @property Organization        $organization
+ * @property Person              $person
  */
 abstract class User extends ActiveRecord implements IdentityInterface {
 
 	use SharedModelTrait;
+
+	/**
+	 * @var Organization|null
+	 */
+	protected $organizationCache = null;
 
 
 	/**
@@ -44,17 +48,6 @@ abstract class User extends ActiveRecord implements IdentityInterface {
 
 
 	/**
-	 * @return mixed|null
-	 */
-	public function getOrgTypeId(): ?int {
-		if (($organization = $this->getOrganization())) {
-			return $organization->getOrgType()->id;
-		}
-		return null;
-	}
-
-
-	/**
 	 * @return ActiveQuery
 	 */
 	public function getPerson() {
@@ -63,126 +56,47 @@ abstract class User extends ActiveRecord implements IdentityInterface {
 
 
 	/**
-	 * @return ActiveQuery
+	 * @return mixed|null
 	 */
-	public function getCommitmentFills() {
-		return $this->hasMany(UserCommitmentFill::class, ['user_id' => 'id']);
+	public function getEvents(): ?ActiveQuery {
+		return $this->person ? $this->person->getEvents() : null;
 	}
 
 
 	/**
-	 * @return bool
-	 */
-	public function hasCommitmentFill(): bool {
-		return count($this->commitmentFills) > 0;
-	}
-
-
-	/**
-	 * @return UserCommitmentFill|null
-	 */
-	public function getLatestCommitmentFill(): ?UserCommitmentFill {
-		return $this->getCommitmentFills()->orderBy('date DESC')->limit(1)->one();
-	}
-
-
-	/**
-	 * @param int|string $id
+	 * @param bool $forceReload
 	 *
-	 * @return void|IdentityInterface|null
-	 */
-	public static function findIdentity($id) {
-		return self::findOne(['id' => $id]);
-	}
-
-
-	/**
-	 * @param mixed $token
-	 * @param null  $type
-	 *
-	 * @return void|IdentityInterface|null
-	 * @throws NotSupportedException
-	 */
-	public static function findIdentityByAccessToken($token, $type = null) {
-		throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
-	}
-
-
-	/**
-	 * Finds user by email
-	 *
-	 * @param string $email
-	 *
-	 * @return static|null
-	 */
-	public static function findByEmail($email) {
-		return static::findOne(['email' => $email]);
-	}
-
-
-	/**
-	 * @return int|string|void
-	 */
-	public function getId() {
-		return $this->id;
-	}
-
-
-	/**
-	 * @return string|void
-	 */
-	public function getAuthKey() {
-		return $this->auth_key;
-	}
-
-
-	/**
-	 * @param string $authKey
-	 *
-	 * @return bool|void
-	 */
-	public function validateAuthKey($authKey) {
-		return $this->getAuthKey() === $authKey;
-	}
-
-
-	/**
-	 * Validates password
-	 *
-	 * @param string $password password to validate
-	 *
-	 * @return bool if password provided is valid for current user
-	 */
-	public function validatePassword($password) {
-		return Yii::$app->security->validatePassword($password, $this->crypt);
-	}
-
-
-	/**
-	 * Validates password
-	 *
-	 * @return bool if password provided is valid for current user
-	 */
-	public function validateRegistration() {
-		$organization = $this->getOrganization();
-		if (!$organization) {
-			return 0;
-		}
-		$approvedEvent = $this->getActiveMeetApprovedEvent($organization);
-		if (!$approvedEvent) {
-			return 1;
-		}
-		return 2;
-	}
-
-
-	/**
 	 * @return Organization|null
 	 */
-	public function getOrganization(): ?Organization {
-		if (!empty(($organizations = $this->getOrganizationsByPositionEvents()))) {
-			return reset($organizations);
+	public function getOrganization(bool $forceReload = false): ?Organization {
+		if (is_null($this->organizationCache) || $forceReload) {
+			if (!empty(($organizations = $this->getOrganizationsByPositionEvents()))) {
+				$this->organizationCache = reset($organizations);
+			}
 		}
+
+		return $this->organizationCache;
+	}
+
+
+	/**
+	 * @param $username
+	 *
+	 * @return \app\models\lutheran\User|null
+	 */
+	public static function findByUsername($username): ?User {
+		return parent::findOne(['id' => $username]);
+	}
+
+
+	/**
+	 * @return mixed|null
+	 */
+	public function getOrgTypeId(): ?int {
+		if (($organization = $this->getOrganization())) {
+			return $organization->orgType ? $organization->orgType->id : null;
+		}
+
 		return null;
 	}
 
@@ -192,17 +106,10 @@ abstract class User extends ActiveRecord implements IdentityInterface {
 	 */
 	public function getOrganizationsByPositionEvents(): array {
 		$events = $this->getActivePositionEvents();
+
 		return array_map(function (Event $event) {
 			return $event->organization;
 		}, $events);
-	}
-
-
-	/**
-	 * @return mixed|null
-	 */
-	public function getEvents(): ?ActiveQuery {
-		return $this->person ? $this->person->getEvents() : null;
 	}
 
 
@@ -245,6 +152,37 @@ abstract class User extends ActiveRecord implements IdentityInterface {
 
 
 	/**
+	 * Validates password
+	 *
+	 * @param string $password password to validate
+	 *
+	 * @return bool if password provided is valid for current user
+	 */
+	public function validatePassword($password) {
+		return Yii::$app->security->validatePassword($password, $this->crypt);
+	}
+
+
+	/**
+	 * Validates password
+	 *
+	 * @return bool if password provided is valid for current user
+	 */
+	public function validateRegistration() {
+		$organization = $this->getOrganization();
+		if (!$organization) {
+			return 0;
+		}
+		$approvedEvent = $this->getActiveMeetApprovedEvent($organization);
+		if (!$approvedEvent) {
+			return 1;
+		}
+
+		return 2;
+	}
+
+
+	/**
 	 * Generates password hash from password and sets it to the model
 	 *
 	 * @param string $password
@@ -252,7 +190,6 @@ abstract class User extends ActiveRecord implements IdentityInterface {
 	 * @throws Exception
 	 */
 	public function setPassword($password) {
-		$this->password = Yii::$app->security->generatePasswordHash($password);
 	}
 
 
@@ -261,7 +198,66 @@ abstract class User extends ActiveRecord implements IdentityInterface {
 	 * @throws Exception
 	 */
 	public function generateAuthKey() {
-		$this->auth_key = Yii::$app->security->generateRandomString();
+	}
+
+
+	/**
+	 * @param int|string $id
+	 *
+	 * @return void|IdentityInterface|null
+	 */
+	public static function findIdentity($id) {
+		return self::findOne(['id' => $id]);
+	}
+
+
+	/**
+	 * @param mixed $token
+	 * @param null  $type
+	 *
+	 * @return void|IdentityInterface|null
+	 * @throws NotSupportedException
+	 */
+	public static function findIdentityByAccessToken($token, $type = null) {
+		throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+	}
+
+
+	/**
+	 * Finds user by email
+	 *
+	 * @param string $email
+	 *
+	 * @return static|null
+	 */
+	public static function findByEmail($email) {
+		return static::findOne(['email' => $email]);
+	}
+
+
+	/**
+	 * @return int|string|void
+	 */
+	public function getId() {
+		return $this->vuid;
+	}
+
+
+	/**
+	 * @return string|void
+	 */
+	public function getAuthKey() {
+		return null;
+	}
+
+
+	/**
+	 * @param string $authKey
+	 *
+	 * @return bool|void
+	 */
+	public function validateAuthKey($authKey) {
+		return true;
 	}
 
 

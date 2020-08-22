@@ -49,13 +49,13 @@ abstract class CommitmentOption extends ActiveRecord {
 	/**
 	 * @param Request               $request
 	 *
-	 * @param UserQuestionFill      $questionFill
+	 * @param OrgQuestionFill      $questionFill
 	 * @param int                   $instanceNumber
 	 * @param QuestionInstance|null $instance
 	 *
 	 * @return bool
 	 */
-	public function isChecked(Request $request, UserQuestionFill $questionFill, int $instanceNumber, ?QuestionInstance $instance = null): bool {
+	public function isChecked(Request $request, OrgQuestionFill $questionFill, int $instanceNumber, ?QuestionInstance $instance = null): bool {
 		$checked = false;
 		if ($this->item && $this->item->isOnlyCustomInput()) {
 			$checked = true;

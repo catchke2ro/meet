@@ -12,14 +12,15 @@ namespace meetbase\models\traits;
  */
 trait SharedModelTrait {
 
+
 	/**
 	 * @param string $baseClass
 	 *
 	 * @return string|string[]|null
 	 */
 	protected function getModelClass(string $baseClass) {
-		return preg_replace('/[^\\\\]+$/', '', static::class).
-			   preg_replace('/(.*)\\\\([^\\\\]+)$/', '$2', $baseClass);
+		return preg_replace('/^meetbase\\\\models\\\\/', 'app\\models\\', $baseClass);
 	}
+
 
 }

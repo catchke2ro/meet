@@ -2,7 +2,6 @@
 
 namespace meetbase\models\traits;
 
-use meetbase\models\QuestionOption;
 use yii\web\Request;
 
 /**

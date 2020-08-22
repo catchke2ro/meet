@@ -5,19 +5,20 @@ namespace meetbase\models;
 use meetbase\models\interfaces\FillInterface;
 use meetbase\models\interfaces\ItemInterface;
 use DateTime;
+use meetbase\models\lutheran\Organization;
 use meetbase\models\traits\SharedModelTrait;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
- * Class UserCommitmentFill
+ * Class OrgCommitmentFill
  *
  * @package app\models
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  *
  * @property int                    $id
- * @property int                    $user_id
+ * @property int                    $org_id
  * @property int                    $target_module_id
  * @property int                    $manual_module_id
  * @property int                    $manual_score
@@ -25,12 +26,12 @@ use yii\db\ActiveRecord;
  * @property bool                   $approved
  * @property int                    $org_type
  * @property DateTime               $date
- * @property User                   $user
+ * @property Organization           $organization
  * @property Module|null            $targetModule
  * @property Module|null            $manualModule
- * @property UserCommitmentOption[] $options
+ * @property OrgCommitmentOption[] $options
  */
-abstract class UserCommitmentFill extends ActiveRecord implements FillInterface {
+abstract class OrgCommitmentFill extends ActiveRecord implements FillInterface {
 
 	use SharedModelTrait;
 
@@ -38,15 +39,15 @@ abstract class UserCommitmentFill extends ActiveRecord implements FillInterface 
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_user_commitment_fills';
+		return 'meet_org_commitment_fills';
 	}
 
 
 	/**
 	 * @return ActiveQuery
 	 */
-	public function getUser() {
-		return $this->hasOne($this->getModelClass(User::class), ['id' => 'user_id']);
+	public function getOrganization() {
+		return $this->hasOne($this->getModelClass(Organization::class), ['id' => 'org_id']);
 	}
 
 
@@ -62,7 +63,7 @@ abstract class UserCommitmentFill extends ActiveRecord implements FillInterface 
 	 * @return ActiveQuery
 	 */
 	public function getOptions() {
-		return $this->hasMany($this->getModelClass(UserCommitmentOption::class), ['user_commitment_fill_id' => 'id']);
+		return $this->hasMany($this->getModelClass(OrgCommitmentOption::class), ['org_commitment_fill_id' => 'id']);
 	}
 
 
@@ -72,7 +73,7 @@ abstract class UserCommitmentFill extends ActiveRecord implements FillInterface 
 	 */
 	public function getCheckedCommitmentOptions(): ?array {
 		$questionOptionIds = [];
-		/** @var UserCommitmentOption $option */
+		/** @var OrgCommitmentOption $option */
 		foreach ($this->getOptions()->all() as $option) {
 			$questionOptionIds[] = $option->commitment_option_id;
 		}
@@ -105,9 +106,9 @@ abstract class UserCommitmentFill extends ActiveRecord implements FillInterface 
 	 */
 	public function getInstance(CommitmentCategory $commitmentCategory, int $instanceNum): ?ActiveRecord {
 		$instance = null;
-		$instances = CommitmentInstance::find()
-			->innerJoinWith('userCommitmentOptions as userCommitmentOptions')
-			->innerJoinWith('userCommitmentOptions.userCommitmentFill as commitmentFill')
+		$instances = $this->getModelClass(CommitmentInstance::class)::find()
+			->innerJoinWith('orgCommitmentOptions as orgCommitmentOptions')
+			->innerJoinWith('orgCommitmentOptions.orgCommitmentFill as commitmentFill')
 			->where(['commitmentFill.id' => $this->id, 'commitment_category_id' => $commitmentCategory->id])
 			->all();
 		if ($instances && isset($instances[$instanceNum])) {
@@ -124,7 +125,7 @@ abstract class UserCommitmentFill extends ActiveRecord implements FillInterface 
 	 * @return string|null
 	 */
 	public function getCustomInputValue(ItemInterface $item): ?string {
-		/** @var UserCommitmentOption|null $option */
+		/** @var OrgCommitmentOption|null $option */
 		$option = $this->getOptions()
 			->innerJoinWith('commitmentOption as option')
 			->where(['option.is_custom_input' => 1, 'option.commitment_id' => $item->id])
@@ -150,7 +151,7 @@ abstract class UserCommitmentFill extends ActiveRecord implements FillInterface 
 			$value = (int) $request->getBodyParam('options')[$this->id][$instance];
 		}
 
-		/** @var UserCommitmentOption $fillOptionOfCommitment */
+		/** @var OrgCommitmentOption $fillOptionOfCommitment */
 		$fillOptionOfCommitment = $this->getOptions()
 			->alias('fillOption')
 			->innerJoinWith('commitmentOption as commitmentOption')

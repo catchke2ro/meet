@@ -7,22 +7,22 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
- * Class UserCommitmentOption
+ * Class OrgCommitmentOption
  *
  * @package app\models
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  *
  * @property int                     $id
- * @property int                     $user_commitment_fill_id
+ * @property int                     $org_commitment_fill_id
  * @property int                     $commitment_option_id
  * @property int|null                $instance_id
  * @property string                  $custom_input
- * @property UserCommitmentFill      $userCommitmentFill
+ * @property OrgCommitmentFill      $orgCommitmentFill
  * @property CommitmentInstance|null $commitmentInstance
  * @property CommitmentOption        $commitmentOption
  * @property int                     $months
  */
-abstract class UserCommitmentOption extends ActiveRecord {
+abstract class OrgCommitmentOption extends ActiveRecord {
 
 	use SharedModelTrait;
 
@@ -30,15 +30,15 @@ abstract class UserCommitmentOption extends ActiveRecord {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_user_commitment_options';
+		return 'meet_org_commitment_options';
 	}
 
 
 	/**
 	 * @return ActiveQuery
 	 */
-	public function getUserCommitmentFill() {
-		return $this->hasOne($this->getModelClass(UserCommitmentFill::class), ['id' => 'user_commitment_fill_id']);
+	public function getOrgCommitmentFill() {
+		return $this->hasOne($this->getModelClass(OrgCommitmentFill::class), ['id' => 'org_commitment_fill_id']);
 	}
 
 

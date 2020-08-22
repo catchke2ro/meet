@@ -27,7 +27,7 @@ abstract class QuestionInstance extends ActiveRecord {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_user_question_answer_instances';
+		return 'meet_org_question_answer_instances';
 	}
 
 
@@ -43,7 +43,8 @@ abstract class QuestionInstance extends ActiveRecord {
 	 * @return ActiveQuery
 	 */
 	public function getQuestionAnswers() {
-		return $this->hasMany($this->getModelClass(UserQuestionAnswer::class), ['instance_id' => 'id']);
+		return $this->hasMany($this->getModelClass(OrgQuestionAnswer::class), ['instance_id' => 'id']);
 	}
+
 
 }

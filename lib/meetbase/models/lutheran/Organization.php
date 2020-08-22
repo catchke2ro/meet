@@ -2,6 +2,7 @@
 
 namespace meetbase\models\lutheran;
 
+use meetbase\models\OrgCommitmentFill;
 use meetbase\models\traits\SharedModelTrait;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -9,17 +10,18 @@ use yii\db\ActiveRecord;
 /**
  * Class Organization
  *
- * @property int              $id
- * @property int              $ref_regi_id
- * @property int              $ref_kategoria_id
- * @property int              $ref_tipus_id
- * @property string           $nev
- * @property int              $erv_allapot
- * @property int              $kerulet_gen
- * @property OrganizationType $orgType
- * @property array|Event[]    $events
- * @property Event            $registrationEvent
- * @property Event            $positionEvent
+ * @property int                 $id
+ * @property int                 $ref_regi_id
+ * @property int                 $ref_kategoria_id
+ * @property int                 $ref_tipus_id
+ * @property string              $nev
+ * @property int                 $erv_allapot
+ * @property int                 $kerulet_gen
+ * @property OrganizationType    $orgType
+ * @property array|Event[]       $events
+ * @property Event               $registrationEvent
+ * @property Event               $positionEvent
+ * @property OrgCommitmentFill[] $commitmentFills
  *
  * @package app\models
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
@@ -56,12 +58,21 @@ abstract class Organization extends ActiveRecord {
 	/**
 	 * @return ActiveQuery
 	 */
+	public function getCommitmentFills() {
+		return $this->hasMany($this->getModelClass(OrgCommitmentFill::class), ['org_id' => 'id']);
+	}
+
+
+	/**
+	 * @return ActiveQuery
+	 */
 	public function getRegistrationEvent() {
 		$qb = clone $this->getEvents();
 		$qb->multiple = false;
 		$qb->andOnCondition([
 			'registrationEvent.ref_tipus_id' => Event::ID_TYPE_MEET_REGISTRATION
 		]);
+
 		return $qb;
 	}
 
@@ -76,7 +87,24 @@ abstract class Organization extends ActiveRecord {
 			'positionEvent.ref2_id'      => Event::ID_POSITION_MEET_REFERER
 		]);
 		$qb->multiple = false;
+
 		return $qb;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function hasCommitmentFill(): bool {
+		return count($this->commitmentFills) > 0;
+	}
+
+
+	/**
+	 * @return OrgCommitmentFill|null
+	 */
+	public function getLatestCommitmentFill(): ?OrgCommitmentFill {
+		return $this->getCommitmentFills()->orderBy('date DESC')->limit(1)->one();
 	}
 
 

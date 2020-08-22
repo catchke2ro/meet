@@ -14,14 +14,4 @@ use meetbase\models\lutheran\User as BaseUser;
 class User extends BaseUser {
 
 
-	/**
-	 * @param $username
-	 *
-	 * @return User|null
-	 */
-	public static function findByUsername($username): ?User {
-		return parent::findOne(['id' => $username]);
-	}
-
-
 }

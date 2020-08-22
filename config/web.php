@@ -61,6 +61,7 @@ $config = [
 				'/kilepes'            => 'user/logout',
 				'/vallalasok/pontok'  => 'commitment/score',
 				'/vallalasok/history' => 'commitment/history',
+				'/vallalasok/vege'    => 'commitment/end',
 
 				'/_orgs' => 'ajax/orgs'
 			],

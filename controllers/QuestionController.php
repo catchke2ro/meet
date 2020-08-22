@@ -2,18 +2,20 @@
 
 namespace app\controllers;
 
-use app\lib\OrgTypes;
 use app\lib\TreeLib;
+use app\models\lutheran\Organization;
 use app\models\QuestionCategory;
 use app\models\QuestionInstance;
-use app\models\UserQuestionAnswer;
-use app\models\UserQuestionFill;
+use app\models\OrgQuestionAnswer;
+use app\models\OrgQuestionFill;
 use DateTime;
 use Exception;
 use http\Exception\InvalidArgumentException;
+use meetbase\models\lutheran\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\Request;
 
 /**
@@ -109,13 +111,19 @@ class QuestionController extends Controller {
 		try {
 			$transaction = Yii::$app->db->beginTransaction();
 
+			/** @var User $user */
+			/** @var Organization $organization */
+			$user = Yii::$app->user->getIdentity();
+			if (!($user && ($organization = $user->getOrganization()))) {
+				throw new NotFoundHttpException();
+			}
 			$orgType = $request->getBodyParam('orgType');
-			if (!($orgType && OrgTypes::getInstance()->offsetExists($orgType))) {
+			if (!($orgType && $orgType == $organization->orgType->id)) {
 				throw new InvalidArgumentException('Invalid input parameters');
 			}
 
-			$fill = (new UserQuestionFill());
-			$fill->user_id = 1;
+			$fill = (new OrgQuestionFill());
+			$fill->org_id = $organization->id;
 			$fill->org_type = $orgType;
 			$fill->date = (new DateTime())->format('Y-m-d H:i:s');
 			$fill->save();
@@ -137,8 +145,8 @@ class QuestionController extends Controller {
 			foreach ($options as $questionId => $instances) {
 				$categoryId = $categoriesByQuestions[$questionId] ?? null;
 				foreach ($instances ?: [] as $instanceNumber => $optionId) {
-					$answer = new UserQuestionAnswer();
-					$answer->user_question_fill_id = $fill->id;
+					$answer = new OrgQuestionAnswer();
+					$answer->org_question_fill_id = $fill->id;
 					$answer->custom_input = $customInputs[$questionId][$optionId][$instanceNumber] ?: null;
 					$answer->question_option_id = $optionId;
 					if (isset($instanceNumsToIds[$categoryId.'_'.$instanceNumber])) {
