@@ -102,7 +102,7 @@ class CommitmentController extends Controller {
 			}
 		} elseif ($organization->hasCommitmentFill()) {
 			$fill = $organization->getLatestCommitmentFill();
-			if (!$fill->approved) {
+			if (!$fill->isApproved()) {
 				return $this->render('pendingfill', compact(
 					'fill'
 				));

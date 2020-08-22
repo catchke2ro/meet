@@ -102,7 +102,7 @@ abstract class Organization extends ActiveRecord {
 		$fills = $this->commitmentFills ?: [];
 		if ($approvedOnly) {
 			$fills = array_filter($fills, function (OrgCommitmentFill $fill) {
-				return $fill->approved;
+				return $fill->isApproved();
 			});
 		}
 

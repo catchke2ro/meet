@@ -2,6 +2,7 @@
 
 namespace meetbase\models;
 
+use app\models\lutheran\Event;
 use meetbase\models\interfaces\FillInterface;
 use meetbase\models\interfaces\ItemInterface;
 use DateTime;
@@ -23,7 +24,6 @@ use yii\db\ActiveRecord;
  * @property int                   $manual_module_id
  * @property int                   $manual_score
  * @property string                $comment
- * @property bool                  $approved
  * @property int                   $org_type
  * @property string                $date
  * @property Organization          $organization
@@ -190,11 +190,22 @@ abstract class OrgCommitmentFill extends ActiveRecord implements FillInterface {
 	 * @return Module|null
 	 */
 	public function getFinalModule(): ?Module {
-		if (!$this->approved) {
+		if (!$this->isApproved()) {
 			return null;
 		}
 
 		return $this->manualModule ?: $this->targetModule;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isApproved(): bool {
+		return !is_null(Event::find()
+			->andWhere(['ref_tipus_id' => Yii::$app->params['event_type_meet_commitment_approved']])
+			->andWhere(['ertek1' => 1])
+			->one());
 	}
 
 

@@ -72,7 +72,7 @@ class Event extends BaseEvent {
 		$event->ref_tipus_id = Yii::$app->params['event_type_meet_commitment'];
 		$event->ref_szervegyseg_id = $organization->id;
 		$event->ref_szemely_id = $person->id;
-		$event->ertek1 = $fill->getScore();
+		$event->ref1_id = $fill->id;
 
 		return $event;
 	}

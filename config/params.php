@@ -17,9 +17,9 @@ return [
 
 	'event_type_pozicio' => 1036, //Pozíció betöltés esemény típus
 	'event_type_meet_reg' => 101, //MEET új reg esemény típus
-	'event_type_meet_reg_approved' => 104, //MEET reg approved esemény típus
-	'event_type_meet_commitment' => 102, //MEET új vállalás esemény típus
-	'event_type_meet_commitment_approved' => 105, //MEET vállalás elfogadva esemény típus
+	'event_type_meet_reg_approved' => 102, //MEET reg approved esemény típus
+	'event_type_meet_commitment' => 103, //MEET új vállalás esemény típus
+	'event_type_meet_commitment_approved' => 104, //MEET vállalás elfogadva esemény típus
 
 	'position_type_megbizott' => 3, //Megbízott pozicio típus
 	'position_meet_referer' => 253, //MEET referens pozíció
