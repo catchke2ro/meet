@@ -137,8 +137,8 @@ class Registration extends Model {
 				$organization = new Organization();
 				$organization->nev = $this->orgName;
 				$organization->ref_regi_id = 0;
-				$organization->ref_kategoria_id = OrganizationType::find()->one()->id;
-				$organization->ref_tipus_id = 1;
+				$organization->ref_kategoria_id = Organization::ID_TYPE_NEVTAR; //Névtári bejegyzés
+				$organization->ref_tipus_id = Organization::ID_TYPE_EGYHAZKOZSEG; //Egyházközszég
 				$organization->erv_allapot = 0;
 				$success &= $organization->save();
 

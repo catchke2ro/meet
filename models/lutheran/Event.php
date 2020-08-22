@@ -14,9 +14,6 @@ use meetbase\models\lutheran\Event as BaseEvent;
  */
 class Event extends BaseEvent {
 
-
-
-
 	/**
 	 * @param Organization $organization
 	 * @param Person       $person

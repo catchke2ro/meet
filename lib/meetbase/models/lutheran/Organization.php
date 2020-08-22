@@ -28,6 +28,9 @@ use yii\db\ActiveRecord;
  */
 abstract class Organization extends ActiveRecord {
 
+	const ID_TYPE_EGYHAZKOZSEG = 1;
+	const ID_TYPE_NEVTAR = 1;
+
 	use SharedModelTrait;
 
 

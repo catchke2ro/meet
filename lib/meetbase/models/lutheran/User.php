@@ -16,13 +16,13 @@ use yii\web\IdentityInterface;
  * @package app\models
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  *
- * @property int                 $vuid
- * @property string              $id
- * @property string              $crypt
- * @property string              $email
- * @property string              $name
- * @property Organization        $organization
- * @property Person              $person
+ * @property int          $vuid
+ * @property string       $id
+ * @property string       $crypt
+ * @property string       $email
+ * @property string       $name
+ * @property Organization $organization
+ * @property Person       $person
  */
 abstract class User extends ActiveRecord implements IdentityInterface {
 
@@ -144,7 +144,8 @@ abstract class User extends ActiveRecord implements IdentityInterface {
 			->andOnCondition([
 				'ref_tipus_id'       => Event::ID_TYPE_MEET_REGISTRATION_APPROVED,
 				'erv_allapot'        => 1,
-				'ref_szervegyseg_id' => $organization->id
+				'ref_szervegyseg_id' => $organization->id,
+				'ertek1'             => 1
 			]);
 
 		return $qb->one();
@@ -219,7 +220,7 @@ abstract class User extends ActiveRecord implements IdentityInterface {
 	 * @throws NotSupportedException
 	 */
 	public static function findIdentityByAccessToken($token, $type = null) {
-		throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+		throw new NotSupportedException('"findIdentityByAccessToken" is not implemented . ');
 	}
 
 
