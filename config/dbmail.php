@@ -2,7 +2,7 @@
 
 return [
 	'class'    => 'yii\db\Connection',
-	'dsn'      => 'mysql:host=mysql;dbname=virtualmail',
+	'dsn'      => 'mysql:host=mysql_virtualmail;dbname=virtualmail',
 	'username' => 'root',
 	'password' => '9rY00ZiJJM',
 	'charset'  => 'utf8',
