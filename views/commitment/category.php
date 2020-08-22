@@ -2,7 +2,7 @@
 
 use app\models\CommitmentCategory;
 use app\models\interfaces\FillInterface;
-use app\models\UserQuestionFill;
+use app\models\OrgQuestionFill;
 
 /**
  * @var $commitmentCategory                       CommitmentCategory

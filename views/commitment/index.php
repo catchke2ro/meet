@@ -2,11 +2,12 @@
 
 use app\models\CommitmentCategory;
 use app\models\Module;
-use app\models\UserQuestionFill;
+use app\models\OrgCommitmentFill;
+use app\models\OrgQuestionFill;
 
 /**
  * @var $commitmentCategories                     CommitmentCategory[]
- * @var $fill                                     UserQuestionFill[]
+ * @var $fill                                     OrgQuestionFill
  * @var $this                                     yii\web\View
  * @var $modules                                  array|Module[]
  * @var $checkedCommitmentOptions                 array
@@ -28,11 +29,25 @@ $this->title = 'Vállalások';
 		</p>
 	<?php } ?>
 
+	<?php if ($fill instanceof OrgCommitmentFill) { ?>
+		<div class="card shadow-none border border-primary">
+			<div class="card-body">
+				<dl class="row">
+					<dt class="col-sm-4">Legutóbbi vállalás időpontja:</dt>
+					<dt class="col-sm-8"><?=(new DateTime($fill->date))->format('Y. m. d. H:i:s');?></dt>
+					<dt class="col-sm-4">Megszerzett modul:</dt>
+					<dt class="col-sm-8"><?=$fill->getFinalModule() ? $fill->getFinalModule()->name : null;?></dt>
+				</dl>
+			</div>
+		</div>
+	<?php } ?>
+
 	<?=$this->render('/parts/module-modals', [
 			'modules'       => $modules,
 	]);?>
 	<div class="card modules shadow-none">
-		<input type="hidden" name="targetModule" id="selectedModule" value="" />
+		<input type="hidden" name="targetModule" id="selectedModule"
+			   value="<?=$fill instanceof OrgCommitmentFill && $fill->getFinalModule() ? $fill->getFinalModule()->id : null;?>" />
 		<div class="card-body">
 			<h3>Válassz modult, kitűzött célt!</h3>
 			<ul class="moduleList">

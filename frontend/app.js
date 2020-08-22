@@ -196,6 +196,11 @@ $(function () {
 
 			updateScore($('form.commitmentsForm'));
 		});
+
+		const initialModule = $('input#selectedModule').val();
+		if (initialModule !== '') {
+			$treeModuleList.find('a.selectModule[data-moduleid="' + initialModule + '"]').click();
+		}
 	}
 
 

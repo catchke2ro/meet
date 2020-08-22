@@ -2,6 +2,7 @@
 
 namespace app\models\lutheran;
 
+use app\models\OrgCommitmentFill;
 use DateTime;
 use meetbase\models\lutheran\Event as BaseEvent;
 
@@ -53,6 +54,26 @@ class Event extends BaseEvent {
 		$event->ref_szemely_id = $person->id;
 		$event->ertek1 = $person->nev;
 		$event->ertek2 = $emailContact->ertek1;
+
+		return $event;
+	}
+
+
+	/**
+	 * @param Organization      $organization
+	 * @param Person            $person
+	 * @param OrgCommitmentFill $fill
+	 *
+	 * @return Event
+	 */
+	public static function createNewCommitmentEvent(Organization $organization, Person $person, OrgCommitmentFill $fill) {
+		$event = new Event();
+		$event->erv_kezdet = (new DateTime())->format('Y-m-d');
+		$event->erv_allapot = 0;
+		$event->ref_tipus_id = self::ID_TYPE_MEET_COMMITMENT;
+		$event->ref_szervegyseg_id = $organization->id;
+		$event->ref_szemely_id = $person->id;
+		$event->ertek1 = $fill->getScore();
 
 		return $event;
 	}

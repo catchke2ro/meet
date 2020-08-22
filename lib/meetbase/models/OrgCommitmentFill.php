@@ -17,18 +17,18 @@ use yii\db\ActiveRecord;
  * @package app\models
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  *
- * @property int                    $id
- * @property int                    $org_id
- * @property int                    $target_module_id
- * @property int                    $manual_module_id
- * @property int                    $manual_score
- * @property string                 $comment
- * @property bool                   $approved
- * @property int                    $org_type
- * @property DateTime               $date
- * @property Organization           $organization
- * @property Module|null            $targetModule
- * @property Module|null            $manualModule
+ * @property int                   $id
+ * @property int                   $org_id
+ * @property int                   $target_module_id
+ * @property int                   $manual_module_id
+ * @property int                   $manual_score
+ * @property string                $comment
+ * @property bool                  $approved
+ * @property int                   $org_type
+ * @property string                $date
+ * @property Organization          $organization
+ * @property Module|null           $targetModule
+ * @property Module|null           $manualModule
  * @property OrgCommitmentOption[] $options
  */
 abstract class OrgCommitmentFill extends ActiveRecord implements FillInterface {
@@ -56,6 +56,14 @@ abstract class OrgCommitmentFill extends ActiveRecord implements FillInterface {
 	 */
 	public function getTargetModule() {
 		return $this->hasOne($this->getModelClass(Module::class), ['id' => 'target_module_id']);
+	}
+
+
+	/**
+	 * @return ActiveQuery
+	 */
+	public function getManualModule() {
+		return $this->hasOne($this->getModelClass(Module::class), ['id' => 'manual_module_id']);
 	}
 
 
@@ -175,6 +183,18 @@ abstract class OrgCommitmentFill extends ActiveRecord implements FillInterface {
 		}
 
 		return $score;
+	}
+
+
+	/**
+	 * @return Module|null
+	 */
+	public function getFinalModule(): ?Module {
+		if (!$this->approved) {
+			return null;
+		}
+
+		return $this->manualModule ?: $this->targetModule;
 	}
 
 

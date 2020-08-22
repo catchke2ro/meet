@@ -93,10 +93,19 @@ abstract class Organization extends ActiveRecord {
 
 
 	/**
+	 * @param bool $approvedOnly
+	 *
 	 * @return bool
 	 */
-	public function hasCommitmentFill(): bool {
-		return count($this->commitmentFills) > 0;
+	public function hasCommitmentFill(bool $approvedOnly = false): bool {
+		$fills = $this->commitmentFills ?: [];
+		if ($approvedOnly) {
+			$fills = array_filter($fills, function (OrgCommitmentFill $fill) {
+				return $fill->approved;
+			});
+		}
+
+		return count($fills) > 0;
 	}
 
 

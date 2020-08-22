@@ -49,6 +49,7 @@ abstract class Event extends ActiveRecord {
 
 	const ID_TYPE_POSITION            = 1036;
 	const ID_TYPE_MEET_REGISTRATION   = 101;
+	const ID_TYPE_MEET_COMMITMENT     = 102;
 	const ID_TYPE_MEET_APPROVED       = 104;
 	const ID_POSITION_TYPE_ACCREDITED = 3;
 	const ID_POSITION_MEET_REFERER    = 253;

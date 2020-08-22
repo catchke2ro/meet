@@ -8,6 +8,7 @@ use app\models\CommitmentInstance;
 use app\models\CommitmentItem;
 use app\models\CommitmentOption;
 use app\models\interfaces\FillInterface;
+use app\models\lutheran\Event;
 use app\models\lutheran\Organization;
 use app\models\Module;
 use app\models\QuestionCategory;
@@ -126,6 +127,7 @@ class CommitmentController extends Controller {
 		if ($request->isPost) {
 			try {
 				$this->save($request, $categoriesByCommitments);
+
 				return $this->redirect('/vallalasok/vege');
 			} catch (Exception $e) {
 				Yii::$app->session->setFlash('error', 'Hiba történt a mentés során.');
@@ -197,7 +199,6 @@ class CommitmentController extends Controller {
 			$intervalMultipliers = $request->getBodyParam('intervalMultipliers') ?: [];
 
 
-
 			$instanceNumsToIds = [];
 			foreach ($instanceNames as $categoryId => $categoryInstances) {
 				foreach ($categoryInstances as $num => $instanceName) {
@@ -226,6 +227,10 @@ class CommitmentController extends Controller {
 					$fillOption->save();
 				}
 			}
+
+			$event = Event::createNewCommitmentEvent($organization, $user->person, $fill);
+			$event->save();
+
 			$transaction->commit();
 
 			return $fill->id;
@@ -315,18 +320,19 @@ class CommitmentController extends Controller {
 	public function actionHistory($commitmentId) {
 		/** @var User $user */
 		$user = Yii::$app->user->getIdentity();
-		if (!($user && $user->hasCommitmentFill() && ($commitment = CommitmentItem::findOne(['id' => $commitmentId])))) {
-			throw new HttpException(404);
+		$this->layout = false;
+		if (!($user && ($organization = $user->getOrganization()) && $organization->hasCommitmentFill() && ($commitment = CommitmentItem::findOne(['id' => $commitmentId])))) {
+			return $this->render('historyempty');
 		}
 
 		/** @var OrgCommitmentFill[] $fills */
-		$fillIds = $user->getCommitmentFills()->orderBy('date DESC')->select('id')->column();
+		$fillIds = $organization->getCommitmentFills()->orderBy('date DESC')->select('id')->column();
 
 		$historyValues = OrgCommitmentOption::find()
 			->alias('commitmentOption')
 			->innerJoinWith('commitmentOption as option')
 			->innerJoinWith('orgCommitmentFill as fill')
-			->andWhere(['in', 'commitmentOption.user_commitment_fill_id', $fillIds])
+			->andWhere(['in', 'commitmentOption.org_commitment_fill_id', $fillIds])
 			->andWhere(['option.commitment_id' => $commitmentId])
 			->orderBy('fill.date DESC')
 			->select([
@@ -348,7 +354,6 @@ class CommitmentController extends Controller {
 			];
 		}
 
-		$this->layout = false;
 
 		return $this->render('history', compact('historyRows', 'commitment'));
 	}

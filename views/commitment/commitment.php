@@ -4,10 +4,11 @@ use app\models\CommitmentCategory;
 use app\models\CommitmentItem;
 use app\models\CommitmentOption;
 use app\models\QuestionInstance;
-use app\models\UserCommitmentFill;use app\models\UserQuestionFill;
+use app\models\OrgCommitmentFill;
+use app\models\OrgQuestionFill;
 
 /**
- * @var $fill                                     UserQuestionFill
+ * @var $fill                                     OrgQuestionFill
  * @var $commitmentCategory                       CommitmentCategory
  * @var $commitment                               CommitmentItem
  * @var $this                                     yii\web\View
@@ -86,7 +87,7 @@ $catId = $commitmentCategory->id;
 				</div>
 			<?php } ?>
 
-			<?php if ($fill instanceof UserCommitmentFill) { ?>
+			<?php if ($fill instanceof OrgCommitmentFill) { ?>
 				<a href="javascript:void(0)"
 				   class="btn btn-sm btn-secondary"
 				   data-toggle="modal"
