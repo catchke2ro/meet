@@ -122,9 +122,9 @@ class Registration extends Model {
 	/**
 	 * Signs user up.
 	 *
-	 * @return User|null the saved model or null if saving fails
+	 * @return bool|null
 	 */
-	public function signup(): bool {
+	public function signup() {
 		if (!$this->validate()) {
 			return false;
 		}
@@ -200,7 +200,7 @@ class Registration extends Model {
 
 			$transaction->commit();
 
-			return $success;
+			return $success ? $person->id : false;
 		} catch (\Exception $exception) {
 			$transaction->rollBack();
 		}

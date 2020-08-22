@@ -7,7 +7,9 @@
 
 namespace app\commands;
 
-use app\models\OrgCommitmentFill;
+use app\components\Email;
+use app\models\lutheran\Event;
+use Exception;
 use yii\console\Controller;
 
 /**
@@ -33,6 +35,37 @@ class CronController extends Controller {
 	 */
 	public function options($actionID) {
 		return [];
+	}
+
+
+	/**
+	 *
+	 */
+	public function actionSendApprovedRegistrations() {
+		/** @var Event[] $notMailedApprovedRegs */
+		$notMailedApprovedRegs = Event::find()
+			->andWhere(['ref_tipus_id' => Event::ID_TYPE_MEET_REGISTRATION_APPROVED])
+			->andWhere(['ertek1' => 1])
+			->andWhere(['<>', 'ertek2', 1])
+			->all();
+
+		foreach ($notMailedApprovedRegs as $notMailedApprovedReg) {
+			if ($notMailedApprovedReg->person && ($email = $notMailedApprovedReg->person->getEmail())) {
+				try {
+					(new Email())->sendEmail(
+						'approved_registration',
+						$email,
+						'MEET - Regisztráció elfogadva',
+						['person' => $notMailedApprovedReg->person]
+					);
+					$notMailedApprovedReg->ertek2 = 1;
+					$notMailedApprovedReg->save();
+				} catch(Exception $e) {
+					//Continue to next event on error
+				}
+
+			}
+		}
 	}
 
 

@@ -21,6 +21,7 @@ use yii\db\ActiveRecord;
  * @property bool           $erv_allapot
  * @property PersonCategory $personCategory
  * @property User           $user
+ * @property Contact        $emailContact
  */
 abstract class Person extends ActiveRecord {
 
@@ -46,6 +47,18 @@ abstract class Person extends ActiveRecord {
 	/**
 	 * @return ActiveQuery
 	 */
+	public function getEmailContact() {
+		return $this->hasOne($this->getModelClass(Contact::class), [
+			'ref_szemely_id' => 'id'
+		])->andOnCondition([
+			'ref_tipus_id' => ContactType::ID_EMAIL
+		]);
+	}
+
+
+	/**
+	 * @return ActiveQuery
+	 */
 	public function getUser() {
 		return $this->hasOne($this->getModelClass(User::class), ['vuid' => 'vuid']);
 	}
@@ -56,6 +69,14 @@ abstract class Person extends ActiveRecord {
 	 */
 	public function getEvents() {
 		return $this->hasMany($this->getModelClass(Event::class), ['ref_szemely_id' => 'id']);
+	}
+
+
+	/**
+	 * @return string|null
+	 */
+	public function getEmail(): ?string {
+		return $this->emailContact ? $this->emailContact->ertek1 : null;
 	}
 
 

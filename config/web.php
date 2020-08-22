@@ -33,10 +33,15 @@ $config = [
 		],
 		'mailer'       => [
 			'class'            => 'yii\swiftmailer\Mailer',
-			// send all mails to a file by default. You have to set
-			// 'useFileTransport' to false and configure a transport
-			// for the mailer to send real emails.
-			'useFileTransport' => true,
+			'useFileTransport' => false,
+			'transport' => [
+				'class' => 'Swift_SmtpTransport',
+				'encryption' => 'tls',
+				'host' => 'in-v3.mailjet.com',
+				'port' => '587',
+				'username' => 'd06cb8e360ee26230b0112ac63b270ba',
+				'password' => '3f1cfc2311249f5b07efe2d6889d6512',
+			],
 		],
 		'log'          => [
 			'traceLevel' => YII_DEBUG ? 3 : 0,

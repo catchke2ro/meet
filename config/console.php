@@ -26,6 +26,18 @@ $config = [
 			],
 		],
 		'db'          => $db,
+		'mailer'       => [
+			'class'            => 'yii\swiftmailer\Mailer',
+			'useFileTransport' => false,
+			'transport' => [
+				'class' => 'Swift_SmtpTransport',
+				'encryption' => 'tls',
+				'host' => 'in-v3.mailjet.com',
+				'port' => '587',
+				'username' => 'd06cb8e360ee26230b0112ac63b270ba',
+				'password' => '3f1cfc2311249f5b07efe2d6889d6512',
+			],
+		],
 	],
 	'params'              => $params,
 	/*

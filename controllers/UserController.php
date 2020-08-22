@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\forms\Login;
 use app\models\forms\Registration;
+use app\models\lutheran\Person;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -64,7 +65,17 @@ class UserController extends Controller {
 		$model = new Registration();
 
 		if ($model->load(Yii::$app->request->post())) {
-			if (($user = $model->signup())) {
+			if (($personId = $model->signup())) {
+				$person = Person::findOne(['id' => $personId]);
+				$email = $person->getEmail();
+
+				Yii::$app->mailer->compose('new_registration', [
+					'person' => $person
+				])
+					->setTo($email)
+					->setSubject('MEET - Új regisztráció')
+					->send();
+
 				return $this->redirect(Url::to('user/login'));
 			}
 		}

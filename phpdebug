@@ -1,0 +1,3 @@
+#!/bin/bash
+
+PHP_IDE_CONFIG="serverName=_" php -dxdebug.idekey=ADAM -dxdebug.remote_enable=On -dxdebug.remote_host=docker.for.mac.localhost -dxdebug.remote_autostart=On "$@"

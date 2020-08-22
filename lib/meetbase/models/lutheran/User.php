@@ -142,7 +142,7 @@ abstract class User extends ActiveRecord implements IdentityInterface {
 		}
 		$qb = $this->getEvents()
 			->andOnCondition([
-				'ref_tipus_id'       => Event::ID_TYPE_MEET_APPROVED,
+				'ref_tipus_id'       => Event::ID_TYPE_MEET_REGISTRATION_APPROVED,
 				'erv_allapot'        => 1,
 				'ref_szervegyseg_id' => $organization->id
 			]);
