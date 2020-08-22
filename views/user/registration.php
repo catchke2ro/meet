@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @var $model Registration
+ */
+
+use app\models\forms\Registration;
 use yii\bootstrap4\ActiveForm;
 use yii\helpers\Html;
 
@@ -16,19 +21,22 @@ $this->title = 'Regisztráció';
 				</div>
 				<?php $form = ActiveForm::begin(['id' => 'form-signup', 'enableClientScript' => false]); ?>
 				<div class="card-body">
-					<?=$form->field($model, 'email')->label('E-mail cím')->textInput(['autofocus' => true])?>
-					<?=$form->field($model, 'password')->label('Jelszó')->passwordInput()?>
-					<?=$form->field($model, 'passwordConfirm')->label('Jelszó megeerősítése')->passwordInput()?>
-					<?=$form->field($model, 'orgRemoteId')->label('Kiválasztom az adataimat a központi adatbázisból')
-						->dropDownList(['' => ' - Nem szereplek az adatbázisban - ', 13 => 'Egy szervezet']);?>
-					<fieldset>
+					<div class="row">
+						<?=$form->field($model, 'namePrefix', ['options' => ['class' => 'form-group col-sm-3']])->label('Név előtag')->textInput()?>
+						<?=$form->field($model, 'name', ['options' => ['class' => 'form-group col-sm-9']])->label('Név')->textInput(['autofocus' => true])?>
+					</div>
+					<?=$form->field($model, 'email')->label('E-mail cím')->textInput()?>
+					<?=$form->field($model, 'orgRemoteId', ['options' => ['class' => 'form-group orgSelector']])
+						->label('Kiválasztom az adataimat a központi adatbázisból')
+						->dropDownList(array_merge(['' => ' - Nem szereplek az adatbázisban - ']));?>
+					<fieldset class="orgData">
 						<legend>Szervezet adatai</legend>
 						<span>Csak amennyiben nem szerepel az adatbázisban</span>
-						<?=$form->field($model, 'orgName')->label('Név'); ?>
-						<?=$form->field($model, 'orgAddress')->label('Cím'); ?>
-						<?=$form->field($model, 'orgPhone')->label('Telefonszám'); ?>
-						<?=$form->field($model, 'orgCompanyNumber')->label('Cégjegyzékszám'); ?>
-						<?=$form->field($model, 'orgTaxNumber')->label('Adószám'); ?>
+						<?=$form->field($model, 'orgName')->label('Név');?>
+						<?=$form->field($model, 'orgAddressZip')->label('Irányítószám');?>
+						<?=$form->field($model, 'orgAddressCity')->label('Település');?>
+						<?=$form->field($model, 'orgAddressStreet')->label('Utca, házszám...');?>
+						<?=$form->field($model, 'orgPhone')->label('Telefonszám');?>
 					</fieldset>
 				</div>
 				<div class="card-footer">

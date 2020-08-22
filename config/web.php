@@ -1,10 +1,11 @@
 <?php
 
 
-use app\models\User;
+use app\models\lutheran\User;
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
+$dbmail = require __DIR__ . '/dbmail.php';
 
 $config = [
 	'language'   => 'hu-HU',
@@ -47,6 +48,7 @@ $config = [
 			],
 		],
 		'db'           => $db,
+		'dbmail'       => $dbmail,
 		'urlManager'   => [
 			'enablePrettyUrl' => true,
 			'showScriptName'  => false,
@@ -60,51 +62,7 @@ $config = [
 				'/vallalasok/pontok'  => 'commitment/score',
 				'/vallalasok/history' => 'commitment/history',
 
-				'/admin' => 'admin/index/index',
-
-				'/admin/users'                 => 'admin/users/index',
-				'/admin/users/create'          => 'admin/users/create',
-				'/admin/users/edit/<id:\d+>'   => 'admin/users/edit',
-				'/admin/users/delete/<id:\d+>' => 'admin/users/delete',
-
-				'/admin/question-categories'                 => 'admin/question-categories/index',
-				'/admin/question-categories/create'          => 'admin/question-categories/create',
-				'/admin/question-categories/edit/<id:\d+>'   => 'admin/question-categories/edit',
-				'/admin/question-categories/delete/<id:\d+>' => 'admin/question-categories/delete',
-
-				'/admin/question-items/<categoryId:\d+>'        => 'admin/question-items/index',
-				'/admin/question-items/create/<categoryId:\d+>' => 'admin/question-items/create',
-				'/admin/question-items/edit/<id:\d+>'           => 'admin/question-items/edit',
-				'/admin/question-items/delete/<id:\d+>'         => 'admin/question-items/delete',
-
-				'/admin/question-options/<itemId:\d+>'        => 'admin/question-options/index',
-				'/admin/question-options/create/<itemId:\d+>' => 'admin/question-options/create',
-				'/admin/question-options/edit/<id:\d+>'       => 'admin/question-options/edit',
-				'/admin/question-options/delete/<id:\d+>'     => 'admin/question-options/delete',
-
-				'/admin/commitment-categories'                 => 'admin/commitment-categories/index',
-				'/admin/commitment-categories/create'          => 'admin/commitment-categories/create',
-				'/admin/commitment-categories/edit/<id:\d+>'   => 'admin/commitment-categories/edit',
-				'/admin/commitment-categories/delete/<id:\d+>' => 'admin/commitment-categories/delete',
-
-				'/admin/commitment-items/<categoryId:\d+>'        => 'admin/commitment-items/index',
-				'/admin/commitment-items/create/<categoryId:\d+>' => 'admin/commitment-items/create',
-				'/admin/commitment-items/edit/<id:\d+>'           => 'admin/commitment-items/edit',
-				'/admin/commitment-items/delete/<id:\d+>'         => 'admin/commitment-items/delete',
-
-				'/admin/commitment-options/<itemId:\d+>'        => 'admin/commitment-options/index',
-				'/admin/commitment-options/create/<itemId:\d+>' => 'admin/commitment-options/create',
-				'/admin/commitment-options/edit/<id:\d+>'       => 'admin/commitment-options/edit',
-				'/admin/commitment-options/delete/<id:\d+>'     => 'admin/commitment-options/delete',
-
-				'/admin/modules'                 => 'admin/modules/index',
-				'/admin/modules/create'          => 'admin/modules/create',
-				'/admin/modules/edit/<id:\d+>'   => 'admin/modules/edit',
-				'/admin/modules/delete/<id:\d+>' => 'admin/modules/delete',
-
-				'/admin/user-commitments'          => 'admin/user-commitments/index',
-				'/admin/user-commitments/<id:\d+>' => 'admin/user-commitments/view',
-
+				'/_orgs' => 'ajax/orgs'
 			],
 		],
 	],

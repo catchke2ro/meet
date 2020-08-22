@@ -5,8 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const config = {
 	entry: {
-		app: './frontend/app.js',
-		admin: './frontend/admin.js'
+		app: './frontend/app.js'
 	},
 	output: {
 		path: path.resolve(__dirname, 'web/dist'),

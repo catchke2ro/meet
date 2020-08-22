@@ -16,7 +16,7 @@ $this->title = 'Belépés';
 				</div>
 				<?php $form = ActiveForm::begin(['id' => 'form-login', 'enableClientScript' => false]); ?>
 				<div class="card-body">
-					<?=$form->field($model, 'email')->label('E-mail cím')->textInput(['autofocus' => true])?>
+					<?=$form->field($model, 'username')->label('Felhasználónév')->textInput(['autofocus' => true])?>
 					<?=$form->field($model, 'password')->label('Jelszó')->passwordInput()?>
 				</div>
 				<div class="card-footer">

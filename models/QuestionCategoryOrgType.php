@@ -2,25 +2,15 @@
 
 namespace app\models;
 
-use yii\db\ActiveRecord;
+use meetbase\models\QuestionCategoryOrgType as BaseQuestionCategoryOrgType;
 
 /**
  * Class QuestionCategoryOrgType
  *
  * @package app\models
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
- * @property int $org_type_id
- * @property int $question_category_id
  */
-class QuestionCategoryOrgType extends ActiveRecord {
-
-
-	/**
-	 * @return string
-	 */
-	public static function tableName(): string {
-		return '{{meet_question_category_org_types}}';
-	}
+class QuestionCategoryOrgType extends BaseQuestionCategoryOrgType {
 
 
 }

@@ -45,36 +45,4 @@ class AppAsset extends AssetBundle {
 		'/dist/app.js',
 	];
 
-	/**
-	 * @var array
-	 */
-	public $adminCss = [
-		'/dist/admin.css',
-	];
-
-	/**
-	 * @var array
-	 */
-	public $adminJs = [
-		'/dist/admin.js',
-	];
-
-	/**
-	 * @var array
-	 */
-	public $depends = [];
-
-
-	/**
-	 * @throws InvalidConfigException
-	 */
-	public function init() {
-		parent::init();
-		if (strpos(Yii::$app->request->getUrl(), '/admin/') === 0) {
-			$this->css = $this->adminCss;
-			$this->js = $this->adminJs;
-		}
-	}
-
-
 }

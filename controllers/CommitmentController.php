@@ -11,7 +11,7 @@ use app\models\CommitmentOption;
 use app\models\interfaces\FillInterface;
 use app\models\Module;
 use app\models\QuestionCategory;
-use app\models\User;
+use app\models\lutheran\User;
 use app\models\UserCommitmentFill;
 use app\models\UserCommitmentOption;
 use app\models\UserQuestionFill;

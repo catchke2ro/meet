@@ -3,6 +3,8 @@ import "./app.sass";
 import $ from "jquery"
 import "bootstrap/dist/js/bootstrap"
 import "admin-lte/dist/js/adminlte"
+import "admin-lte/dist/js/adminlte"
+import "admin-lte/plugins/select2/js/select2.full.min"
 import Sticky from "sticky-js"
 
 
@@ -23,7 +25,7 @@ $(function () {
 		$(event.target).closest('.card').find('.titles').trigger('click');
 	});
 
-	$(document).on('click', '.instanceNumberWrapper', function(ev) {
+	$(document).on('click', '.instanceNumberWrapper', function (ev) {
 		ev.stopPropagation();
 	})
 	/*$(document).on('show.bs.collapse hide.bs.collapse', function(ev) {
@@ -31,7 +33,6 @@ $(function () {
 			return false;
 		}
 	});*/
-
 
 
 	const $conditionedCategories = $('div.qcCategory').filter((index, e) => parseInt($(e).data('condition-option')) > 0);
@@ -93,12 +94,12 @@ $(function () {
 	});
 
 
-	const updateScore = function($form) {
+	const updateScore = function ($form) {
 		$.ajax({
 			url: '/vallalasok/pontok',
 			method: 'POST',
 			data: $form.serialize(),
-			success: function(data) {
+			success: function (data) {
 				if (typeof data.score !== 'undefined') {
 					$('.commitmentScore span.score').text(data.score);
 				}
@@ -120,16 +121,16 @@ $(function () {
 					const $progressBar = $('div.moduleProgress');
 					if (percentage > 0) {
 						$progressBar.removeClass('d-none');
-						$progressBar.find('.progress-bar').width(percentage+'%');
+						$progressBar.find('.progress-bar').width(percentage + '%');
 					} else {
 						$progressBar.addClass('d-none');
 						$progressBar.find('.progress-bar').width(0);
 					}
 				}
 			},
-			error: function(data) {
+			error: function (data) {
 				console.log('An error occured.', data);
-			}
+			},
 		});
 	}
 
@@ -158,11 +159,11 @@ $(function () {
 			url: '/vallalasok/history',
 			method: 'GET',
 			data: {
-				commitmentId: commitmentId
+				commitmentId: commitmentId,
 			},
 			success: function (data) {
 				modal.find('.modal-body').html(data);
-			}
+			},
 		});
 	});
 	$historyModal.on('hidden.bs.modal', function (event) {
@@ -177,13 +178,13 @@ $(function () {
 
 		const sticky = new Sticky('.card.modules', {
 			wrap: true,
-			stickyClass: 'stuck'
+			stickyClass: 'stuck',
 		});
 
 		const $treeModuleList = $treeModules.find('ul.moduleList');
 
-		$treeModuleList.on('click', 'a.selectModule', function() {
-			const	$a = $(this),
+		$treeModuleList.on('click', 'a.selectModule', function () {
+			const $a = $(this),
 				$li = $a.closest('li'),
 				$allLis = $li.closest('ul').find('li'),
 				$actives = $li.prevAll().add($li);
@@ -194,6 +195,34 @@ $(function () {
 			$('input#selectedModule').val($a.data('moduleid'));
 
 			updateScore($('form.commitmentsForm'));
+		});
+	}
+
+
+	const $orgSelector = $('.form-group.orgSelector select');
+	if ($orgSelector.length) {
+		$orgSelector.select2({
+			ajax: {
+				delay: 500,
+				url: '/_orgs',
+				dataType: 'json',
+				minimumInputLength: 2,
+				// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+			},
+		});
+
+		$orgSelector.on('select2:open', function (e) {
+			$('.select2-search__field').attr('placeholder', 'Keress a szervezet nevére');
+		});
+		$orgSelector.on('change', function () {
+
+		});
+	}
+
+	const $regForm = $('form#form-signup');
+	if ($regForm.length) {
+		$regForm.find('.orgSelector select').on('change', function () {
+			$regForm.find('fieldset.orgData').toggleClass('d-none', $(this).val() !== '');
 		});
 	}
 

@@ -2,7 +2,7 @@
 
 namespace app\models\forms;
 
-use app\models\User;
+use app\models\lutheran\User;
 use Yii;
 use yii\base\Model;
 
@@ -16,10 +16,14 @@ use yii\base\Model;
  */
 class Login extends Model {
 
+	const VALID         = 1;
+	const NOT_EXISTS    = 2;
+	const NOT_ACTIVATED = 3;
+
 	/**
 	 * @var string
 	 */
-	public $email;
+	public $username;
 
 	/**
 	 * @var  string
@@ -37,10 +41,11 @@ class Login extends Model {
 	 */
 	public function rules() {
 		return [
-			// email and password are both required
-			[['email', 'password'], 'required'],
+			// username and password are both required
+			[['username', 'password'], 'required'],
 			// password is validated by validatePassword()
 			['password', 'validatePassword'],
+			['username', 'validateRegistration'],
 		];
 	}
 
@@ -62,7 +67,30 @@ class Login extends Model {
 
 
 	/**
-	 * Logs in a user using the provided email and password.
+	 * Validates the password.
+	 *
+	 * @param string $attribute the attribute currently being validated
+	 * @param array  $params    the additional name-value pairs given in the rule
+	 */
+	public function validateRegistration($attribute, $params) {
+		if (!$this->hasErrors()) {
+			/** @var User $user */
+			if (!($user = $this->getUser())) {
+				return;
+			}
+			$registrationValid = $user->validateRegistration();
+			switch ($registrationValid) {
+				case 0:
+					$this->addError($attribute, 'Hibás felhasználónév vagy jelszó!');
+				case 1:
+					$this->addError($attribute, 'A regisztráció még aktiválásra vár');
+			}
+		}
+	}
+
+
+	/**
+	 * Logs in a user using the provided username and password.
 	 *
 	 * @return bool whether the user is logged in successfully
 	 */
@@ -76,13 +104,13 @@ class Login extends Model {
 
 
 	/**
-	 * Finds user by [[email]]
+	 * Finds user by [[username]]
 	 *
 	 * @return User|null
 	 */
 	protected function getUser() {
 		if ($this->user === null) {
-			$this->user = User::findByEmail($this->email);
+			$this->user = User::findByUsername(['id' => $this->username]);
 		}
 
 		return $this->user;

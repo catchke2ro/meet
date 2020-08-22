@@ -59,6 +59,9 @@
   "autoload": {
     "files": [
       "lib/global_functions.php"
-    ]
+    ],
+    "psr-4": {
+      "meetbase\\": "lib/meetbase"
+    }
   }
 }

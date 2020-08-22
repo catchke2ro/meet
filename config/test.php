@@ -22,7 +22,7 @@ return [
 			'showScriptName' => true,
 		],
 		'user'         => [
-			'identityClass' => 'app\models\User',
+			'identityClass' => 'app\models\lutheran\User',
 		],
 		'request'      => [
 			'cookieValidationKey'  => 'test',
