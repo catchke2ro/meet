@@ -5,6 +5,7 @@ namespace app\models\lutheran;
 use app\models\OrgCommitmentFill;
 use DateTime;
 use meetbase\models\lutheran\Event as BaseEvent;
+use Yii;
 
 /**
  * Class Event
@@ -13,6 +14,7 @@ use meetbase\models\lutheran\Event as BaseEvent;
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  */
 class Event extends BaseEvent {
+
 
 	/**
 	 * @param Organization $organization
@@ -24,11 +26,11 @@ class Event extends BaseEvent {
 		$event = new Event();
 		$event->erv_kezdet = (new DateTime())->format('Y-m-d');
 		$event->erv_allapot = 0;
-		$event->ref_tipus_id = self::ID_TYPE_POSITION;
+		$event->ref_tipus_id = Yii::$app->params['event_type_pozicio'];
 		$event->ref_szervegyseg_id = $organization->id;
 		$event->ref_szemely_id = $person->id;
-		$event->ref1_id = self::ID_POSITION_TYPE_ACCREDITED;
-		$event->ref2_id = self::ID_POSITION_MEET_REFERER;
+		$event->ref1_id = Yii::$app->params['position_type_megbizott'];
+		$event->ref2_id = Yii::$app->params['position_meet_referer'];
 		$event->ertek1 = 0;
 
 		return $event;
@@ -46,7 +48,7 @@ class Event extends BaseEvent {
 		$event = new Event();
 		$event->erv_kezdet = (new DateTime())->format('Y-m-d');
 		$event->erv_allapot = 1;
-		$event->ref_tipus_id = self::ID_TYPE_MEET_REGISTRATION;
+		$event->ref_tipus_id = Yii::$app->params['event_type_meet_reg'];
 		$event->ref_szervegyseg_id = $organization->id;
 		$event->ref_szemely_id = $person->id;
 		$event->ertek1 = $person->nev;
@@ -67,7 +69,7 @@ class Event extends BaseEvent {
 		$event = new Event();
 		$event->erv_kezdet = (new DateTime())->format('Y-m-d');
 		$event->erv_allapot = 0;
-		$event->ref_tipus_id = self::ID_TYPE_MEET_COMMITMENT;
+		$event->ref_tipus_id = Yii::$app->params['event_type_meet_commitment'];
 		$event->ref_szervegyseg_id = $organization->id;
 		$event->ref_szemely_id = $person->id;
 		$event->ertek1 = $fill->getScore();

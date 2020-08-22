@@ -10,6 +10,7 @@ namespace app\commands;
 use app\components\Email;
 use app\models\lutheran\Event;
 use Exception;
+use Yii;
 use yii\console\Controller;
 
 /**
@@ -44,7 +45,7 @@ class CronController extends Controller {
 	public function actionSendApprovedRegistrations() {
 		/** @var Event[] $notMailedApprovedRegs */
 		$notMailedApprovedRegs = Event::find()
-			->andWhere(['ref_tipus_id' => Event::ID_TYPE_MEET_REGISTRATION_APPROVED])
+			->andWhere(['ref_tipus_id' => Yii::$app->params['event_type_meet_reg_approved']])
 			->andWhere(['ertek1' => 1])
 			->andWhere(['<>', 'ertek2', 1])
 			->all();

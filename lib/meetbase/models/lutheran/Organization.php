@@ -4,6 +4,7 @@ namespace meetbase\models\lutheran;
 
 use meetbase\models\OrgCommitmentFill;
 use meetbase\models\traits\SharedModelTrait;
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -27,9 +28,6 @@ use yii\db\ActiveRecord;
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  */
 abstract class Organization extends ActiveRecord {
-
-	const ID_TYPE_EGYHAZKOZSEG = 1;
-	const ID_TYPE_NEVTAR = 1;
 
 	use SharedModelTrait;
 
@@ -73,7 +71,7 @@ abstract class Organization extends ActiveRecord {
 		$qb = clone $this->getEvents();
 		$qb->multiple = false;
 		$qb->andOnCondition([
-			'registrationEvent.ref_tipus_id' => Event::ID_TYPE_MEET_REGISTRATION
+			'registrationEvent.ref_tipus_id' => Yii::$app->params['event_type_meet_reg']
 		]);
 
 		return $qb;
@@ -86,8 +84,8 @@ abstract class Organization extends ActiveRecord {
 	public function getPositionEvent() {
 		$qb = clone $this->getEvents();
 		$qb->andOnCondition([
-			'positionEvent.ref_tipus_id' => Event::ID_TYPE_POSITION,
-			'positionEvent.ref2_id'      => Event::ID_POSITION_MEET_REFERER
+			'positionEvent.ref_tipus_id' => Yii::$app->params['event_type_pozicio'],
+			'positionEvent.ref2_id'      => Yii::$app->params['position_meet_referer']
 		]);
 		$qb->multiple = false;
 

@@ -137,9 +137,9 @@ class Registration extends Model {
 				$organization = new Organization();
 				$organization->nev = $this->orgName;
 				$organization->ref_regi_id = 0;
-				$organization->ref_kategoria_id = Organization::ID_TYPE_NEVTAR; //Névtári bejegyzés
-				$organization->ref_tipus_id = Organization::ID_TYPE_EGYHAZKOZSEG; //Egyházközszég
-				$organization->erv_allapot = 0;
+				$organization->ref_kategoria_id = Yii::$app->params['new_org_kategoria_id']; //Névtári bejegyzés Küld
+				$organization->ref_tipus_id = Yii::$app->params['new_org_default_tipus_id']; //Egyházközszég
+				$organization->erv_allapot = Yii::$app->params['new_org_erv_allapot'];
 				$success &= $organization->save();
 
 				$orgAddressContact = new Contact();
@@ -177,10 +177,10 @@ class Registration extends Model {
 			}
 
 			$person = new Person();
-			$person->ref_kategoria_id = PersonCategory::ID_OUTER;
+			$person->ref_kategoria_id = Yii::$app->params['new_person_kategoria_id'];
 			$person->nev_elotag = $this->namePrefix;
 			$person->nev = $this->name;
-			$person->erv_allapot = 0;
+			$person->erv_allapot = Yii::$app->params['new_person_erv_allapot'];
 			$success &= $person->save();
 
 			$personEmailContanct = new Contact();

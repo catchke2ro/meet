@@ -122,9 +122,9 @@ abstract class User extends ActiveRecord implements IdentityInterface {
 		}
 		$qb = $this->getEvents()
 			->andOnCondition([
-				'ref_tipus_id' => Event::ID_TYPE_POSITION,
-				'ref2_id'      => Event::ID_POSITION_MEET_REFERER,
-				'erv_allapot'  => 1
+				'ref_tipus_id' => Yii::$app->params['event_type_pozicio'],
+				'ref2_id'      => Yii::$app->params['position_meet_referer'],
+				'erv_allapot'  => Yii::$app->params['org_valid_erv_allapot']
 			]);
 
 		return $qb->all() ?: [];
@@ -142,8 +142,8 @@ abstract class User extends ActiveRecord implements IdentityInterface {
 		}
 		$qb = $this->getEvents()
 			->andOnCondition([
-				'ref_tipus_id'       => Event::ID_TYPE_MEET_REGISTRATION_APPROVED,
-				'erv_allapot'        => 1,
+				'ref_tipus_id'       => Yii::$app->params['event_type_meet_reg_approved'],
+				'erv_allapot'        => Yii::$app->params['org_meet_reg_valid_erv_allapot'],
 				'ref_szervegyseg_id' => $organization->id,
 				'ertek1'             => 1
 			]);

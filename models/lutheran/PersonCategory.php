@@ -12,6 +12,4 @@ use meetbase\models\lutheran\PersonCategory as BasePersonCategory;
  */
 class PersonCategory extends BasePersonCategory {
 
-	const ID_OUTER = 3;
-
 }
