@@ -4,12 +4,12 @@ namespace app\controllers;
 
 use app\models\forms\Login;
 use app\models\forms\Registration;
-use app\models\lutheran\Person;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 /**
@@ -30,18 +30,18 @@ class UserController extends Controller {
 				'class' => AccessControl::className(),
 				'rules' => [
 					[
-						'actions' => ['login', 'registration'],
-						'allow' => true,
+						'actions' => ['login', 'registration', 'get-authorization-file'],
+						'allow'   => true,
 					],
 					[
 						'actions' => ['logout'],
-						'allow' => true,
-						'roles' => ['@'],
+						'allow'   => true,
+						'roles'   => ['@'],
 					],
 				],
 			],
-			'verbs' => [
-				'class' => VerbFilter::className(),
+			'verbs'  => [
+				'class'   => VerbFilter::className(),
 				'actions' => [
 					'logout' => ['post'],
 				],
@@ -66,21 +66,12 @@ class UserController extends Controller {
 
 		if ($model->load(Yii::$app->request->post())) {
 			if (($personId = $model->signup())) {
-				$person = Person::findOne(['id' => $personId]);
-				$email = $person->getEmail();
-
-				/*Yii::$app->mailer->compose('new_registration', [
-					'person' => $person
-				])
-					->setTo($email)
-					->setSubject('MEET - Új regisztráció')
-					->send();*/
-
 				return $this->redirect(Url::to('user/login'));
 			}
 		}
 
 		Yii::$app->view->params['pageClass'] = 'registration';
+
 		return $this->render('registration', [
 			'model' => $model,
 		]);
@@ -102,6 +93,7 @@ class UserController extends Controller {
 		}
 
 		Yii::$app->view->params['pageClass'] = 'login';
+
 		return $this->render('login', [
 			'model' => $model,
 		]);
@@ -115,6 +107,24 @@ class UserController extends Controller {
 		Yii::$app->user->logout();
 
 		return $this->goHome();
+	}
+
+
+	/**
+	 * @param $id
+	 * @param $token
+	 *
+	 * @return \yii\console\Response|Response
+	 * @throws NotFoundHttpException
+	 */
+	public function actionGetAuthorizationFile($id, $token) {
+		$validToken = Yii::$app->params['token'];
+		$baseDir = Yii::$app->getBasePath() . '/storage/authorizations';
+		if (!(!empty($id) && $token && $validToken === $token && file_exists($baseDir . '/' . $id . '.pdf'))) {
+			throw new NotFoundHttpException();
+		}
+
+		return Yii::$app->response->sendFile($baseDir . '/' . $id . '.pdf');
 	}
 
 

@@ -64,5 +64,6 @@ return [
 		'szallas'        => [
 			401, //intézmény
 		],
-	]
+	],
+	'token' => 'yVeU5UcUWgRs9niTrmoZ32UIg1baUsPC'
 ];

@@ -6,13 +6,12 @@ use app\models\lutheran\Contact;
 use app\models\lutheran\ContactType;
 use app\models\lutheran\Event;
 use app\models\lutheran\Organization;
-use app\models\lutheran\OrganizationType;
 use app\models\lutheran\Person;
-use app\models\lutheran\PersonCategory;
 use app\models\lutheran\User;
 use Exception;
 use Yii;
 use yii\base\Model;
+use yii\web\UploadedFile;
 
 /**
  * Class Registration
@@ -84,6 +83,16 @@ class Registration extends Model {
 	 */
 	public $orgRemoteId;
 
+	/**
+	 * @var UploadedFile
+	 */
+	public $pdf;
+
+	/**
+	 * @var string
+	 */
+	public $terms;
+
 
 	/**
 	 * @inheritdoc
@@ -114,8 +123,27 @@ class Registration extends Model {
 			['orgCompanyNumber', 'safe'],
 			['orgTaxNumber', 'safe'],
 			['orgRemoteId', 'safe'],
+			['pdf', 'required'],
+			['pdf', 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf'],
+			['terms', 'required', 'requiredValue' => 1, 'message' => 'A szabályzat elfogadása kötelező!']
+
 			//['passwordConfirm', 'safe'],
 		];
+	}
+
+
+	/**
+	 * @param array $data
+	 * @param null  $formName
+	 *
+	 * @return bool
+	 */
+	public function load($data, $formName = null) {
+		$result = parent::load($data, $formName);
+		if ($result) {
+			$this->pdf = UploadedFile::getInstance($this, 'pdf');
+		}
+		return $result;
 	}
 
 
@@ -128,6 +156,11 @@ class Registration extends Model {
 		if (!$this->validate()) {
 			return false;
 		}
+
+		$targetFileId = time() . '_' . uniqid();
+		$targetFileName = $targetFileId . '.pdf';
+		$targetFile = Yii::$app->getBasePath() . '/storage/authorizations/' . $targetFileName;
+		$this->pdf->saveAs($targetFile);
 
 		$transaction = Yii::$app->db->beginTransaction();
 		try {
@@ -193,7 +226,7 @@ class Registration extends Model {
 			$success &= $personEmailContanct->save();
 
 			$newPositionEvent = Event::createNewPositionEvent($organization, $person);
-			$newRegistrationEvent = Event::createNewRegistrationEvent($organization, $person, $personEmailContanct);
+			$newRegistrationEvent = Event::createNewRegistrationEvent($organization, $person, $personEmailContanct, $targetFileId);
 
 			$success &= $newPositionEvent->save();
 			$success &= $newRegistrationEvent->save();
@@ -222,7 +255,9 @@ class Registration extends Model {
 			'orgPhone'         => 'Szervezet telefonszáma',
 			'orgCompanyNumber' => 'Szervezet cégjegyzékszáma',
 			'orgTaxNumber'     => 'Szervezet adószáma',
-			'orgRemoteId'      => 'Adatbázis'
+			'orgRemoteId'      => 'Adatbázis',
+			'pdf'              => 'Meghatalmazás',
+			'terms'            => 'Adatkezelési szabályzat'
 		];
 	}
 
