@@ -6,6 +6,7 @@ import "admin-lte/dist/js/adminlte"
 import "admin-lte/dist/js/adminlte"
 import "admin-lte/plugins/select2/js/select2.full.min"
 import Sticky from "sticky-js"
+import "./map"
 
 
 $(function () {

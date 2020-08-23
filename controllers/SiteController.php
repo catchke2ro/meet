@@ -42,4 +42,16 @@ class SiteController extends Controller {
 	}
 
 
+	/**
+	 * Displays Home
+	 *
+	 * @return string
+	 */
+	public function actionParticipants() {
+
+		Yii::$app->view->params['pageClass'] = 'participants';
+		return $this->render('participants');
+	}
+
+
 }

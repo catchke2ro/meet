@@ -42,6 +42,7 @@ AppAsset::register($this);
 			<!-- Left navbar links -->
 			<ul class="navbar-nav">
 				<li class="nav-item d-none d-sm-inline-block"><a href="/" class="nav-link">Főoldal</a></li>
+				<li class="nav-item d-none d-sm-inline-block"><a href="/resztvevok" class="nav-link">Résztvevők</a></li>
 				<?php if (Yii::$app->user->isGuest) { ?>
 					<li class="nav-item"><a href="/belepes" class="nav-link">Belépés</a></li>
 					<li class="nav-item"><a href="/regisztracio" class="nav-link">Regisztráció</a></li>

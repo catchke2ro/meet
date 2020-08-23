@@ -59,6 +59,7 @@ $config = [
 			'showScriptName'  => false,
 			'rules'           => [
 				'/'                   => 'site/home',
+				'/resztvevok'         => 'site/participants',
 				'/kerdesek'           => 'question/index',
 				'/vallalasok'         => 'commitment/index',
 				'/regisztracio'       => 'user/registration',
