@@ -28,12 +28,17 @@ AppAsset::register($this);
 
 	<header>
 		<div class="headerTop">
-			<div class="logo"><img src="/assets/img/meet_logo_webre_fektetett.png" alt="MEET"/></div>
+			<div class="logo"><a href="/"><img src="/assets/img/meet_logo_webre_fektetett.png" alt="MEET"/></a></div>
 			<?php if (!Yii::$app->getUser()->isGuest) { ?>
 				<div class="user">
 					<p class="text-small loggedInName">Belépve: <?=Yii::$app->getUser()->getIdentity()->name;?></p>
 					<?php echo Html::beginForm(['/user/logout'], 'post', ['id' => 'logoutForm']) . Html::endForm(); ?>
 					<a href="javascript:void(0)" class="btn btn-sm btn-primary logoutLink">Kilépés</a>
+				</div>
+			<?php } else { ?>
+				<div class="user">
+					<p class="text-small notLoggedInName">Ön nincs bejelentkezve!</p>
+					<a href="/belepes" class="btn btn-sm btn-primary">Belépés</a>
 				</div>
 			<?php } ?>
 		</div>
@@ -42,11 +47,12 @@ AppAsset::register($this);
 			<!-- Left navbar links -->
 			<ul class="navbar-nav">
 				<li class="nav-item d-none d-sm-inline-block"><a href="/" class="nav-link">Főoldal</a></li>
-				<li class="nav-item d-none d-sm-inline-block"><a href="/resztvevok" class="nav-link">Résztvevők</a></li>
-				<?php if (Yii::$app->user->isGuest) { ?>
-					<li class="nav-item"><a href="/belepes" class="nav-link">Belépés</a></li>
-					<li class="nav-item"><a href="/regisztracio" class="nav-link">Regisztráció</a></li>
-				<?php } else { ?>
+				<li class="nav-item d-none d-sm-inline-block"><a href="/programleiras" class="nav-link">Programleírás</a></li>
+				<li class="nav-item d-none d-sm-inline-block"><a href="/aktivitas" class="nav-link">Aktivitás</a></li>
+				<li class="nav-item d-none d-sm-inline-block"><a href="/#resztvevok" class="nav-link">Résztvevők</a></li>
+				<li class="nav-item d-none d-sm-inline-block"><a href="/#kapcsolat" class="nav-link">Kapcsolat</a></li>
+
+				<?php if (!Yii::$app->user->isGuest) { ?>
 					<li class="nav-item"><a href="/vallalasok" class="nav-link">Vállalás</a></li>
 				<?php } ?>
 			</ul>

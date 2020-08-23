@@ -9,8 +9,7 @@
  * @return string|null
  */
 function reduceMonths(int $months): ?string {
-	foreach (
-		[
+	foreach ([
 			12 => 'év',
 			6  => 'félév',
 			3  => 'negyedév',
@@ -24,6 +23,7 @@ function reduceMonths(int $months): ?string {
 
 	return null;
 }
+
 
 /**
  * @param $step
@@ -41,6 +41,7 @@ function getIntervalMultiplier($step): int {
 	}
 }
 
+
 /**
  * @param int $step
  *
@@ -56,6 +57,7 @@ function getIntervalStep(int $step): int {
 			return $step;
 	}
 }
+
 
 /**
  * @param int $threshold
@@ -73,6 +75,7 @@ function getIntervalThreshold(int $threshold, int $step) {
 			return $threshold;
 	}
 }
+
 
 /**
  * @param $step
@@ -92,6 +95,7 @@ function getIntervalName(int $step): string {
 	}
 }
 
+
 /**
  * @param int|null $value
  * @param int      $step
@@ -104,4 +108,47 @@ function convertIntervalValue(?int $value, int $step): int {
 	}
 
 	return round($value / $step);
+}
+
+
+
+/**
+ * Generates slug from the string with a character map
+ *
+ * @param string $string Input string
+ * @param string|null $lang Language code for character map
+ * @param bool $onlyLetters If true, special characters won't be replaced to '-'
+ * @return mixed|string
+ */
+function slug($string = '', $lang = null, $onlyLetters = false) {
+	$slugArray = include __DIR__ . '/slugcharmap.php';
+
+	$slug = mb_strtolower(strip_tags(trim($string))); //Convert to lower case
+
+	//Special replace strings
+	$spaceRpl = $onlyLetters ? '' : '-';
+	$hyphenRpl = $onlyLetters ? '' : '-';
+
+	//Replace spaces
+	$slug = preg_replace('/[ \/\.\,]/', $spaceRpl, $slug);
+
+	//Get array map
+	$lang = 'hu';
+	$trArray = ($lang && !empty($slugArray['languages'][$lang])) ? array_replace($slugArray['default'], $slugArray['languages'][$lang]) : $slugArray['default'];
+
+	//Replace characters
+	$slug = strtr($slug, $trArray);
+
+	$trUnicodeArray = $slugArray['unicode'] ?? [];
+	foreach ($trUnicodeArray as $replacement => $chars) {
+		$chars = array_map(function ($code) {
+			return '\x{'.$code.'}';
+		}, $chars);
+		$slug = preg_replace('/['.implode('', $chars).']/', $replacement, $slug);
+	}
+
+	$slug = preg_replace('/[^a-z0-9\-_]/', '', $slug); //Replace special characters
+	$slug = preg_replace('/[\-]+/', $hyphenRpl, $slug);
+	$slug = preg_replace('/\-$/', '', $slug);
+	return $slug;
 }

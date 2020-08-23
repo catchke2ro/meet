@@ -6,6 +6,7 @@ import "admin-lte/dist/js/adminlte"
 import "admin-lte/dist/js/adminlte"
 import "admin-lte/plugins/select2/js/select2.full.min"
 import Sticky from "sticky-js"
+import imagesLoaded from "imagesloaded"
 import "./map"
 
 
@@ -176,7 +177,6 @@ $(function () {
 
 	const $treeModules = $('.card.modules');
 	if ($treeModules.length) {
-
 		const sticky = new Sticky('.card.modules', {
 			wrap: true,
 			stickyClass: 'stuck',
@@ -229,6 +229,56 @@ $(function () {
 	if ($regForm.length) {
 		$regForm.find('.orgSelector select').on('change', function () {
 			$regForm.find('fieldset.orgData').toggleClass('d-none', $(this).val() !== '');
+		});
+	}
+
+
+	const $postsIndex = $('.postsIndex');
+	if ($postsIndex.length) {
+
+		function resizeGridItem ($item) {
+			const rowHeight = parseInt($postsIndex.css('grid-auto-rows'));
+			let rowGap = $postsIndex.css('grid-row-gap');
+			if (rowGap === 'normal') {
+				rowGap = 0;
+			} else {
+				rowGap = parseInt(rowGap);
+			}
+			const rowSpan = Math.ceil(($item.find('.postInner')[0].getBoundingClientRect().height + rowGap) / (rowHeight + rowGap));
+
+			$item.css('grid-row-end', 'span ' + rowSpan);
+		}
+
+		function resizeAllGridItems () {
+			$postsIndex.find('.postItem').each(function () {
+				resizeGridItem($(this));
+			})
+		}
+
+		function resizeInstance (instance) {
+			item = instance.elements[0];
+			resizeGridItem(item);
+		}
+
+		resizeAllGridItems();
+		$(window).on('resize', resizeAllGridItems());
+
+		imagesLoaded.makeJQueryPlugin($);
+		$postsIndex.imagesLoaded(function () {
+			resizeAllGridItems();
+		});
+		/*	allItems = document.getElementsByClassName("item");
+			for (x = 0; x < allItems.length; x++) {
+				imagesLoaded(allItems[x], resizeInstance);
+			}*/
+
+		$(document).on('click', '.postsIndex .moreLink a, .postsIndex .lessLink a', function () {
+			const $item = $(this).closest('.postItem');
+			$item.toggleClass('opened', $(this).closest('.moreLink').length > 0);
+			resizeAllGridItems();
+			$([document.documentElement, document.body]).animate({
+				scrollTop: $item.offset().top,
+			}, 1000);
 		});
 	}
 

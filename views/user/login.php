@@ -16,6 +16,10 @@ $this->title = 'Belépés';
 				</div>
 				<?php $form = ActiveForm::begin(['id' => 'form-login', 'enableClientScript' => false]); ?>
 				<div class="card-body">
+					<div class="text-center mb-2">
+						<p class="mb-1">Amennyiben még nem regisztrált, itt megteheti:</p>
+						<a class="btn btn-secondary" href="/regisztracio">Regisztráció</a>
+					</div>
 					<?=$form->field($model, 'username')->label('Felhasználónév')->textInput(['autofocus' => true])?>
 					<?=$form->field($model, 'password')->label('Jelszó')->passwordInput()?>
 				</div>

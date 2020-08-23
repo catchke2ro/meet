@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Post;
 use Yii;
 use yii\web\Controller;
 
@@ -38,6 +39,7 @@ class SiteController extends Controller {
 	public function actionHome() {
 
 		Yii::$app->view->params['pageClass'] = 'home';
+
 		return $this->render('home');
 	}
 
@@ -50,6 +52,7 @@ class SiteController extends Controller {
 	public function actionTerms() {
 
 		Yii::$app->view->params['pageClass'] = 'terms';
+
 		return $this->render('terms');
 	}
 
@@ -62,6 +65,7 @@ class SiteController extends Controller {
 	public function actionDocuments() {
 
 		Yii::$app->view->params['pageClass'] = 'documents';
+
 		return $this->render('documents');
 	}
 
@@ -74,7 +78,49 @@ class SiteController extends Controller {
 	public function actionParticipants() {
 
 		Yii::$app->view->params['pageClass'] = 'participants';
+
 		return $this->render('participants');
+	}
+
+
+	/**
+	 * Displays Home
+	 *
+	 * @return string
+	 */
+	public function actionDescription() {
+
+		Yii::$app->view->params['pageClass'] = 'description';
+
+		return $this->render('description');
+	}
+
+
+	/**
+	 * Displays Home
+	 *
+	 * @return string
+	 */
+	public function actionModules() {
+
+		Yii::$app->view->params['pageClass'] = 'modules';
+
+		return $this->render('modules');
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function actionPosts() {
+		$posts = Post::find()
+			->orderBy('order ASC')
+			->all();
+
+		Yii::$app->view->params['pageClass'] = 'posts';
+		return $this->render('posts', [
+			'posts' => $posts
+		]);
 	}
 
 

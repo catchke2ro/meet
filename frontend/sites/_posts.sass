@@ -1,0 +1,107 @@
+.content-wrapper.posts
+
+	.postsIndex
+		display: grid
+		grid-template-columns: repeat(auto-fill, minmax(333px, 1fr))
+		grid-auto-rows: 20px
+
+		& > .postItem
+			overflow: hidden
+			padding: 1.6rem
+			transition: grid-column 1s
+
+			.imageWrapper
+				position: relative
+				width: 100%
+				padding-top: 60%
+				overflow: hidden
+				border-top-left-radius: $border-radius-lg
+				border-top-right-radius: $border-radius-lg
+
+				img
+					max-width: 100%
+					position: absolute
+					top: 0px
+					left: 50%
+					transform: translateX(-50%)
+
+			.imageWrapperOpened
+				display: none
+				float: left
+				margin: 1rem
+				width: percentage(1/3)
+
+				img
+					max-width: 100%
+
+			.titleWrapper
+				background-color: $gray-100
+				padding: 1rem 0.5rem
+
+				h2
+					color: $gray-600
+					font-size: 1rem
+					font-weight: 900
+					margin-bottom: 0px
+
+				ul.tags
+					list-style-type: none
+					padding: 0px
+					margin-bottom: 0px
+					line-height: 1
+
+					li
+						display: inline-block
+						font-weight: bold
+						font-size: 0.8rem
+
+			.intro, .text
+				padding: 1rem
+				font-size: 0.95rem
+				hyphens: auto
+				line-height: 1.3
+				text-align: justify
+
+				.moreLink, .lessLink
+					text-align: right
+					font-weight: bold
+					margin-top: 1rem
+
+					a
+						color: $secondary
+
+			.text
+				display: none
+
+			&.postType-hir
+				ul.tags li, .moreLink a, .lessLink a
+					color: $cedrusKek
+
+			&.postType-meghivo
+				ul.tags li, .moreLink a, .lessLink a
+					color: $liliomLila
+
+			&.postType-jogyakorlat
+				ul.tags li, .moreLink a, .lessLink a
+					color: $fugeSarga
+
+			&.opened
+				grid-column: span 3
+
+				.imageWrapper
+					display: none
+
+				.imageWrapperOpened
+					display: block
+
+				.imageWrapper
+					float: left
+
+				.intro .moreLink
+					display: none
+
+				.text
+					display: block
+
+
+
