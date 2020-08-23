@@ -23,6 +23,11 @@ use yii\db\ActiveRecord;
  * @property Event               $registrationEvent
  * @property Event               $positionEvent
  * @property OrgCommitmentFill[] $commitmentFills
+ * @property Contact[]           $contacts
+ * @property Contact[]           $phoneContacts
+ * @property Contact[]           $emailContacts
+ * @property Contact[]           $addressContacts
+ * @property Contact[]           $gpsContacts
  *
  * @package app\models
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
@@ -53,6 +58,14 @@ abstract class Organization extends ActiveRecord {
 	 */
 	public function getEvents() {
 		return $this->hasMany($this->getModelClass(Event::class), ['ref_szervegyseg_id' => 'id']);
+	}
+
+
+	/**
+	 * Get org type
+	 */
+	public function getContacts() {
+		return $this->hasMany($this->getModelClass(Contact::class), ['ref_szervegyseg_id' => 'id']);
 	}
 
 
@@ -89,6 +102,54 @@ abstract class Organization extends ActiveRecord {
 		]);
 		$qb->multiple = false;
 
+		return $qb;
+	}
+
+
+	/**
+	 * @return ActiveQuery
+	 */
+	public function getPhoneContacts() {
+		$qb = clone $this->getContacts();
+		$qb->andOnCondition([
+			'phoneContact.ref_tipus_id' => ContactType::ID_PHONE
+		]);
+		return $qb;
+	}
+
+
+	/**
+	 * @return ActiveQuery
+	 */
+	public function getEmailContacts() {
+		$qb = clone $this->getContacts();
+		$qb->andOnCondition([
+			'emailContact.ref_tipus_id' => ContactType::ID_EMAIL
+		]);
+		return $qb;
+	}
+
+
+	/**
+	 * @return ActiveQuery
+	 */
+	public function getAddressContacts() {
+		$qb = clone $this->getContacts();
+		$qb->andOnCondition([
+			'addressContact.ref_tipus_id' => ContactType::ID_ADDRESS
+		]);
+		return $qb;
+	}
+
+
+	/**
+	 * @return ActiveQuery
+	 */
+	public function getGpsContacts() {
+		$qb = clone $this->getContacts();
+		$qb->andOnCondition([
+			'gpsContact.ref_tipus_id' => ContactType::ID_GPS
+		]);
 		return $qb;
 	}
 

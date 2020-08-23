@@ -71,8 +71,9 @@ $config = [
 				'/vallalasok/history'      => 'commitment/history',
 				'/vallalasok/vege'         => 'commitment/end',
 
-				'/_orgs'               => 'ajax/orgs',
+				'/_org-list'           => 'ajax/org-list',
 				'/_authorization-file' => 'user/get-authorization-file',
+				'/_orgs'               => 'ajax/orgs'
 			],
 		],
 	],

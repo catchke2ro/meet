@@ -2,6 +2,7 @@
 
 namespace meetbase\models;
 
+use meetbase\models\traits\SharedModelTrait;
 use yii\db\ActiveRecord;
 
 /**
@@ -18,12 +19,30 @@ use yii\db\ActiveRecord;
  */
 abstract class Module extends ActiveRecord {
 
+	use SharedModelTrait;
+
+	/**
+	 * @var mixed|null
+	 */
+	protected static $firstModule;
+
 
 	/**
 	 * @return string
 	 */
 	public static function tableName(): string {
 		return 'meet_modules';
+	}
+
+
+	/**
+	 * @return Module
+	 */
+	public static function firstModule(): Module {
+		if (is_null(self::$firstModule)) {
+			self::$firstModule = static::find()->orderBy('threshold ASC')->one();
+		}
+		return self::$firstModule;
 	}
 
 

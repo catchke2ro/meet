@@ -203,6 +203,7 @@ abstract class OrgCommitmentFill extends ActiveRecord implements FillInterface {
 	 */
 	public function isApproved(): bool {
 		return !is_null(Event::find()
+			->andWhere(['ref1_id' => $this->id])
 			->andWhere(['ref_tipus_id' => Yii::$app->params['event_type_meet_commitment_approved']])
 			->andWhere(['ertek1' => 1])
 			->one());

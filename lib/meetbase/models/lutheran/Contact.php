@@ -46,4 +46,37 @@ abstract class Contact extends ActiveRecord {
 	}
 
 
+	/**
+	 * @return string
+	 */
+	public function getAddressString(): string {
+		$parts = [];
+		if ($this->ertek1) {
+			$parts[] = $this->ertek1;
+		}
+		if ($this->ertek2) {
+			$parts[] = $this->ertek2 . ($this->ertek3 ? ',' : '');
+		}
+		if ($this->ertek3) {
+			$parts[] = $this->ertek3;
+		}
+
+		return implode(' ', $parts);
+	}
+
+
+	/**
+	 * @return array|null
+	 */
+	public function getCooridnates(): ?array {
+		if (!empty($this->ertek1) && !empty($this->ertek2)) {
+			return [
+				'lat' => $this->ertek1,
+				'lng' => $this->ertek2
+			];
+		}
+		return null;
+	}
+
+
 }

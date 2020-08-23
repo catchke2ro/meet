@@ -69,3 +69,11 @@ $this->title = 'Főoldal';
 	</div>
 
 </div>
+
+<div class="map">
+	<div id="map"></div>
+	<div id="mapPopup">
+		<span class="name"></span><br />
+		<span class="moduleName"></span> | <span class="address"></span>
+	</div>
+</div>

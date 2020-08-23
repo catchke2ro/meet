@@ -210,7 +210,7 @@ $(function () {
 		$orgSelector.select2({
 			ajax: {
 				delay: 500,
-				url: '/_orgs',
+				url: '/_org-list',
 				dataType: 'json',
 				minimumInputLength: 2,
 				// Additional AJAX parameters go here; see the end of this chapter for the full code of this example

@@ -63,3 +63,19 @@ input:focus, textarea:focus, button:focus
 	& > input:first-child:checked + label::before
 		background-color: $primary
 		border-color: $primary
+
+
+#mapPopup
+	padding: 2px 5px 2px 18px
+	background-color: white
+	position: relative
+	min-height: 36px
+	span
+		font-size: 11px
+		&.name
+			font-weight: bold
+	img.markerIcon
+		position: absolute
+		top: -5px
+		left: -15px
+		height: 46px

@@ -18,6 +18,7 @@ abstract class ContactType extends ActiveRecord {
 	const ID_ADDRESS = 7;
 	const ID_PHONE = 2;
 	const ID_EMAIL = 1;
+	const ID_GPS = 15;
 
 	/**
 	 * @return string
