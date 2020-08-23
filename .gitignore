@@ -40,5 +40,3 @@ tests/_support/_generated
 
 composer.lock
 .docker-sync
-
-storage

@@ -46,7 +46,6 @@ AppAsset::register($this);
 		<nav class="main-header navbar navbar-expand navbar-white navbar-light">
 			<!-- Left navbar links -->
 			<ul class="navbar-nav">
-				<li class="nav-item d-none d-sm-inline-block"><a href="/" class="nav-link">Főoldal</a></li>
 				<li class="nav-item d-none d-sm-inline-block"><a href="/programleiras" class="nav-link">Programleírás</a></li>
 				<li class="nav-item d-none d-sm-inline-block"><a href="/aktivitas" class="nav-link">Aktivitás</a></li>
 				<li class="nav-item d-none d-sm-inline-block"><a href="/#resztvevok" class="nav-link">Résztvevők</a></li>
