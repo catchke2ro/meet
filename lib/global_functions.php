@@ -1,6 +1,11 @@
 <?php
 
 
+function menuActiveClass(string $url): string {
+	return preg_match('/^'.preg_quote($url, '/').'/i', Yii::$app->request->url) ? 'active' : '';
+}
+
+
 /**
  * Print months with bigger units
  *
@@ -109,7 +114,6 @@ function convertIntervalValue(?int $value, int $step): int {
 
 	return round($value / $step);
 }
-
 
 
 /**

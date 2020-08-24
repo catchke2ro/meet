@@ -89,7 +89,7 @@ class UserController extends Controller {
 		$model = new Login();
 
 		if ($model->load(Yii::$app->request->post()) && $model->login()) {
-			return $this->goBack();
+			return $this->redirect('/');
 		}
 
 		Yii::$app->view->params['pageClass'] = 'login';

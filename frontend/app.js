@@ -267,14 +267,13 @@ $(function () {
 		$postsIndex.imagesLoaded(function () {
 			resizeAllGridItems();
 		});
-		/*	allItems = document.getElementsByClassName("item");
-			for (x = 0; x < allItems.length; x++) {
-				imagesLoaded(allItems[x], resizeInstance);
-			}*/
 
 		$(document).on('click', '.postsIndex .moreLink a, .postsIndex .lessLink a', function () {
 			const $item = $(this).closest('.postItem');
-			$item.toggleClass('opened', $(this).closest('.moreLink').length > 0);
+			$postsIndex.find('.postItem').removeClass('opened');
+			if ($(this).closest('.moreLink').length > 0) {
+				$item.addClass('opened');
+			}
 			resizeAllGridItems();
 			$([document.documentElement, document.body]).animate({
 				scrollTop: $item.offset().top,

@@ -27,13 +27,18 @@ $this->title = 'Aktivitás';
 						<?php } ?>
 					</ul>
 				</div>
-				<?php if ($post->getImageUrl()) { ?>
-					<div class="imageWrapperOpened">
-						<img src="<?=$post->getImageUrl();?>" alt="<?=$post->title;?>" />
-					</div>
-				<?php } ?>
 				<div class="intro"><?=$post->intro;?><p class="moreLink"><a href="javascript:void(0)">Bővebben >></a></p></div>
-				<div class="text"><?=$post->text;?><p class="lessLink"><a href="javascript:void(0)"><< Mutass kevesebbet</a></p></div>
+				<div class="text">
+					<?php if ($post->getImageUrl()) { ?>
+						<img src="<?=$post->getImageUrl();?>" alt="<?=$post->title;?>" />
+					<?php } ?>
+					<?php if ($post->intro) {?>
+						<?=$post->intro;?>
+						<p>&nbsp;</p>
+					<?php } ?>
+					<?=$post->text;?>
+					<p class="lessLink"><a href="javascript:void(0)"><< Mutass kevesebbet</a></p>
+				</div>
 			</div>
 		</div>
 	<?php } ?>
