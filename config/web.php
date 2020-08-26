@@ -82,6 +82,21 @@ $config = [
 		],
 	],
 	'params'     => $params,
+	'modules' => [
+		'meet'        => [
+			'class' => 'app\modules\meet\Module',
+			'layout' => 'admin',
+			'as access'  => [
+				'class' => \yii\filters\AccessControl::className(),
+				'rules' => [
+					[
+						'allow' => true,
+						'roles' => ['@'],
+					],
+				],
+			],
+		],
+	]
 ];
 
 if (YII_ENV_DEV) {

@@ -1,0 +1,44 @@
+// Your variable overrides
+
+// Bootstrap and its default variables
+//@import "~bootstrap"
+
+// Bootstrap
+// ---------------------------------------------------
+@import '~bootstrap/scss/functions'
+@import 'variables'
+@import '~admin-lte/build/scss/bootstrap-variables'
+@import '~bootstrap/scss/bootstrap'
+@import '~datatables.net-bs4/css/dataTables.bootstrap4.css'
+
+// Variables and Mixins
+// ---------------------------------------------------
+@import '~admin-lte/build/scss/variables'
+@import '~admin-lte/build/scss/mixins'
+
+@import '~admin-lte/build/scss/parts/core'
+@import '~admin-lte/build/scss/parts/components'
+@import '~admin-lte/build/scss/parts/extra-components'
+@import '~admin-lte/build/scss/parts/pages'
+@import '~admin-lte/build/scss/parts/plugins'
+@import '~admin-lte/build/scss/parts/miscellaneous'
+
+@import '~admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.css'
+
+@import "~font-awesome/scss/font-awesome.scss"
+//@import "~admin-lte/dist/css/adminlte.css"
+
+@import "variables"
+
+
+.btn-primary
+	color: $white
+
+table.dataTable
+	td:last-child a
+		font-size: 18px
+		margin: 0px 5px
+
+
+
+
