@@ -105,7 +105,7 @@ class AjaxController extends Controller {
 	 * @return string
 	 */
 	protected function getMarker(Organization $organization, ?Module $module) {
-		$moduleSlug = $module ? $module->slug : Module::firstModule();
+		$moduleSlug = $module ? $module->slug : Module::firstModule()->slug;
 		$typeSlug = Yii::$app->params['defult_marker_group'];
 		foreach (Yii::$app->params['marker_groups'] as $slug => $ids) {
 			if (in_array($organization->orgType->id, $ids)) {
