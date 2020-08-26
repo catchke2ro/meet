@@ -19,10 +19,14 @@ $this->title = 'Regisztráció';
 				<div class="card-header">
 					<h1 class="card-title"><?=Html::encode($this->title)?></h1>
 				</div>
-				<?php $form = ActiveForm::begin(['id'                 => 'form-signup',
-												 'fieldClass' => \app\widgets\ActiveField::class,
-												 'enableClientScript' => false,
-												 'options'            => ['enctype' => 'multipart/form-data']
+				<?php $form = ActiveForm::begin([
+					'id'                 => 'form-signup',
+					'fieldClass'         => \app\widgets\ActiveField::class,
+					'enableClientScript' => false,
+					'options'            => [
+						'enctype'      => 'multipart/form-data',
+						'data-sitekey' => Yii::$app->params['recaptcha_site_key']
+					]
 				]); ?>
 				<div class="card-body">
 					<fieldset class="border p-3 mb-3">
@@ -33,8 +37,8 @@ $this->title = 'Regisztráció';
 						</div>
 						<?=$form->field($model, 'email')->label('E-mail cím')->textInput()?>
 						<?=$form->field($model, 'orgRemoteId', ['options' => ['class' => 'form-group orgSelector']])
-							->label('Kiválasztom az adataimat a központi adatbázisból')
-							->dropDownList(array_merge(['' => ' - Nem szereplek az adatbázisban - ']));?>
+						        ->label('Kiválasztom az adataimat a központi adatbázisból')
+						        ->dropDownList(array_merge(['' => ' - Nem szereplek az adatbázisban - ']));?>
 					</fieldset>
 					<fieldset class="orgData border p-3 mb-3">
 						<legend>Szervezet adatai</legend>
@@ -49,17 +53,20 @@ $this->title = 'Regisztráció';
 					<fieldset class="border p-3 mb-3">
 						<legend>Meghatalmazás</legend>
 						<?=$form->field($model, 'pdf')->label(false)
-							->hint('<p>Csak pdf fájl tölthető fel. <br /> A meghatalmazás itt tölthető le: <a href="/dokumentumok" target="_blank">Dokumentumok</a></p>')
-							->fileInput()?>
+						        ->hint('<p>Csak pdf fájl tölthető fel. <br /> A meghatalmazás itt tölthető le: <a href="/dokumentumok" target="_blank">Dokumentumok</a></p>')
+						        ->fileInput()?>
 					</fieldset>
 
 					<?=$form->field($model, 'terms')
-						->label('Az <a href="/adatkezelesi-szabalyzat" target="_blank">adatkezelési szabályzatot</a> elfogadom', ['class' => 'custom-control-label'])
-						->checkbox();?>
-
+					        ->label('Az <a href="/adatkezelesi-szabalyzat" target="_blank">adatkezelési szabályzatot</a> elfogadom', ['class' => 'custom-control-label'])
+					        ->checkbox();?>
+					<?=$form->field($model, 'recaptcha_response')->label(false)->textInput(['type' => 'hidden']);?>
 				</div>
 				<div class="card-footer">
-					<?=Html::submitButton('Regisztráció', ['class' => 'btn btn-primary', 'name' => 'signup-button'])?>
+					<?=Html::submitButton('Regisztráció', [
+						'class' => 'btn btn-primary',
+						'name'  => 'signup-button'
+					])?>
 				</div>
 				<?php ActiveForm::end(); ?>
 			</div>

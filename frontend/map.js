@@ -70,6 +70,9 @@ $(document).ready(function () {
 				$popupEl.find('span.address').text(feature.get('data').address);
 				$popupEl.find('span.moduleName').text(feature.get('data').lastModuleName);
 				$popupEl.append('<img src="' + feature.get('data').markerIcon + '" class="markerIcon"/>');
+				if ($popupEl.find('a.contact').length) {
+					$popupEl.find('a.contact').attr('href', $popupEl.find('a.contact').data('url')+feature.get('data').orgId);
+				}
 				$popupEl.removeClass('d-none');
 			} else {
 				$popupEl.find('img.markerIcon').remove();

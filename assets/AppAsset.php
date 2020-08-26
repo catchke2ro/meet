@@ -43,6 +43,16 @@ class AppAsset extends AssetBundle {
 	 */
 	public $js = [
 		'/dist/app.js',
+		'https://www.google.com/recaptcha/api.js?render={siteKey}'
 	];
+
+
+	public function init() {
+		parent::init();
+
+		foreach ($this->js as &$js) {
+			$js = preg_replace('/\{siteKey\}/', Yii::$app->params['recaptcha_site_key'], $js);
+		}
+	}
 
 }

@@ -36,9 +36,11 @@ $this->title = 'Főoldal';
 
 	<div class="teaser">
 		<div class="imgWrapper">
-			<img src="/assets/img/meet_nyito_kiskep_01.jpg" alt="Programleírás" />
+			<a href="/programleiras">
+				<img src="/assets/img/meet_nyito_kiskep_01.jpg" alt="Programleírás" />
+			</a>
 		</div>
-		<h3>Programleírás</h3>
+		<h3><a href="/programleiras">Programleírás</a></h3>
 		<p class="teaserText">A Műveld és őrizd! program a teljes egyházat átfogó teremtésvédelmi program, melyet az egyház központilag indít, és
 			amelyhez az egyház bármely közössége önkéntesen csatlakozhat. A program önkéntes alapon és elven működik, a közösségek saját
 			indíttatásukból jelentkeznek, maguk határozhatják meg céljaikat, szándékaikat, az elköteleződés mértékét, és maguk állíthatják össze a
@@ -48,9 +50,11 @@ $this->title = 'Főoldal';
 
 	<div class="teaser">
 		<div class="imgWrapper">
-			<img src="/assets/img/meet_nyito_kiskep_02.jpg" alt="Modulok (Bibliai novények)" />
+			<a href="/modulok">
+				<img src="/assets/img/meet_nyito_kiskep_02.jpg" alt="Modulok (Bibliai novények)" />
+			</a>
 		</div>
-		<h3>Modulok (Bibliai novények)</h3>
+		<h3><a href="/modulok">Modulok (Bibliai novények)</a></h3>
 		<p class="teaserText">A közösségi szerepvállalás, a teremtést óvó vállalások és elköteleződés mértékétől függően, a közösségek öt különböző
 			modulból választhatják részvételüket a programban. A modulokat szimbolizáló bibliai növények mindegyike szép, a maga nemében mindegyik
 			teljes, és mindegyik fontos üzenetet hordoz. Neked melyik a kedvenc növényed? Nézd meg bibliai növényeinket.</p>
@@ -59,9 +63,11 @@ $this->title = 'Főoldal';
 
 	<div class="teaser">
 		<div class="imgWrapper">
-			<img src="/assets/img/meet_nyito_kiskep_03.jpg" alt="Jógyakorlatok" />
+			<a href="/aktivitas">
+				<img src="/assets/img/meet_nyito_kiskep_03.jpg" alt="Jógyakorlatok" />
+			</a>
 		</div>
-		<h3>Jógyakorlatok</h3>
+		<h3><a href="/aktivitas">Jógyakorlatok</a></h3>
 		<p class="teaserText">A MEET program résztvevő gyülekezetei, iskolái, óvodái, diakóniai intézményei, közösségei és intézményei megosztják
 			tapasztalataikat, jógyakorlataikat, illetve a közösségben megvalósuló eseményekről és rendezvényekről hírt adnak. Inspirációra vágysz?
 			Te is szerveznél valamilyen teremtésvédelmi programot? Tallózz a résztvevők hírei, programjai, ötletei között.</p>
@@ -73,9 +79,10 @@ $this->title = 'Főoldal';
 <a name="resztvevok"></a>
 <div class="homeMap">
 	<div id="map"></div>
-	<div id="mapPopup">
+	<div id="mapPopup" class="d-none">
 		<span class="name"></span><br />
-		<span class="moduleName"></span> | <span class="address"></span>
+		<span class="moduleName"></span> | <span class="address"></span><br />
+		<span class="fa fa-envelope"></span>&nbsp;<a class="contact" href="javascript:void(0)" data-url="/uzenet?orgId=">Üzenet küldése</a>
 	</div>
 </div>
 

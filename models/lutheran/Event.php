@@ -81,4 +81,25 @@ class Event extends BaseEvent {
 	}
 
 
+	/**
+	 * @param string $name
+	 * @param string $email
+	 * @param string $message
+	 *
+	 * @return Event
+	 */
+	public static function createNewMessageEvent(int $orgId, string $name, string $email, string $message) {
+		$event = new Event();
+		$event->erv_kezdet = (new DateTime())->format('Y-m-d');
+		$event->erv_allapot = 0;
+		$event->ref_tipus_id = Yii::$app->params['event_type_meet_org_message'];
+		$event->ref_szervegyseg_id = $orgId;
+		$event->ertek1 = $name;
+		$event->ertek2 = $email;
+		$event->ertek10 = $message;
+
+		return $event;
+	}
+
+
 }

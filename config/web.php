@@ -62,6 +62,7 @@ $config = [
 				//'/resztvevok'              => 'site/participants',
 				'/aktivitas'               => 'site/posts',
 				'/programleiras'           => 'site/description',
+				'/modulok'                 => 'site/modules',
 				'/dokumentumok'            => 'site/documents',
 				'/adatkezelesi-szabalyzat' => 'site/terms',
 				'/kerdesek'                => 'question/index',
@@ -72,6 +73,7 @@ $config = [
 				'/vallalasok/pontok'       => 'commitment/score',
 				'/vallalasok/history'      => 'commitment/history',
 				'/vallalasok/vege'         => 'commitment/end',
+				'/uzenet'                  => 'site/org-contact',
 
 				'/_org-list'           => 'ajax/org-list',
 				'/_authorization-file' => 'user/get-authorization-file',

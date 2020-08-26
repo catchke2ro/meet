@@ -11,7 +11,8 @@
     "phpoffice/phpspreadsheet": "^1.11",
     "yiisoft/yii2-bootstrap4": "^2.0",
     "tijsverkoyen/css-to-inline-styles": "^2.2.3",
-    "ext-http": "*"
+    "ext-http": "*",
+    "google/recaptcha": "^1.2"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",

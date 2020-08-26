@@ -2,9 +2,15 @@
 
 namespace app\controllers;
 
+use app\models\forms\OrgContact;
+use app\models\forms\Registration;
+use app\models\lutheran\Organization;
 use app\models\Post;
 use Yii;
+use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * Class SiteController
@@ -120,6 +126,37 @@ class SiteController extends Controller {
 		Yii::$app->view->params['pageClass'] = 'posts';
 		return $this->render('posts', [
 			'posts' => $posts
+		]);
+	}
+
+
+	/**
+	 * @param $orgId
+	 *
+	 * @return string|Response
+	 * @throws NotFoundHttpException
+	 */
+	public function actionOrgContact($orgId) {
+		$model = new OrgContact();
+
+		if (!($organization = Organization::findOne(['id' => $orgId]))) {
+			throw new NotFoundHttpException();
+		}
+
+		if ($model->load(Yii::$app->request->post())) {
+			if ($model->signup()) {
+				Yii::$app->session->setFlash('error', 'Sikeres üzenetküldés!');
+				return $this->redirect(Url::to('/'));
+			}
+		}
+
+		$model->orgId = $orgId;
+
+		Yii::$app->view->params['pageClass'] = 'orgContact';
+
+		return $this->render('orgContact', [
+			'model' => $model,
+			'organization' => $organization
 		]);
 	}
 

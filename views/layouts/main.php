@@ -70,6 +70,9 @@ AppAsset::register($this);
 					<a href="/programleiras" class="nav-link <?=menuActiveClass('/programleiras');?>">Programleírás</a>
 				</li>
 				<li class="nav-item d-none d-sm-inline-block">
+					<a href="/modulok" class="nav-link <?=menuActiveClass('/modulok');?>">Modulok</a>
+				</li>
+				<li class="nav-item d-none d-sm-inline-block">
 					<a href="/aktivitas" class="nav-link <?=menuActiveClass('/aktivitas');?>">Aktivitás</a>
 				</li>
 				<li class="nav-item d-none d-sm-inline-block">

@@ -1,6 +1,8 @@
 <?php
 
 
+use ReCaptcha\ReCaptcha;
+
 function menuActiveClass(string $url): string {
 	return preg_match('/^'.preg_quote($url, '/').'/i', Yii::$app->request->url) ? 'active' : '';
 }
@@ -155,4 +157,17 @@ function slug($string = '', $lang = null, $onlyLetters = false) {
 	$slug = preg_replace('/[\-]+/', $hyphenRpl, $slug);
 	$slug = preg_replace('/\-$/', '', $slug);
 	return $slug;
+}
+
+
+/**
+ * @return bool
+ */
+function recaptchaValidator(string $response) {
+	$secretKey = Yii::$app->params['recaptcha_secret_key'] ?? null;
+
+	$recaptcha = new ReCaptcha($secretKey);
+	$resp = $recaptcha->setExpectedHostname($_SERVER['HTTP_HOST'])
+	                  ->verify($response, $_SERVER['REMOTE_ADDR']);
+	return $resp->isSuccess();
 }

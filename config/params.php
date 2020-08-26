@@ -5,6 +5,9 @@ return [
 	'senderName'  => 'MEET Lutheran',
 	'email_url'   => 'https://catchke2ro.hu',
 
+	'recaptcha_site_key'   => '6LehrcMZAAAAAN1eWRgKB5o7QciHrV5o2IyoM1hn',
+	'recaptcha_secret_key' => '6LehrcMZAAAAAI8AeB49YAn0G3klVgGv1AVeWtBi',
+
 	'new_org_kategoria_id'     => 3, //Új szervegység kategória - Külső partner - MEET
 	'new_org_default_tipus_id' => 1, //Új szervegység default típus - Egyházközség
 	'new_org_erv_allapot'      => 0, //Új szervegység erv_allapot,
@@ -20,23 +23,24 @@ return [
 	'event_type_meet_reg_approved'        => 102, //MEET reg approved esemény típus
 	'event_type_meet_commitment'          => 103, //MEET új vállalás esemény típus
 	'event_type_meet_commitment_approved' => 104, //MEET vállalás elfogadva esemény típus
+	'event_type_meet_org_message'         => 105, //MEET üzenet egységnek
 
 	'position_type_megbizott' => 3, //Megbízott pozicio típus
 	'position_meet_referer'   => 253, //MEET referens pozíció,
 
 	'defult_marker_group' => 'egyeb_kozosseg',
-	'marker_groups' => [
-		'diakonia'       => [
+	'marker_groups'       => [
+		'diakonia'   => [
 			2613 //diakónia
 		],
-		'gyulekezet'     => [
+		'gyulekezet' => [
 			1, //egyházközség
 			1201, //társegyház
 			1301, //leányegyház
 			1401, //fiókegyház
 			1801, //bíróság
 		],
-		'iroda'          => [
+		'iroda'      => [
 			501, //egyesület/alapítvány
 			601, //országos munkaág
 			1601, //testület
@@ -54,16 +58,16 @@ return [
 			2625, //országos iroda osztálya
 			2626, //egyházkormányzati egységek
 		],
-		'konyvtar'       => [],
-		'oktatas'        => [
+		'konyvtar'   => [],
+		'oktatas'    => [
 			2611, //nevelési-oktatási
 			2612, //ifjúsági és gyermek
 			2627, //tanszék
 			2628, //EHE szervezeti egység
 		],
-		'szallas'        => [
+		'szallas'    => [
 			401, //intézmény
 		],
 	],
-	'token' => 'yVeU5UcUWgRs9niTrmoZ32UIg1baUsPC'
+	'token'               => 'yVeU5UcUWgRs9niTrmoZ32UIg1baUsPC'
 ];

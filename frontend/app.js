@@ -281,4 +281,19 @@ $(function () {
 		});
 	}
 
+	$('input[name*="[recaptcha_response]"]').each(function (index, e) {
+		const $input = $(this),
+			$form = $input.closest('form');
+
+		$form.on('submit', function(event) {
+			event.preventDefault();
+			grecaptcha.execute($form.data('sitekey'), { action: 'registration' }).then(function (token) {
+				$input.val(token);
+				$form[0].submit();
+			}, function (reason) {
+				console.log(reason);
+			});
+		});
+	});
+
 });

@@ -2,6 +2,7 @@
 
 namespace app\models\forms;
 
+use app\components\validators\recaptcha;
 use app\models\lutheran\Contact;
 use app\models\lutheran\ContactType;
 use app\models\lutheran\Event;
@@ -93,6 +94,11 @@ class Registration extends Model {
 	 */
 	public $terms;
 
+	/**
+	 * @var string
+	 */
+	public $recaptcha_response;
+
 
 	/**
 	 * @inheritdoc
@@ -125,7 +131,9 @@ class Registration extends Model {
 			['orgRemoteId', 'safe'],
 			['pdf', 'required'],
 			['pdf', 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf'],
-			['terms', 'required', 'requiredValue' => 1, 'message' => 'A szabályzat elfogadása kötelező!']
+			['terms', 'required', 'requiredValue' => 1, 'message' => 'A szabályzat elfogadása kötelező!'],
+			['recaptcha_response', 'required', 'message' => 'CAPTCHA hiba'],
+			['recaptcha_response', recaptcha::class]
 
 			//['passwordConfirm', 'safe'],
 		];
