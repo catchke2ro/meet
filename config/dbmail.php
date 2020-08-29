@@ -2,9 +2,9 @@
 
 return [
 	'class'    => 'yii\db\Connection',
-	'dsn'      => 'mysql:host=mysql_virtualmail;dbname=virtualmail',
-	'username' => 'root',
-	'password' => '9rY00ZiJJM',
+	'dsn'      => 'mysql:host=mysql.server.lutheran.hu;dbname=virtualmail',
+	'username' => 'meet_teszt',
+	'password' => 'gmeWSR349TmdDr',
 	'charset'  => 'utf8',
 
 	// Schema cache options (for production environment)
