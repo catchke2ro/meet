@@ -3,7 +3,7 @@
 return [
 	'class'    => 'yii\db\Connection',
 	'dsn'      => 'mysql:host=mysql.server.lutheran.hu;dbname=yii2tst',
-	'username' => 'meet_teszt',
+	'username' => 'yii2_meet_teszt',
 	'password' => 'gmeWSR349TmdDr',
 	'charset'  => 'utf8',
 
