@@ -31,6 +31,7 @@ class QuestionOptionEdit extends QuestionOptionCreate {
 		$this->order = $questionOption->order;
 		$this->isCustomInput = $questionOption->is_custom_input;
 		$this->description = $questionOption->description;
+		$this->commitmentOptions = $questionOption->getCommitmentOptions();
 	}
 
 
@@ -54,6 +55,18 @@ class QuestionOptionEdit extends QuestionOptionCreate {
 			$this->questionOption->order = $this->order;
 			$this->questionOption->is_custom_input = $this->isCustomInput;
 			$success &= $this->questionOption->save();
+
+			if (is_array($this->commitmentOptions)) {
+				Yii::$app->db->createCommand()->delete('meet_commitments_by_questions', [
+					'question_option_id' => $this->questionOption->id,
+				])->execute();
+				foreach ($this->commitmentOptions as $commitmentOptionId) {
+					Yii::$app->db->createCommand()->insert('meet_commitments_by_questions', [
+						'question_option_id' => $this->questionOption->id,
+						'commitment_option_id' => $commitmentOptionId
+					])->execute();
+				}
+			}
 
 			$transaction->commit();
 

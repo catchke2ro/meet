@@ -44,6 +44,11 @@ class QuestionOptionCreate extends Model {
 	 */
 	private $item;
 
+	/**
+	 * @var array
+	 */
+	public $commitmentOptions;
+
 
 	/**
 	 * QuestionOptionCreate constructor.
@@ -67,6 +72,7 @@ class QuestionOptionCreate extends Model {
 			['order', 'number'],
 			['description', 'safe'],
 			['isCustomInput', 'safe'],
+			['commitmentOptions', 'safe'],
 		];
 	}
 
@@ -91,6 +97,15 @@ class QuestionOptionCreate extends Model {
 			$questionOption->is_custom_input = $this->isCustomInput;
 			$questionOption->question_id = $this->item->id;
 			$success &= $questionOption->save();
+
+			if (is_array($this->commitmentOptions)) {
+				foreach ($this->commitmentOptions as $commitmentOptionId) {
+					Yii::$app->db->createCommand()->insert('meet_commitments_by_questions', [
+						'question_option_id' => $this->questionOption->id,
+						'commitment_option_id' => $commitmentOptionId
+					])->execute();
+				}
+			}
 
 			$transaction->commit();
 

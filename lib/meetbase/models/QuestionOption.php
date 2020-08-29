@@ -3,6 +3,8 @@
 namespace meetbase\models;
 
 use meetbase\models\traits\WithItemTrait;
+use PDO;
+use Yii;
 use yii\db\ActiveRecord;
 use yii\web\Request;
 
@@ -56,5 +58,14 @@ abstract class QuestionOption extends ActiveRecord {
 		return $checked;
 	}
 
+
+	/**
+	 *
+	 */
+	public function getCommitmentOptions() {
+		return Yii::$app->db
+			->createCommand("SELECT `commitment_option_id` FROM `meet_commitments_by_questions` WHERE `question_option_id` = {$this->id}")
+			->queryAll(PDO::FETCH_COLUMN) ?: [];
+	}
 
 }

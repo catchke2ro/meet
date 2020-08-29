@@ -2,6 +2,7 @@
 
 namespace app\modules\meet\controllers;
 
+use app\modules\meet\models\CommitmentOption;
 use app\modules\meet\models\forms\QuestionOptionCreate;
 use app\modules\meet\models\forms\QuestionOptionEdit;
 use app\modules\meet\models\QuestionItem;
@@ -72,9 +73,13 @@ class QuestionOptionsController extends AbstractAdminController {
 
 		Yii::$app->view->params['pageClass'] = 'questionOptionCreate';
 
+		list($commitmentOptions, $commitmentOptionsOptions) = CommitmentOption::getMultiselectOptions();
+
 		return $this->render('create', [
 			'model' => $model,
-			'item'  => $item
+			'item'  => $item,
+			'commitmentOptions' => $commitmentOptions,
+			'commitmentOptionsOptions' => $commitmentOptionsOptions
 		]);
 	}
 
@@ -99,9 +104,13 @@ class QuestionOptionsController extends AbstractAdminController {
 		}
 		Yii::$app->view->params['pageClass'] = 'questionOptionEdit';
 
+		list($commitmentOptions, $commitmentOptionsOptions) = CommitmentOption::getMultiselectOptions();
+
 		return $this->render('edit', [
 			'model' => $model,
-			'item'  => $questionOption->item
+			'item'  => $questionOption->item,
+			'commitmentOptions' => $commitmentOptions,
+			'commitmentOptionsOptions' => $commitmentOptionsOptions
 		]);
 	}
 

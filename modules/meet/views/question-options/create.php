@@ -27,6 +27,9 @@ $this->title = 'Kérdés létrehozása';
 				<?=$form->field($model, 'description')->label('Leírás')->textarea()?>
 				<?=$form->field($model, 'order')->label('Sorrend')->textInput(['type' => 'number'])?>
 				<?=$form->field($model, 'isCustomInput')->label('Egyedi szöveges válasz', ['class' => 'custom-control-label'])->checkbox()?>
+				<?=$form->field($model, 'commitmentOptions')->label('Kapcsolódó vállalás opciók')
+					->dropDownList($commitmentOptions, ['options' => $commitmentOptionsOptions, 'multiple' => true, 'encode' => false, 'style' => 'height: 300px'])
+					->hint('Több kijelölése Ctrl-al (Mac: Cmd)');?>
 			</div>
 			<div class="card-footer">
 				<?=Html::submitButton('Mentés', ['class' => 'btn btn-primary', 'name' => 'save-button'])?>

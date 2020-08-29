@@ -62,4 +62,36 @@ class CommitmentOption extends BaseCommitmentOption implements DataTableModelInt
 	}
 
 
+	/**
+	 * @return array|array[]
+	 */
+	public static function getMultiselectOptions(): array {
+		$commitmentOptions = self::find()
+			->alias('commitmentOption')
+			->innerJoinWith('item as commitmentItem')
+			->innerJoinWith('item.category as commitmentCategory')
+			->orderBy(['commitmentCategory.order' => 'ASC', 'commitmentItem.order' => 'ASC', 'commitmentOption.order' => 'ASC'])
+			->all();
+
+		$options = [];
+		$optionsOptions = [];
+		$prevCategory = $prevItem = null;
+		/** @var CommitmentOption $commitmentOption */
+		foreach ($commitmentOptions as $commitmentOption) {
+			$item = $commitmentOption->item;
+			$category = $commitmentOption->item->category;
+			if ($category !== $prevCategory) {
+				$options['category['.$category->id.']'] = $category->name;
+				$optionsOptions['category['.$category->id.']'] = ['disabled' => true, 'style' => 'color: lightgray'];
+			}
+			if ($item !== $prevItem) {
+				$options['item['.$item->id.']'] = str_repeat('&nbsp;', 4).$item->name;
+				$optionsOptions['item['.$item->id.']'] = ['disabled' => true, 'style' => 'color: lightgray'];
+			}
+			$options[$commitmentOption->id] = str_repeat('&nbsp;', 8).$commitmentOption->name;
+		}
+		return [$options, $optionsOptions];
+	}
+
+
 }

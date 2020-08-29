@@ -3,8 +3,8 @@
 namespace app\modules\meet\models\forms;
 
 use app\modules\meet\models\QuestionCategory;
-use app\modules\meet\models\QuestionCategoryOrgType;
 use Exception;
+use meetbase\models\QuestionCategoryOrgType;
 use Yii;
 
 /**
@@ -70,7 +70,7 @@ class QuestionCategoryEdit extends QuestionCategoryCreate {
 			}
 			$newOrgTypes = array_diff($orgTypes, $existingOrgTypes);
 			foreach ($newOrgTypes as $newOrgType) {
-				$questionCategoryOrgType = new QuestionCategoryOrgType();
+				$questionCategoryOrgType = new \app\modules\meet\models\QuestionCategoryOrgType();
 				$questionCategoryOrgType->org_type_id = $newOrgType;
 				$questionCategoryOrgType->question_category_id = $this->questionCategory->id;
 				$success &= $questionCategoryOrgType->save();
