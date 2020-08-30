@@ -68,6 +68,19 @@ class SiteController extends Controller {
 	 *
 	 * @return string
 	 */
+	public function actionImpressum() {
+
+		Yii::$app->view->params['pageClass'] = 'impressum';
+
+		return $this->render('impressum');
+	}
+
+
+	/**
+	 * Displays Home
+	 *
+	 * @return string
+	 */
 	public function actionDocuments() {
 
 		Yii::$app->view->params['pageClass'] = 'documents';

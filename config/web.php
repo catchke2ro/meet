@@ -65,6 +65,7 @@ $config = [
 				'/modulok'                 => 'site/modules',
 				'/dokumentumok'            => 'site/documents',
 				'/adatkezelesi-szabalyzat' => 'site/terms',
+				'/impresszum'              => 'site/impressum',
 				'/kerdesek'                => 'question/index',
 				'/vallalasok'              => 'commitment/index',
 				'/regisztracio'            => 'user/registration',
@@ -82,11 +83,11 @@ $config = [
 		],
 	],
 	'params'     => $params,
-	'modules' => [
-		'meet'        => [
-			'class' => 'app\modules\meet\Module',
-			'layout' => 'admin',
-			'as access'  => [
+	'modules'    => [
+		'meet' => [
+			'class'     => 'app\modules\meet\Module',
+			'layout'    => 'admin',
+			'as access' => [
 				'class' => \yii\filters\AccessControl::className(),
 				'rules' => [
 					[

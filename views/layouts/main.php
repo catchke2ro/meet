@@ -99,7 +99,7 @@ AppAsset::register($this);
 	</div>
 
 	<footer>
-		<p><span>Copyright @2020</span>&nbsp;|&nbsp;<a href="/">Impresszum</a></p>
+		<p><span>Copyright @2020</span>&nbsp;|&nbsp;<a href="/impresszum">Impresszum</a></p>
 	</footer>
 
 </div>
