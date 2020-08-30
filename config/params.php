@@ -31,6 +31,8 @@ return [
 	'position_pastor_general' => 2, //Igazgató lelkész,
 	'position_superintendent' => 90, //Felügyelő,
 
+	'registration_org_types' => [1, 1201, 1301, 1401],
+
 	'defult_marker_group' => 'egyeb_kozosseg',
 	'marker_groups'       => [
 		'diakonia'   => [

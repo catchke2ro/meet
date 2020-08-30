@@ -28,7 +28,7 @@ class AjaxController extends Controller {
 	public function actionOrgList($term = null) {
 		$orgs = [];
 		if ($term && strlen($term) >= 2) {
-			$orgs = Organization::getList($term, false);
+			$orgs = Organization::getList($term, Yii::$app->params['registration_org_types'], false);
 			$orgs = array_map(function (Organization $organization) {
 				return [
 					'id'   => $organization->id,

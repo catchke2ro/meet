@@ -16,15 +16,19 @@ class Organization extends BaseOrganization {
 	/**
 	 * @param string|null $search
 	 *
+	 * @param array       $orgTypes
 	 * @param bool        $mapKeys
 	 *
 	 * @return array|\yii\db\ActiveRecord[]
 	 */
-	public static function getList(?string $search = null, bool $mapKeys = true): array {
+	public static function getList(?string $search = null, array $orgTypes = null, bool $mapKeys = true): array {
 		$qb = self::find();
 		$qb->select(['id', 'nev']);
 		if ($search) {
 			$qb->andWhere(['like', 'nev', $search]);
+		}
+		if (!empty($orgTypes)) {
+			$qb->andWhere(['ref_tipus_id' => $orgTypes]);
 		}
 		if ($mapKeys) {
 			$orgs = [];
