@@ -18,6 +18,7 @@ $this->title = 'Modulok';
 						<th data-data="id" data-orderable="1">ID</th>
 						<th data-data="name" data-orderable="1">Név</th>
 						<th data-data="threshold" data-orderable="1">Határpontszám</th>
+						<th data-data="actions" data-sortable="false">Műveletek</th>
 					</tr>
 					</thead>
 

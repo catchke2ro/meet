@@ -32,8 +32,7 @@ class Module extends BaseModule implements DataTableModelInterface {
 	 */
 	public function getDataTableActions(): array {
 		return [
-			'edit'   => '<a href="/meet/modules/edit?id=' . $this->id . '" class="fa fa-pencil" title="Szerkesztés"></a>',
-			'delete' => '<a href="/meet/modules/delete?id=' . $this->id . '" class="fa fa-trash" title="Törlés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
+			'edit'   => '<a href="/meet/modules/edit?id=' . $this->id . '" class="fa fa-pencil" title="Szerkesztés"></a>'
 		];
 	}
 
