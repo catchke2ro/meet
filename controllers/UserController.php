@@ -2,12 +2,13 @@
 
 namespace app\controllers;
 
+use app\components\Email;
 use app\models\forms\Login;
 use app\models\forms\Registration;
+use app\models\lutheran\Person;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -66,7 +67,16 @@ class UserController extends Controller {
 
 		if ($model->load(Yii::$app->request->post())) {
 			if (($personId = $model->signup())) {
-				return $this->redirect(Url::to('user/login'));
+				$person = Person::findOne(['id' => $personId]);
+				$email = $person->getEmail();
+
+				(new Email())->sendEmail('new_registration', $email, 'MEET Értesítő regisztráció kezdeményezésről', [
+					'person' => $person
+				]);
+
+				Yii::$app->session->setFlash('success', 'Sikeresen kezdeményzted a regisztrációdat. E-mail-ben értesítünk, amint aktiváltuk a regisztrációt.');
+
+				return $this->redirect('/');
 			}
 		}
 

@@ -1,9 +1,9 @@
 <?php
 
 return [
-	'senderEmail' => 'catchke2ro@miheztarto.hu',
-	'senderName'  => 'MEET Lutheran',
-	'email_url'   => 'https://catchke2ro.hu',
+	'senderEmail' => 'meet@lutheran.hu',
+	'senderName'  => 'MEET',
+	'email_url'   => 'http://meet-teszt.lutheran.hu',
 
 	'recaptcha_site_key'   => '6LehrcMZAAAAAN1eWRgKB5o7QciHrV5o2IyoM1hn',
 	'recaptcha_secret_key' => '6LehrcMZAAAAAI8AeB49YAn0G3klVgGv1AVeWtBi',
@@ -27,6 +27,9 @@ return [
 
 	'position_type_megbizott' => 3, //Megbízott pozicio típus
 	'position_meet_referer'   => 253, //MEET referens pozíció,
+	'position_pastor'         => 1, //Lelkész,
+	'position_pastor_general' => 2, //Igazgató lelkész,
+	'position_superintendent' => 90, //Felügyelő,
 
 	'defult_marker_group' => 'egyeb_kozosseg',
 	'marker_groups'       => [

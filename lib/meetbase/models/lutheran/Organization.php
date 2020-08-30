@@ -123,6 +123,7 @@ abstract class Organization extends ActiveRecord {
 	 */
 	public function getEmailContacts() {
 		$qb = clone $this->getContacts();
+		$qb->alias('emailContact');
 		$qb->andOnCondition([
 			'emailContact.ref_tipus_id' => ContactType::ID_EMAIL
 		]);
@@ -176,6 +177,55 @@ abstract class Organization extends ActiveRecord {
 	 */
 	public function getLatestCommitmentFill(): ?OrgCommitmentFill {
 		return $this->getCommitmentFills()->orderBy('date DESC')->limit(1)->one();
+	}
+
+
+	/**
+	 * @param int $role
+	 *
+	 * @return array|ActiveRecord|null
+	 */
+	public function getPersonWithRole(int $role) {
+		return ($this->getModelClass(Person::class))::find()
+			->alias('person')
+			->innerJoin(Event::tableName().' as event', 'event.ref_szemely_id = person.id')
+			->innerJoin(Organization::tableName().' as organization', 'event.ref_szervegyseg_id = organization.id')
+			->andWhere(['event.ref_tipus_id' => Yii::$app->params['event_type_pozicio']])
+			->andWhere(['event.ref2_id' => $role])
+			->andWhere(['organization.id' => $this->id])
+			->one();
+	}
+
+
+	/**
+	 * @return array|ActiveRecord|null
+	 */
+	public function getMeetReferer(): ?Person {
+		return $this->getPersonWithRole(Yii::$app->params['position_meet_referer']);
+	}
+
+
+	/**
+	 * @return array|ActiveRecord|null
+	 */
+	public function getSuperintendent(): ?Person {
+		return $this->getPersonWithRole(Yii::$app->params['position_superintendent']);
+	}
+
+
+	/**
+	 * @return array|ActiveRecord|null
+	 */
+	public function getPastor(): ?Person {
+		return $this->getPersonWithRole(Yii::$app->params['position_pastor']);
+	}
+
+
+	/**
+	 * @return array|ActiveRecord|null
+	 */
+	public function getPastorGeneral(): ?Person {
+		return $this->getPersonWithRole(Yii::$app->params['position_pastor_general']);
 	}
 
 

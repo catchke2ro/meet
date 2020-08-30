@@ -30,7 +30,7 @@ $this->title = 'Regisztráció';
 				]); ?>
 				<div class="card-body">
 					<fieldset class="border p-3 mb-3">
-						<legend>Alap adatok</legend>
+						<legend>Regisztráló adatai</legend>
 						<div class="row">
 							<?=$form->field($model, 'namePrefix', ['options' => ['class' => 'form-group col-sm-3']])->label('Név előtag')->textInput()?>
 							<?=$form->field($model, 'name', ['options' => ['class' => 'form-group col-sm-9']])->label('Név')->textInput(['autofocus' => true])?>
@@ -41,7 +41,7 @@ $this->title = 'Regisztráció';
 						        ->dropDownList(array_merge(['' => ' - Nem szereplek az adatbázisban - ']));?>
 					</fieldset>
 					<fieldset class="orgData border p-3 mb-3">
-						<legend>Szervezet adatai</legend>
+						<legend>Új szervezet regisztrációja</legend>
 						<span>Csak amennyiben nem szerepel az adatbázisban</span>
 						<?=$form->field($model, 'orgName')->label('Név');?>
 						<?=$form->field($model, 'orgAddressZip')->label('Irányítószám');?>
@@ -58,7 +58,7 @@ $this->title = 'Regisztráció';
 					</fieldset>
 
 					<?=$form->field($model, 'terms')
-					        ->label('Az <a href="/adatkezelesi-szabalyzat" target="_blank">adatkezelési szabályzatot</a> elfogadom', ['class' => 'custom-control-label'])
+					        ->label('Regisztrációmmal hozzájárulok személyes adataim kezeléséhez, amelyet a <a href="https://zsinat.lutheran.hu/torvenyek/toervenyek/4-2018.-viii.-28.-orszagos-szabalyrendelet-a-magyarorszagi-evangelikus-egyhaz-adatvedelmi-es-adatbiztonsagi-szabalyzatarol-melleklet/B5_MEE%20adatvedelmi%20szabalyzata_20180626.pdf/view" target="_blank">Magyarországi Evangélikus Egyház 4/2018. (VIII. 28.) országos szabályrendeletében</a> foglalt adatvédelmi és adatbiztonsági szabályzat határoz meg.', ['class' => 'custom-control-label'])
 					        ->checkbox();?>
 					<?=$form->field($model, 'recaptcha_response')->label(false)->textInput(['type' => 'hidden']);?>
 				</div>
