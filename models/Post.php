@@ -54,8 +54,9 @@ class Post extends ActiveRecord {
 	 * @return string|null
 	 */
 	public function getFirstTagSlug(): ?string {
-		if (is_array($this->tags) && $this->tags) {
-			$firstTag = reset($this->tags);
+		$tags = json_decode($this->tags, true) ?: [];
+		if (is_array($tags) && $tags) {
+			$firstTag = reset($tags);
 			return slug($firstTag);
 		}
 		return null;

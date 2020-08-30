@@ -22,7 +22,7 @@ $this->title = 'Aktivitás';
 				<div class="titleWrapper">
 					<h2><?=$post->title;?></h2>
 					<ul class="tags">
-						<?php foreach ($post->tags ?: [] as $tag) { ?>
+						<?php foreach (json_decode($post->tags, true) ?: [] as $tag) { ?>
 							<li>#<?=$tag;?></li>
 						<?php } ?>
 					</ul>
