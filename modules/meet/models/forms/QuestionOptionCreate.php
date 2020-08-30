@@ -100,7 +100,7 @@ class QuestionOptionCreate extends Model {
 
 			if (is_array($this->commitmentOptions)) {
 				foreach ($this->commitmentOptions as $commitmentOptionId) {
-					Yii::$app->db->createCommand()->insert('meet_commitments_by_questions', [
+					Yii::$app->db->createCommand()->insert(Yii::$app->params['table_prefix'].'commitments_by_questions', [
 						'question_option_id' => $this->questionOption->id,
 						'commitment_option_id' => $commitmentOptionId
 					])->execute();

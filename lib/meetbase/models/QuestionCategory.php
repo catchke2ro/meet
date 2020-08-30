@@ -6,6 +6,7 @@ use meetbase\models\interfaces\CategoryInterface;
 use meetbase\models\traits\CategoryInstanceTrait;
 use meetbase\models\traits\SharedModelTrait;
 use meetbase\models\traits\WithItemsTrait;
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -35,7 +36,7 @@ abstract class QuestionCategory extends ActiveRecord implements CategoryInterfac
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_question_categories';
+		return Yii::$app->params['table_prefix'].'question_categories';
 	}
 
 

@@ -2,6 +2,7 @@
 
 namespace meetbase\models;
 
+use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -19,7 +20,7 @@ abstract class CommitmentCategoryOrgType extends ActiveRecord {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_commitment_category_org_types';
+		return Yii::$app->params['table_prefix'].'commitment_category_org_types';
 	}
 
 

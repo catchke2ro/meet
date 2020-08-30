@@ -4,6 +4,7 @@ namespace meetbase\models;
 
 use meetbase\models\traits\SharedModelTrait;
 use meetbase\models\traits\WithItemTrait;
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -27,7 +28,7 @@ abstract class QuestionInstance extends ActiveRecord {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_org_question_answer_instances';
+		return Yii::$app->params['table_prefix'].'org_question_answer_instances';
 	}
 
 

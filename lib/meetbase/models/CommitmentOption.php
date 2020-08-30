@@ -4,6 +4,7 @@ namespace meetbase\models;
 
 use meetbase\models\traits\SharedModelTrait;
 use meetbase\models\traits\WithItemTrait;
+use Yii;
 use yii\db\ActiveRecord;
 use yii\web\Request;
 
@@ -32,7 +33,7 @@ abstract class CommitmentOption extends ActiveRecord {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_commitment_options';
+		return Yii::$app->params['table_prefix'].'commitment_options';
 	}
 
 
@@ -42,7 +43,7 @@ abstract class CommitmentOption extends ActiveRecord {
 	 */
 	public function getQuestionOptions() {
 		return $this->hasMany($this->getModelClass(QuestionOption::class), ['id' => 'commitment_option_id'])
-			->viaTable('meet_commitments_by_questions', ['question_option_id' => 'id']);
+			->viaTable(Yii::$app->params['table_prefix'].'commitments_by_questions', ['question_option_id' => 'id']);
 	}
 
 

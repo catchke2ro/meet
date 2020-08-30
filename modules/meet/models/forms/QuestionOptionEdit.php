@@ -57,11 +57,11 @@ class QuestionOptionEdit extends QuestionOptionCreate {
 			$success &= $this->questionOption->save();
 
 			if (is_array($this->commitmentOptions)) {
-				Yii::$app->db->createCommand()->delete('meet_commitments_by_questions', [
+				Yii::$app->db->createCommand()->delete(Yii::$app->params['table_prefix'].'commitments_by_questions', [
 					'question_option_id' => $this->questionOption->id,
 				])->execute();
 				foreach ($this->commitmentOptions as $commitmentOptionId) {
-					Yii::$app->db->createCommand()->insert('meet_commitments_by_questions', [
+					Yii::$app->db->createCommand()->insert(Yii::$app->params['table_prefix'].'commitments_by_questions', [
 						'question_option_id' => $this->questionOption->id,
 						'commitment_option_id' => $commitmentOptionId
 					])->execute();

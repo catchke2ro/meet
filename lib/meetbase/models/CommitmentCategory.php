@@ -6,6 +6,7 @@ use meetbase\models\interfaces\CategoryInterface;
 use meetbase\models\traits\CategoryInstanceTrait;
 use meetbase\models\traits\SharedModelTrait;
 use meetbase\models\traits\WithItemsTrait;
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -38,7 +39,7 @@ abstract class CommitmentCategory extends ActiveRecord implements CategoryInterf
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_commitment_categories';
+		return Yii::$app->params['table_prefix'].'commitment_categories';
 	}
 
 

@@ -4,6 +4,7 @@ namespace app\modules\meet\models;
 
 use meetbase\models\traits\WithItemTrait;
 use meetbase\models\traits\WithItemTrait\CommitmentInstance as BaseCommitmentInstance;
+use Yii;
 use yii\db\ActiveQuery;
 
 /**
@@ -22,7 +23,7 @@ class CommitmentInstance extends BaseCommitmentInstance {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_user_commitment_option_instances';
+		return Yii::$app->params['table_prefix'].'user_commitment_option_instances';
 	}
 
 

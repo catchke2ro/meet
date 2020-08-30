@@ -3,6 +3,7 @@
 namespace meetbase\models;
 
 use meetbase\models\traits\SharedModelTrait;
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -29,7 +30,7 @@ abstract class OrgQuestionAnswer extends ActiveRecord {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_org_question_answers';
+		return Yii::$app->params['table_prefix'].'org_question_answers';
 	}
 
 

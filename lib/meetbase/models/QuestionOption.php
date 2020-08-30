@@ -30,7 +30,7 @@ abstract class QuestionOption extends ActiveRecord {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_question_options';
+		return Yii::$app->params['table_prefix'].'question_options';
 	}
 
 
@@ -64,7 +64,7 @@ abstract class QuestionOption extends ActiveRecord {
 	 */
 	public function getCommitmentOptions() {
 		return Yii::$app->db
-			->createCommand("SELECT `commitment_option_id` FROM `meet_commitments_by_questions` WHERE `question_option_id` = {$this->id}")
+			->createCommand("SELECT `commitment_option_id` FROM `".Yii::$app->params['table_prefix']."commitments_by_questions` WHERE `question_option_id` = {$this->id}")
 			->queryAll(PDO::FETCH_COLUMN) ?: [];
 	}
 

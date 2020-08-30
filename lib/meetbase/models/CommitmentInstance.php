@@ -6,6 +6,7 @@ use meetbase\models\CommitmentCategory;
 use meetbase\models\traits\SharedModelTrait;
 use meetbase\models\traits\WithItemTrait;
 use meetbase\models\OrgCommitmentOption;
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -30,7 +31,7 @@ abstract class CommitmentInstance extends ActiveRecord {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_org_commitment_option_instances';
+		return Yii::$app->params['table_prefix'].'org_commitment_option_instances';
 	}
 
 

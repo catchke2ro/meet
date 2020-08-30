@@ -39,7 +39,7 @@ abstract class OrgCommitmentFill extends ActiveRecord implements FillInterface {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_org_commitment_fills';
+		return Yii::$app->params['table_prefix'].'org_commitment_fills';
 	}
 
 

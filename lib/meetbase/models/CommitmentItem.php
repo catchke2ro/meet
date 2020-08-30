@@ -5,6 +5,7 @@ namespace meetbase\models;
 use meetbase\models\interfaces\ItemInterface;
 use meetbase\models\traits\WithCategoryTrait;
 use meetbase\models\traits\WithOptionsTrait;
+use Yii;
 use yii\db\ActiveRecord;
 use yii\web\Request;
 
@@ -35,7 +36,7 @@ abstract class CommitmentItem extends ActiveRecord implements ItemInterface {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_commitments';
+		return Yii::$app->params['table_prefix'].'commitments';
 	}
 
 

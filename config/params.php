@@ -5,6 +5,8 @@ return [
 	'senderName'  => 'MEET',
 	'email_url'   => 'http://meet-teszt.lutheran.hu',
 
+	'table_prefix' => 'meet__t__',
+
 	'recaptcha_site_key'   => '6LehrcMZAAAAAN1eWRgKB5o7QciHrV5o2IyoM1hn',
 	'recaptcha_secret_key' => '6LehrcMZAAAAAI8AeB49YAn0G3klVgGv1AVeWtBi',
 

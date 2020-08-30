@@ -30,7 +30,7 @@ class Post extends ActiveRecord {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_posts';
+		return Yii::$app->params['table_prefix'].'posts';
 	}
 
 

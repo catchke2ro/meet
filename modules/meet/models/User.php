@@ -39,7 +39,7 @@ class User extends ActiveRecord implements IdentityInterface, DataTableModelInte
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_users';
+		return Yii::$app->params['table_prefix'].'users';
 	}
 
 

@@ -3,6 +3,7 @@
 namespace meetbase\models;
 
 use meetbase\models\traits\SharedModelTrait;
+use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -31,7 +32,7 @@ abstract class Module extends ActiveRecord {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_modules';
+		return Yii::$app->params['table_prefix'].'modules';
 	}
 
 

@@ -32,7 +32,7 @@ abstract class OrgQuestionFill extends ActiveRecord implements FillInterface {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return 'meet_org_question_fills';
+		return Yii::$app->params['table_prefix'].'org_question_fills';
 	}
 
 
@@ -105,7 +105,7 @@ abstract class OrgQuestionFill extends ActiveRecord implements FillInterface {
 		}
 
 		$command = Yii::$app->db
-			->createCommand('SELECT commitment_option_id FROM meet_commitments_by_questions WHERE question_option_id IN (' . implode(',', $questionOptionIds) . ')');
+			->createCommand('SELECT commitment_option_id FROM '.Yii::$app->params['table_prefix'].'commitments_by_questions WHERE question_option_id IN (' . implode(',', $questionOptionIds) . ')');
 		$checkedCommitmentOptions = $command->queryAll(PDO::FETCH_COLUMN);
 
 		return $checkedCommitmentOptions ?: null;
