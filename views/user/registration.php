@@ -53,13 +53,16 @@ $this->title = 'Regisztráció';
 					<fieldset class="border p-3 mb-3">
 						<legend>Meghatalmazás</legend>
 						<?=$form->field($model, 'pdf')->label(false)
-						        ->hint('<p>Csak pdf fájl tölthető fel. <br /> A meghatalmazás itt tölthető le: <a href="/dokumentumok" target="_blank">Dokumentumok</a></p>')
+						        ->hint('<p>Csak pdf fájl tölthető fel. <br /> A meghatalmazás itt tölthető le: <a href="/dokumentumok" target="_blank">Dokumentumok</a> <br /> További információ az <a href="/afe" target="_blank">Általános Együttműködési Feltételekben</a></p>')
 						        ->fileInput()?>
 					</fieldset>
 
 					<?=$form->field($model, 'terms')
 					        ->label('Regisztrációmmal hozzájárulok személyes adataim kezeléséhez, amelyet a <a href="https://zsinat.lutheran.hu/torvenyek/toervenyek/4-2018.-viii.-28.-orszagos-szabalyrendelet-a-magyarorszagi-evangelikus-egyhaz-adatvedelmi-es-adatbiztonsagi-szabalyzatarol-melleklet/B5_MEE%20adatvedelmi%20szabalyzata_20180626.pdf/view" target="_blank">Magyarországi Evangélikus Egyház 4/2018. (VIII. 28.) országos szabályrendeletében</a> foglalt adatvédelmi és adatbiztonsági szabályzat határoz meg.', ['class' => 'custom-control-label'])
 					        ->checkbox();?>
+					<?=$form->field($model, 'terms2')
+						->label('Az <a href="/afe" target="_blank">Általános Együttműködési Feltételeket</a> elolvastam.', ['class' => 'custom-control-label'])
+						->checkbox();?>
 					<?=$form->field($model, 'recaptcha_response')->label(false)->textInput(['type' => 'hidden']);?>
 				</div>
 				<div class="card-footer">

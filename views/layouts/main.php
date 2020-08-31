@@ -58,7 +58,7 @@ AppAsset::register($this);
 			<?php } else { ?>
 				<div class="user">
 					<p class="text-small notLoggedInName">Ön nincs bejelentkezve!</p>
-					<a href="/belepes" class="btn btn-sm btn-primary">Belépés</a>
+					<a href="/belepes" class="btn btn-sm btn-primary">Belépés / Regisztráció</a>
 				</div>
 			<?php } ?>
 		</div>
@@ -99,7 +99,7 @@ AppAsset::register($this);
 	</div>
 
 	<footer>
-		<p><span>Copyright @2020</span>&nbsp;|&nbsp;<a href="/impresszum">Impresszum</a></p>
+		<p><span>Copyright @2020</span>&nbsp;|&nbsp;<a href="/aef">ÁEF</a>&nbsp;|&nbsp;<a href="/impresszum">Impresszum</a></p>
 	</footer>
 
 </div>

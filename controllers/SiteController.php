@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\Pdf;
 use app\models\forms\OrgContact;
 use app\models\forms\Registration;
 use app\models\lutheran\Organization;
@@ -43,7 +44,6 @@ class SiteController extends Controller {
 	 * @return string
 	 */
 	public function actionHome() {
-
 		Yii::$app->view->params['pageClass'] = 'home';
 
 		return $this->render('home');
@@ -73,6 +73,19 @@ class SiteController extends Controller {
 		Yii::$app->view->params['pageClass'] = 'impressum';
 
 		return $this->render('impressum');
+	}
+
+
+	/**
+	 * Displays Home
+	 *
+	 * @return string
+	 */
+	public function actionAef() {
+
+		Yii::$app->view->params['pageClass'] = 'aef';
+
+		return $this->render('aef');
 	}
 
 

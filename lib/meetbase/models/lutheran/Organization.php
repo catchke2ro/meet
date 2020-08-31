@@ -136,6 +136,7 @@ abstract class Organization extends ActiveRecord {
 	 */
 	public function getAddressContacts() {
 		$qb = clone $this->getContacts();
+		$qb->alias('addressContact');
 		$qb->andOnCondition([
 			'addressContact.ref_tipus_id' => ContactType::ID_ADDRESS
 		]);

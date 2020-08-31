@@ -8,7 +8,9 @@
 namespace app\commands;
 
 use app\components\Email;
+use app\components\Pdf;
 use app\models\lutheran\Event;
+use app\models\lutheran\Organization;
 use Exception;
 use Yii;
 use yii\console\Controller;
@@ -52,38 +54,44 @@ class CronController extends Controller {
 
 		foreach ($notMailedApprovedRegs as $notMailedApprovedReg) {
 			if ($notMailedApprovedReg->person && ($email = $notMailedApprovedReg->person->getEmail())) {
+
 				try {
+					$pdfFilename = (new Pdf())->generatePdf('/pdf/mustar', 'Mustarmag.pdf', [
+						'organization' => Organization::findOne(['id' => $notMailedApprovedReg->organization])
+					]);
+
 					(new Email())->sendEmail(
 						'approved_registration',
 						$email,
 						'MEET Értesítő sikeres regisztrációról',
-						['person' => $notMailedApprovedReg->person, 'organization' => $notMailedApprovedReg->organization]
+						['person' => $notMailedApprovedReg->person, 'organization' => $notMailedApprovedReg->organization],
+						[$pdfFilename]
 					);
 
 
-					if(!empty($notMailedApprovedReg->organization->emailContacts)) {
+					if (!empty($notMailedApprovedReg->organization->emailContacts)) {
 						$superintendent = $notMailedApprovedReg->organization->getSuperintendent();
 						$pastor = $notMailedApprovedReg->organization->getPastorGeneral() ?: $notMailedApprovedReg->organization->getPastor();
 						$meetReferer = $notMailedApprovedReg->organization->getMeetReferer();
 
 						$emailContact = reset($notMailedApprovedReg->organization->emailContacts);
-						$this->stdout($emailContact->ertek1);
 						(new Email())->sendEmail(
 							'approved_registration_org',
 							$emailContact->ertek1,
 							'MEET program tagsági felvétel értesítő',
 							[
-								'person' => $notMailedApprovedReg->person,
-								'organization' => $notMailedApprovedReg->organization,
+								'person'         => $notMailedApprovedReg->person,
+								'organization'   => $notMailedApprovedReg->organization,
 								'superintendent' => $superintendent,
-								'pastor' => $pastor,
-								'meetReferer' => $meetReferer,
+								'pastor'         => $pastor,
+								'meetReferer'    => $meetReferer,
 							]
 						);
 					}
 					$notMailedApprovedReg->ertek2 = 1;
 					$notMailedApprovedReg->save();
 				} catch (Exception $e) {
+					throw $e;
 					//Continue to next event on error
 				}
 

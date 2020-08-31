@@ -28,19 +28,25 @@ class Email extends Component {
 	 * @param        $to
 	 * @param string $subject
 	 * @param array  $vars
+	 * @param array  $attachments
 	 */
-	public function sendEmail(string $template, $to, string $subject, array $vars = []) {
+	public function sendEmail(string $template, $to, string $subject, array $vars = [], array $attachments = []) {
 		/** @var View $view */
 		$mailer = Yii::$app->mailer;
 		$view = $mailer->getView();
 		$view->on(View::EVENT_AFTER_RENDER, [$this, 'postHtml']);
 
 		$view->params['__subject'] = $subject;
-		$mailer->compose($template, $vars)
+		$message = $mailer->compose($template, $vars)
 			->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
 			->setTo($to)
-			->setSubject($subject)
-			->send();
+			->setSubject($subject);
+
+		foreach ($attachments as $attachment) {
+			$message->attach($attachment);
+		}
+
+		$message->send();
 	}
 
 

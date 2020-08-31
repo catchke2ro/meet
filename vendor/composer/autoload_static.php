@@ -139,6 +139,7 @@ class ComposerStaticInit21569d20b333217f3a586e5e4fdb1e78
             'Symfony\\Contracts\\EventDispatcher\\' => 34,
             'Symfony\\Component\\Yaml\\' => 23,
             'Symfony\\Component\\String\\' => 25,
+            'Symfony\\Component\\Process\\' => 26,
             'Symfony\\Component\\Finder\\' => 25,
             'Symfony\\Component\\EventDispatcher\\' => 34,
             'Symfony\\Component\\DomCrawler\\' => 29,
@@ -153,6 +154,7 @@ class ComposerStaticInit21569d20b333217f3a586e5e4fdb1e78
         'P' => 
         array (
             'Psr\\SimpleCache\\' => 16,
+            'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
             'Psr\\EventDispatcher\\' => 20,
@@ -168,6 +170,10 @@ class ComposerStaticInit21569d20b333217f3a586e5e4fdb1e78
         array (
             'MyCLabs\\Enum\\' => 13,
             'Matrix\\' => 7,
+        ),
+        'K' => 
+        array (
+            'Knp\\Snappy\\' => 11,
         ),
         'G' => 
         array (
@@ -311,6 +317,10 @@ class ComposerStaticInit21569d20b333217f3a586e5e4fdb1e78
         array (
             0 => __DIR__ . '/..' . '/symfony/string',
         ),
+        'Symfony\\Component\\Process\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/process',
+        ),
         'Symfony\\Component\\Finder\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/finder',
@@ -342,6 +352,10 @@ class ComposerStaticInit21569d20b333217f3a586e5e4fdb1e78
         'Psr\\SimpleCache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
+        ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
         'Psr\\Http\\Message\\' => 
         array (
@@ -379,6 +393,10 @@ class ComposerStaticInit21569d20b333217f3a586e5e4fdb1e78
         'Matrix\\' => 
         array (
             0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
+        ),
+        'Knp\\Snappy\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/knplabs/knp-snappy/src/Knp/Snappy',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
@@ -467,11 +485,13 @@ class ComposerStaticInit21569d20b333217f3a586e5e4fdb1e78
         'Codeception\\Lib\\Connector\\Yii2\\TransactionForcer' => __DIR__ . '/..' . '/codeception/module-yii2/src/Codeception/Lib/Connector/Yii2/TransactionForcer.php',
         'Codeception\\Lib\\Framework' => __DIR__ . '/..' . '/codeception/lib-innerbrowser/src/Codeception/Lib/Framework.php',
         'Codeception\\Lib\\InnerBrowser' => __DIR__ . '/..' . '/codeception/lib-innerbrowser/src/Codeception/Lib/InnerBrowser.php',
+        'Codeception\\Module\\AbstractAsserts' => __DIR__ . '/..' . '/codeception/module-asserts/src/Codeception/Module/AbstractAsserts.php',
         'Codeception\\Module\\Asserts' => __DIR__ . '/..' . '/codeception/module-asserts/src/Codeception/Module/Asserts.php',
         'Codeception\\Module\\Filesystem' => __DIR__ . '/..' . '/codeception/module-filesystem/src/Codeception/Module/Filesystem.php',
         'Codeception\\Module\\Yii2' => __DIR__ . '/..' . '/codeception/module-yii2/src/Codeception/Module/Yii2.php',
         'Codeception\\Util\\HttpCode' => __DIR__ . '/..' . '/codeception/lib-innerbrowser/src/Codeception/Util/HttpCode.php',
         'Codeception\\Util\\Shared\\Asserts' => __DIR__ . '/..' . '/codeception/lib-asserts/src/Codeception/Util/Shared/Asserts.php',
+        'Codeception\\Util\\Shared\\InheritedAsserts' => __DIR__ . '/..' . '/codeception/lib-asserts/src/Codeception/Util/Shared/InheritedAsserts.php',
         'DivisionByZeroError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/DivisionByZeroError.php',
         'Error' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/Error.php',
         'JsonException' => __DIR__ . '/..' . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',

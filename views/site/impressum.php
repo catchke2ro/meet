@@ -5,7 +5,7 @@ $this->title = 'Impresszum';
 
 
 <div class="stat impressum">
-	<img src="/assets/img/logos/meet_logo.png" alt="MEET logó" class="meetLogo"/>
+	<a href="/"><img src="/assets/img/logos/meet_logo.png" alt="MEET logó" class="meetLogo"/></a>
 	<p>A <strong class="text-primary">Műveld és őrizd! Evangélikus Egyházi Teremtésvédelmi (MEET) program</strong> hivatalos honlapja a meet.lutheran.hu címen érhető el. A meet.lutheran.hu minden tartalma szerzői jogi védelem alatt áll. A honlapon elhelyezett szövegek a lapra és a szerzőkre való hivatkozással szabadon idézhetőek. A minden más tartalom felhasználásához azonban a Magyarországi Evangélikus Egyház Ararát Teremtésvédelmi Munkaágának előzetes, írásbeli engedélye szükséges.</p>
 	<p><strong class="text-primary">A honlap tulajdonosa:<br /></strong>Magyarországi Evangélikus Egyház<br />Székhelye: 1085 Budapest, Üllői út 24.<br />Adószám: 19719483-2-42<br />Technikai szám: 0035 </p>
 	<p><strong class="text-primary">A honlap üzemeltetője:<br /></strong>Magyarországi Evangélikus Egyház<br />Ararát Teremtésvédelmi Munkaága<br />Székhelye: 1085 Budapest, Üllői út 24.<br />Elérhetősége: arterm@lutheran.hu </p>

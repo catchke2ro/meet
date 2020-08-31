@@ -66,12 +66,23 @@ $(document).ready(function () {
 				const coordinates = feature.getGeometry().getCoordinates();
 				popup.setPosition(coordinates);
 				console.log(feature);
-				$popupEl.find('span.name').text(feature.get('data').name);
-				$popupEl.find('span.address').text(feature.get('data').address);
-				$popupEl.find('span.moduleName').text(feature.get('data').lastModuleName);
-				$popupEl.append('<img src="' + feature.get('data').markerIcon + '" class="markerIcon"/>');
-				if ($popupEl.find('a.contact').length) {
-					$popupEl.find('a.contact').attr('href', $popupEl.find('a.contact').data('url')+feature.get('data').orgId);
+				if (typeof feature.get('data').name !== 'undefined') {
+					$popupEl.find('span.name').text(feature.get('data').name);
+				}
+				if (typeof feature.get('data').address !== 'undefined') {
+					$popupEl.find('span.address').text(feature.get('data').address);
+				}
+				if (typeof feature.get('data').lastModuleName !== 'undefined') {
+					$popupEl.find('span.moduleName').text(feature.get('data').lastModuleName);
+				}
+				if (typeof feature.get('data').markerIcon !== 'undefined') {
+					$popupEl.append('<img src="' + feature.get('data').markerIcon + '" class="markerIcon"/>');
+				}
+				if (typeof feature.get('data').orgId !== 'undefined' && $popupEl.find('span.contact').length) {
+					$popupEl.find('span.contact').removeClass('d-none');
+					$popupEl.find('span.contact a').attr('href', $popupEl.find('a.contact').data('url')+feature.get('data').orgId);
+				} else {
+					$popupEl.find('span.contact').addClass('d-none');
 				}
 				$popupEl.removeClass('d-none');
 			} else {
@@ -80,11 +91,19 @@ $(document).ready(function () {
 			}
 		});
 
+		if ($mapDiv.data('default-poi')) {
+			const defaultPoiData = $mapDiv.data('default-poi');
+			addMarker(olProj.fromLonLat([
+				defaultPoiData.lng,
+				defaultPoiData.lat,
+			]), defaultPoiData, pointLayer)
+		}
+
 		$.ajax({
 			url: '/_orgs',
 			success: function (data) {
 				data.forEach(function (row) {
-					if (row.coordinates.lat && row.coordinates.lng) {
+					if (row.coordinates && row.coordinates.lat && row.coordinates.lng) {
 						addMarker(olProj.fromLonLat([
 							row.coordinates.lng,
 							row.coordinates.lat,

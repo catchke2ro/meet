@@ -97,6 +97,11 @@ class Registration extends Model {
 	/**
 	 * @var string
 	 */
+	public $terms2;
+
+	/**
+	 * @var string
+	 */
 	public $recaptcha_response;
 
 
@@ -132,6 +137,7 @@ class Registration extends Model {
 			['pdf', 'required'],
 			['pdf', 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf'],
 			['terms', 'required', 'requiredValue' => 1, 'message' => 'A szabályzat elfogadása kötelező!'],
+			['terms2', 'required', 'requiredValue' => 1, 'message' => 'A feltételek elfogadása kötelező!'],
 			['recaptcha_response', 'required', 'message' => 'CAPTCHA hiba'],
 			['recaptcha_response', recaptcha::class]
 
@@ -158,7 +164,7 @@ class Registration extends Model {
 	/**
 	 * Signs user up.
 	 *
-	 * @return bool|null
+	 * @return bool|array|null
 	 */
 	public function signup() {
 		if (!$this->validate()) {
@@ -241,7 +247,7 @@ class Registration extends Model {
 
 			$transaction->commit();
 
-			return $success ? $person->id : false;
+			return $success ? [$person->id, $organization->id] : false;
 		} catch (\Exception $exception) {
 			$transaction->rollBack();
 		}
@@ -265,7 +271,8 @@ class Registration extends Model {
 			'orgTaxNumber'     => 'Szervezet adószáma',
 			'orgRemoteId'      => 'Adatbázis',
 			'pdf'              => 'Meghatalmazás',
-			'terms'            => 'Adatkezelési szabályzat'
+			'terms'            => 'Adatkezelési szabályzat',
+			'terms2'           => 'Általános Együttműködési Feltételek'
 		];
 	}
 

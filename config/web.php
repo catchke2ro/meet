@@ -1,6 +1,7 @@
 <?php
 
 
+use app\components\AuthManager;
 use app\models\lutheran\User;
 
 $params = require __DIR__ . '/params.php';
@@ -17,6 +18,9 @@ $config = [
 		'@npm'   => '@vendor/npm-asset',
 	],
 	'components' => [
+		'authManager' => [
+			'class' => AuthManager::class,
+		],
 		'request'      => [
 			'cookieValidationKey' => 'OMLFrqqEvaSHG2qTgZTAv4W8uIp-FoDa',
 		],
@@ -62,6 +66,7 @@ $config = [
 				//'/resztvevok'              => 'site/participants',
 				'/aktivitas'               => 'site/posts',
 				'/programleiras'           => 'site/description',
+				'/aef'                     => 'site/aef',
 				'/modulok'                 => 'site/modules',
 				'/dokumentumok'            => 'site/documents',
 				'/adatkezelesi-szabalyzat' => 'site/terms',
@@ -92,7 +97,7 @@ $config = [
 				'rules' => [
 					[
 						'allow' => true,
-						'roles' => ['@'],
+						'roles' => ['admin'],
 					],
 				],
 			],

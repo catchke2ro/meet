@@ -51,10 +51,10 @@ $this->title = 'Főoldal';
 	<div class="teaser">
 		<div class="imgWrapper">
 			<a href="/modulok">
-				<img src="/assets/img/meet_nyito_kiskep_02.jpg" alt="Modulok (Bibliai novények)" />
+				<img src="/assets/img/meet_nyito_kiskep_02.jpg" alt="Modulok (Bibliai növények)" />
 			</a>
 		</div>
-		<h3><a href="/modulok">Modulok (Bibliai novények)</a></h3>
+		<h3><a href="/modulok">Modulok (Bibliai növények)</a></h3>
 		<p class="teaserText">A közösségi szerepvállalás, a teremtést óvó vállalások és elköteleződés mértékétől függően, a közösségek öt különböző
 			modulból választhatják részvételüket a programban. A modulokat szimbolizáló bibliai növények mindegyike szép, a maga nemében mindegyik
 			teljes, és mindegyik fontos üzenetet hordoz. Neked melyik a kedvenc növényed? Nézd meg bibliai növényeinket.</p>
@@ -64,13 +64,11 @@ $this->title = 'Főoldal';
 	<div class="teaser">
 		<div class="imgWrapper">
 			<a href="/aktivitas">
-				<img src="/assets/img/meet_nyito_kiskep_03.jpg" alt="Jógyakorlatok" />
+				<img src="/assets/img/meet_nyito_kiskep_03.jpg" alt="Aktivitás" />
 			</a>
 		</div>
-		<h3><a href="/aktivitas">Jógyakorlatok</a></h3>
-		<p class="teaserText">A MEET program résztvevő gyülekezetei, iskolái, óvodái, diakóniai intézményei, közösségei és intézményei megosztják
-			tapasztalataikat, jógyakorlataikat, illetve a közösségben megvalósuló eseményekről és rendezvényekről hírt adnak. Inspirációra vágysz?
-			Te is szerveznél valamilyen teremtésvédelmi programot? Tallózz a résztvevők hírei, programjai, ötletei között.</p>
+		<h3><a href="/aktivitas">Aktivitás</a></h3>
+		<p class="teaserText">A MEET program résztvevő gyülekezetei, iskolái, óvodái, diakóniai intézményei és minden típusú közösségei megosztják tapasztalataikat, jógyakorlataikat, segédanyagaikat, illetve a közösségben megvalósuló teremtésvédelmi eseményekről és rendezvényekről hírt adnak. Inspirációra vágysz? Te is szerveznél valamilyen teremtésvédelmi programot? Tallózz a résztvevők hírei, programjai, ötletei között, és küldd meg Te is közösséged híreit!</p>
 		<a href="/aktivitas" class="moreLink">Bővebben >></a>
 	</div>
 
@@ -78,11 +76,11 @@ $this->title = 'Főoldal';
 
 <a name="resztvevok"></a>
 <div class="homeMap">
-	<div id="map"></div>
+	<div id="map" data-default-poi='{"lat": 47.487780, "lng": 19.066010, "name": "MEET központ", "markerIcon": "/assets/img/map_markers/meet_poi.png"}'></div>
 	<div id="mapPopup" class="d-none">
 		<span class="name"></span><br />
 		<span class="moduleName"></span> | <span class="address"></span><br />
-		<span class="fa fa-envelope"></span>&nbsp;<a class="contact" href="javascript:void(0)" data-url="/uzenet?orgId=">Üzenet küldése</a>
+		<span class="contact"><span class="fa fa-envelope"></span>&nbsp;<a href="javascript:void(0)" data-url="/uzenet?orgId=">Üzenet küldése</a></span>
 	</div>
 </div>
 
@@ -102,7 +100,7 @@ $this->title = 'Főoldal';
 							<h4>Műveld és őrizd! Evangélikus Egyházi Teremtésvédelmi program</h4>
 							<ul>
 								<li>e-mail: <strong><a href="mailto:meet@lutheran.hu">meet@lutheran.hu</a></strong></li>
-								<li>postai cím: <strong>Magyarországi Evangélikus Egyház - Ararát 1085 Budapest, Üllői út 24.</strong></li>
+								<li>postai cím: <strong>Magyarországi Evangélikus Egyház - Ararát <br />1085 Budapest, Üllői út 24.</strong></li>
 							</ul>
 						</td>
 					</tr>

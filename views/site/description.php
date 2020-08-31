@@ -29,7 +29,7 @@ $this->title = 'Programleírás';
 	<h4>A jelentkezés menete</h4>
 	<p>A közösség jogszerű döntéshozó szervének határozatával lehetséges a programban részt venni. A határozat kijelöl egy személyt vagy egy csoportot, akit vagy akiket a teremtésvédelmi ügyek képviseletével a közösségen belül megbíz. Ezt követően a felhatalmazott képviselő (MEET referens) jogosult a program adminisztrációját végezni.</p>
 	<p>A jelentkezést követően online-elektronikus felületen keresztül van lehetőség a közösség egyedi teremtésvédelmi programját összeállítani. A program összeállításában kérdőív (önteszt) kitöltés és tervezési segédlet is támogatást nyújt. A program részterületek szerint és időintervallumokban is progresszíven tervezhető, tartalma egyedi elképzelésekkel bővíthető.</p>
-	<p>(Jelentkezési segédlet és határozati minta elérhető itt.)</p>
+	<p>A jelentkezés feltételeiről további információ elérhető az <a href="/aef">Általános Együttműködési Feltélekeben</a>. Egyházközségek részére presbiteri határozat minta letölthető <a href="/dokumentumok">itt</a></p>
 
 	<img src="/assets/img/stat/1pr_3.jpg" alt="MEET táska"/>
 
@@ -47,7 +47,7 @@ $this->title = 'Programleírás';
 	<img src="/assets/img/stat/1pr_5.jpg" alt="MEET, Ararát"/>
 
 	<h4>A beszámolás menete</h4>
-	<p>A beszámolás önellenőrzéssel történik, a közösség maga értékeli ki, hogy a kitűzött célokból, tervekből mit sikerült megvalósítani és mit nem. A megvalósított célok megtartásáról és a nem megvalósított célok további tervezéséről a közösség maga dönthet. A beszámolást követően a közösség új vállalási célt is megfogalmazhat magának, és új modulba is átjelentkezhet. A beszámolás évente történik, de amennyiben a közösség új modulba szeretne jelentkezni, az önértékelő beszámolóját hamarabb is elkészítheti.</p>
+	<p>A beszámolás önellenőrzéssel történik, a közösség maga értékeli ki, hogy a kitűzött célokból, tervekből mit sikerült megvalósítani és mit nem. A megvalósított célok megtartásáról és a nem megvalósított célok további tervezéséről a közösség maga dönthet. A beszámolást követően a közösség új vállalási célt is megfogalmazhat magának, és új modulba is átjelentkezhet. A beszámolás évente történik, de amennyiben a közösség új modulba szeretne átjelentkezni, önértékelő beszámolóját egy évnél hamarabb, de legkorábban három hónap elteltével elkészítheti.</p>
 
 	<img src="/assets/img/stat/1pr_6.jpg" alt="MEET plakátok"/>
 
@@ -55,10 +55,11 @@ $this->title = 'Programleírás';
 	<p>A Magyarországi Evangélikus Egyház Ararát Teremtésvédelmi Munkaága a programhoz csatlakozó közösségeket támogatja és segíti teremtésvédelmi programjaik és céljaik megfogalmazásában és megvalósításban. A Munkaág koordinálja a teljes program működését és vezeti a program adminisztrációját.</p>
 	<p> A Teremtésvédelmi Munkaág továbbképzéseket szervez a résztvevő közösségek teremtésvédelmi megbízottjainak, képviselőinek. A képzési alkalmak a közösségekben folyó munkát lelkileg, szakmailag és közösségépítési, kapcsolatteremtési lehetőséggel is támogatják.</p>
 	<p>A Munkaág időnként találkozót szervez a programban résztvevő közösségek számára, részvételi moduloktól függetlenül és régióhatárokat átívelő formában.</p>
-	
+
 	<div class="text-center">
 		<a class="btn btn-primary registerCTA" href="/regisztracio">Jelentkezem a programba</a>
+		<p>Elolvasom az <a href="/aef">Általános Együttműködési Feltételeket</a></p>
 	</div>
 
-	<img src="/assets/img/logos/meet_logo.png" alt="MEET logó" class="meetLogo"/>
+	<a href="/"><img src="/assets/img/logos/meet_logo.png" alt="MEET logó" class="meetLogo"/></a>
 </div>

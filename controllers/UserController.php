@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\components\Email;
 use app\models\forms\Login;
 use app\models\forms\Registration;
+use app\models\lutheran\Organization;
 use app\models\lutheran\Person;
 use Yii;
 use yii\filters\AccessControl;
@@ -66,12 +67,19 @@ class UserController extends Controller {
 		$model = new Registration();
 
 		if ($model->load(Yii::$app->request->post())) {
-			if (($personId = $model->signup())) {
+			if (($return = $model->signup())) {
+				[$personId, $orgId] = $return;
 				$person = Person::findOne(['id' => $personId]);
+				$organization = Organization::findOne(['id' => $orgId]);
 				$email = $person->getEmail();
 
 				(new Email())->sendEmail('new_registration', $email, 'MEET Értesítő regisztráció kezdeményezésről', [
 					'person' => $person
+				]);
+
+				(new Email())->sendEmail('new_registration_admin', 'meet@lutheran.hu', 'Új regisztráció', [
+					'person' => $person,
+					'organization' => $organization
 				]);
 
 				Yii::$app->session->setFlash('success', 'Sikeresen kezdeményzted a regisztrációdat. E-mail-ben értesítünk, amint aktiváltuk a regisztrációt.');

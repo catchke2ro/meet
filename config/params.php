@@ -76,5 +76,11 @@ return [
 			401, //intézmény
 		],
 	],
-	'token'               => 'yVeU5UcUWgRs9niTrmoZ32UIg1baUsPC'
+	'token'               => 'yVeU5UcUWgRs9niTrmoZ32UIg1baUsPC',
+
+	'admins' => [
+		'abalint',
+		'tbagi',
+		'zskoltai'
+	]
 ];

@@ -25181,6 +25181,21 @@ a.text-muted:hover {
     color: #ffffff;
     margin-bottom: 0; }
 
+.text-mustarmag {
+  color: #fdc06e; }
+
+.text-liliom {
+  color: #b19aca; }
+
+.text-szolovesszo {
+  color: #5ebe76; }
+
+.text-fugefa {
+  color: #d46d80; }
+
+.text-cedrus {
+  color: #598fcb; }
+
 .layout-frontend .wrapper header .headerTop {
   display: flex; }
   .layout-frontend .wrapper header .headerTop .logo {
@@ -25289,7 +25304,8 @@ a.text-muted:hover {
 .content-wrapper.home .homeMap {
   overflow: hidden;
   border-radius: 10px;
-  margin-top: 2.4rem; }
+  margin-top: 2.4rem;
+  margin-bottom: 4rem; }
   .content-wrapper.home .homeMap #map {
     width: 100%;
     height: 600px; }
