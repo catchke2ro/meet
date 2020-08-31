@@ -38,13 +38,13 @@ abstract class User extends ActiveRecord implements IdentityInterface {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return '__users';
+		return 'virtualmail_users__v';
 	}
 
 
-	public static function getDb() {
+	/*public static function getDb() {
 		return Yii::$app->get('dbmail');
-	}
+	}*/
 
 
 	/**
