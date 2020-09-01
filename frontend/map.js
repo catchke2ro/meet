@@ -1,5 +1,6 @@
 import mapStyle from './mapStyle';
 import { Map, View, Feature, Overlay } from 'ol';
+import {defaults} from 'ol/interaction';
 import { Point } from 'ol/geom';
 import { Style, Icon } from 'ol/style';
 import * as olProj from "ol/proj"
@@ -25,6 +26,9 @@ $(document).ready(function () {
 
 		const map = new Map({
 			target: 'map',
+			interactions: defaults({
+				mouseWheelZoom: false,
+			}),
 			view: new View({
 				constrainResolution: true,
 				center: olProj.fromLonLat([19.503736, 47.180086]),

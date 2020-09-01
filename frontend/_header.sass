@@ -21,6 +21,9 @@
 		justify-content: right
 		border-bottom: none
 
+		div.collapse
+			justify-content: right
+
 		.nav-item
 			position: relative
 			&:before
@@ -57,5 +60,37 @@
 
 		.nav-item.loggedInMenu .nav-link
 			color: $secondary
+
+		.navbar-toggler
+			display: block
+			width: 100%
+			font-weight: lighter
+			color: $primary
+
+			+media-breakpoint-up('md')
+				display: none
+
+		+media-breakpoint-down('md')
+
+			border: 1px solid $green
+			border-radius: 5px
+			margin-top: 1rem
+			margin-bottom: 1rem
+			padding: 0px
+
+			.nav-item
+				width: 100%
+				text-align: center
+				border-bottom: 1px solid $gray-500
+				&:before
+					display: none
+				a.nav-link
+					&.active, &:hover
+						&:before
+							height: 100%
+							top: 0px
+							border-radius: 0px
+
+
 
 

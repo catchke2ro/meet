@@ -63,31 +63,40 @@ AppAsset::register($this);
 			<?php } ?>
 		</div>
 
-		<nav class="main-header navbar navbar-expand navbar-white navbar-light">
-			<!-- Left navbar links -->
-			<ul class="navbar-nav">
-				<li class="nav-item d-none d-sm-inline-block">
-					<a href="/programleiras" class="nav-link <?=menuActiveClass('/programleiras');?>">Programleírás</a>
-				</li>
-				<li class="nav-item d-none d-sm-inline-block">
-					<a href="/modulok" class="nav-link <?=menuActiveClass('/modulok');?>">Modulok</a>
-				</li>
-				<li class="nav-item d-none d-sm-inline-block">
-					<a href="/aktivitas" class="nav-link <?=menuActiveClass('/aktivitas');?>">Aktivitás</a>
-				</li>
-				<li class="nav-item d-none d-sm-inline-block">
-					<a href="/#resztvevok" class="nav-link">Résztvevők</a>
-				</li>
-				<li class="nav-item d-none d-sm-inline-block">
-					<a href="/#kapcsolat" class="nav-link">Kapcsolat</a>
-				</li>
+		<nav class="main-header navbar navbar-expand-md navbar-white navbar-light">
 
-				<?php if (!Yii::$app->user->isGuest) { ?>
-					<li class="nav-item d-none d-sm-inline-block loggedInMenu">
-						<a href="/vallalasok" class="nav-link <?=menuActiveClass('/vallalasok');?>">Vállalás</a>
+			<!-- Collapse button -->
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Menü">
+				<span class="fa fa-bars"></span> <strong>Menü</strong>
+			</button>
+
+			<div class="collapse navbar-collapse" id="mainNav">
+				<!-- Left navbar links -->
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a href="/programleiras" class="nav-link <?=menuActiveClass('/programleiras');?>">Programleírás</a>
 					</li>
-				<?php } ?>
-			</ul>
+					<li class="nav-item">
+						<a href="/modulok" class="nav-link <?=menuActiveClass('/modulok');?>">Modulok</a>
+					</li>
+					<li class="nav-item">
+						<a href="/aktivitas" class="nav-link <?=menuActiveClass('/aktivitas');?>">Aktivitás</a>
+					</li>
+					<li class="nav-item">
+						<a href="/#resztvevok" class="nav-link">Résztvevők</a>
+					</li>
+					<li class="nav-item">
+						<a href="/#kapcsolat" class="nav-link">Kapcsolat</a>
+					</li>
+
+					<?php if (!Yii::$app->user->isGuest) { ?>
+						<li class="nav-item d-none d-sm-inline-block loggedInMenu">
+							<a href="/vallalasok" class="nav-link <?=menuActiveClass('/vallalasok');?>">Vállalás</a>
+						</li>
+					<?php } ?>
+				</ul>
+			</div>
+
 		</nav>
 	</header>
 

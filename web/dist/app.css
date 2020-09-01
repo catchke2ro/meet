@@ -25217,6 +25217,8 @@ a.text-muted:hover {
 .layout-frontend .wrapper nav.main-header {
   justify-content: right;
   border-bottom: none; }
+  .layout-frontend .wrapper nav.main-header div.collapse {
+    justify-content: right; }
   .layout-frontend .wrapper nav.main-header .nav-item {
     position: relative; }
     .layout-frontend .wrapper nav.main-header .nav-item:before {
@@ -25250,6 +25252,31 @@ a.text-muted:hover {
       z-index: -1; }
   .layout-frontend .wrapper nav.main-header .nav-item.loggedInMenu .nav-link {
     color: #0088cb; }
+  .layout-frontend .wrapper nav.main-header .navbar-toggler {
+    display: block;
+    width: 100%;
+    font-weight: lighter;
+    color: #6dc067; }
+    @media (min-width: 768px) {
+      .layout-frontend .wrapper nav.main-header .navbar-toggler {
+        display: none; } }
+  @media (max-width: 991.98px) {
+    .layout-frontend .wrapper nav.main-header {
+      border: 1px solid #6dc067;
+      border-radius: 5px;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      padding: 0px; }
+      .layout-frontend .wrapper nav.main-header .nav-item {
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid #808080; }
+        .layout-frontend .wrapper nav.main-header .nav-item:before {
+          display: none; }
+        .layout-frontend .wrapper nav.main-header .nav-item a.nav-link.active:before, .layout-frontend .wrapper nav.main-header .nav-item a.nav-link:hover:before {
+          height: 100%;
+          top: 0px;
+          border-radius: 0px; } }
 
 .content-wrapper.home .hero {
   width: 100%;
@@ -25300,6 +25327,9 @@ a.text-muted:hover {
       text-align: right;
       font-weight: 600;
       font-size: 0.875rem; }
+    @media (max-width: 767.98px) {
+      .content-wrapper.home .teasers .teaser {
+        flex: 100% 0 0; } }
 
 .content-wrapper.home .homeMap {
   overflow: hidden;
@@ -25596,6 +25626,11 @@ a.text-muted:hover {
         display: none; }
       .content-wrapper.posts .postsIndex > .postItem.opened .text {
         display: block; }
+  @media (max-width: 767.98px) {
+    .content-wrapper.posts .postsIndex {
+      grid-template-columns: repeat(auto-fill, 1fr); }
+      .content-wrapper.posts .postsIndex > .postItem.opened {
+        grid-column: span 1; } }
 
 div.stat {
   margin-top: 2rem;
