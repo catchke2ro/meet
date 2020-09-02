@@ -32,7 +32,7 @@ $this->title = 'Főoldal';
 	</div>
 </div>
 
-<div class="teasers row">
+<div class="teasers">
 
 	<div class="teaser">
 		<div class="imgWrapper">

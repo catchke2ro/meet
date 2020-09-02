@@ -25165,6 +25165,10 @@ a.text-muted:hover {
   margin: auto;
   padding: 20px 40px;
   background-color: transparent; }
+  @media (max-width: 767.98px) {
+    .layout-frontend .wrapper > header,
+    .layout-frontend .wrapper > .content-wrapper {
+      padding: 15px 25px; } }
 
 .layout-frontend .wrapper > header {
   padding-bottom: 0px; }
@@ -25256,11 +25260,15 @@ a.text-muted:hover {
     display: block;
     width: 100%;
     font-weight: lighter;
-    color: #6dc067; }
+    color: #6dc067;
+    border: none;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    padding: 0.5rem 1rem; }
     @media (min-width: 768px) {
       .layout-frontend .wrapper nav.main-header .navbar-toggler {
         display: none; } }
-  @media (max-width: 991.98px) {
+  @media (max-width: 767.98px) {
     .layout-frontend .wrapper nav.main-header {
       border: 1px solid #6dc067;
       border-radius: 5px;
@@ -25270,7 +25278,7 @@ a.text-muted:hover {
       .layout-frontend .wrapper nav.main-header .nav-item {
         width: 100%;
         text-align: center;
-        border-bottom: 1px solid #808080; }
+        border-top: 1px solid #dee2e6; }
         .layout-frontend .wrapper nav.main-header .nav-item:before {
           display: none; }
         .layout-frontend .wrapper nav.main-header .nav-item a.nav-link.active:before, .layout-frontend .wrapper nav.main-header .nav-item a.nav-link:hover:before {
@@ -25297,9 +25305,11 @@ a.text-muted:hover {
 .content-wrapper.home .teasers {
   display: flex;
   justify-content: space-between;
-  margin-top: 2.4rem; }
+  margin-top: 2.4rem;
+  flex-wrap: wrap; }
   .content-wrapper.home .teasers .teaser {
-    flex: calc(33.33333% - 1.8rem) 0 0; }
+    flex: calc(33.33333% - 1.8rem) 0 0;
+    margin-bottom: 2.4rem; }
     .content-wrapper.home .teasers .teaser .imgWrapper {
       position: relative;
       width: 100%;
@@ -25312,13 +25322,14 @@ a.text-muted:hover {
         top: 0px;
         left: 0px;
         max-width: 100%; }
-    .content-wrapper.home .teasers .teaser h3, .content-wrapper.home .teasers .teaser h3 a {
+    .content-wrapper.home .teasers .teaser h3 a {
       text-align: center;
       font-weight: bold;
       padding: 1rem;
       font-size: 1.2rem;
       color: #6dc067;
-      background-color: #eeeeee; }
+      background-color: #eeeeee;
+      display: block; }
     .content-wrapper.home .teasers .teaser .teaserText {
       hyphens: auto;
       text-align: justify; }
@@ -25556,7 +25567,8 @@ a.text-muted:hover {
   .content-wrapper.posts .postsIndex > .postItem {
     overflow: hidden;
     padding: 1.6rem;
-    transition: grid-column 1s; }
+    transition: grid-column 1s;
+    grid-row-end: span 15; }
     .content-wrapper.posts .postsIndex > .postItem .imageWrapper {
       position: relative;
       width: 100%;
@@ -25629,6 +25641,9 @@ a.text-muted:hover {
   @media (max-width: 767.98px) {
     .content-wrapper.posts .postsIndex {
       grid-template-columns: repeat(auto-fill, 1fr); }
+      .content-wrapper.posts .postsIndex > .postItem {
+        padding-left: 0px;
+        padding-right: 0px; }
       .content-wrapper.posts .postsIndex > .postItem.opened {
         grid-column: span 1; } }
 
