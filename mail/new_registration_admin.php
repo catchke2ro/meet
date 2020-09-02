@@ -14,6 +14,6 @@ use app\models\lutheran\Person;
 
 <ul>
 	<li>Név: <?=$person->nev_elotag ? $person->nev_elotag.' ' : '';?><?=$person->nev;?></li>
-	<li>Név: <?=$person->emailContact ? $person->emailContact->ertek1 : '';?></li>
+	<li>E-mail: <?=$person->emailContact ? $person->emailContact->ertek1 : '';?></li>
 	<li>Szervezet: #<?=$organization->id;?> <?=$organization->nev;?></li>
 </ul>
