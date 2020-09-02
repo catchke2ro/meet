@@ -13,7 +13,7 @@ nbproject
 Thumbs.db
 
 # composer vendor dir
-#/vendor
+/vendor
 
 # composer itself is not needed
 composer.phar
@@ -35,8 +35,12 @@ tests/_support/_generated
 /logs
 
 /node_modules
-#/web/dist
+/web/dist
 
 
 composer.lock
 .docker-sync
+
+config/*.local.php
+
+storage/pdf
