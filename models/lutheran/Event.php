@@ -82,6 +82,7 @@ class Event extends BaseEvent {
 
 
 	/**
+	 * @param int    $orgId
 	 * @param string $name
 	 * @param string $email
 	 * @param string $message
@@ -96,7 +97,7 @@ class Event extends BaseEvent {
 		$event->ref_szervegyseg_id = $orgId;
 		$event->ertek1 = $name;
 		$event->ertek2 = $email;
-		$event->ertek10 = $message;
+		$event->uzenet = $message;
 
 		return $event;
 	}
