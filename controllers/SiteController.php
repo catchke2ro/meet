@@ -2,9 +2,7 @@
 
 namespace app\controllers;
 
-use app\components\Pdf;
 use app\models\forms\OrgContact;
-use app\models\forms\Registration;
 use app\models\lutheran\Organization;
 use app\models\Post;
 use Yii;

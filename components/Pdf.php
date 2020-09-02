@@ -33,7 +33,7 @@ class Pdf extends Component {
 		$view = new View();
 		$html = $view->render($template, $vars);
 
-		$snappy = new \Knp\Snappy\Pdf('/usr/bin/wkhtmltopdf');
+		$snappy = new \Knp\Snappy\Pdf('xvfb-run /usr/bin/wkhtmltopdf');
 
 		$baseDir = Yii::$app->getBasePath() . '/storage/pdf';
 		$file = $baseDir.'/'.$filename;

@@ -250,6 +250,7 @@ class Registration extends Model {
 			return $success ? [$person->id, $organization->id] : false;
 		} catch (\Exception $exception) {
 			$transaction->rollBack();
+			throw $exception;
 		}
 	}
 

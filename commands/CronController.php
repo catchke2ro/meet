@@ -57,7 +57,7 @@ class CronController extends Controller {
 
 				try {
 					$pdfFilename = (new Pdf())->generatePdf('/pdf/mustar', 'Mustarmag.pdf', [
-						'organization' => Organization::findOne(['id' => $notMailedApprovedReg->organization])
+						'organization' => $notMailedApprovedReg->organization
 					]);
 
 					(new Email())->sendEmail(
