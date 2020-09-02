@@ -136,43 +136,7 @@ $(function () {
 		});
 	}
 
-	let changeTimeout;
-	$(document).on('change', 'form.commitmentsForm *', function () {
-		const $form = $(this).closest('form');
-		clearTimeout(changeTimeout);
-		changeTimeout = setTimeout(function () {
-			updateScore($form)
-		}, 500)
-	});
-	updateScore($('form.commitmentsForm'));
 
-
-	const $historyModal = $('#historyModal');
-	$historyModal.on('show.bs.modal', function (event) {
-		const $a = $(event.relatedTarget);
-		const commitmentId = $a.data('commitmentid');
-		const commitmentName = $a.data('commitment');
-		const modal = $(this);
-
-		modal.find('.modal-header p').html(commitmentName);
-		modal.find('.modal-body').html(modal.find('.modal-loader').html());
-
-		$.ajax({
-			url: '/vallalasok/history',
-			method: 'GET',
-			data: {
-				commitmentId: commitmentId,
-			},
-			success: function (data) {
-				modal.find('.modal-body').html(data);
-			},
-		});
-	});
-	$historyModal.on('hidden.bs.modal', function (event) {
-		const modal = $(this);
-		modal.find('.modal-header h3').html('');
-		modal.find('.modal-body').html('');
-	});
 
 
 	const $treeModules = $('.card.modules');
@@ -202,6 +166,44 @@ $(function () {
 		if (initialModule !== '') {
 			$treeModuleList.find('a.selectModule[data-moduleid="' + initialModule + '"]').click();
 		}
+
+		let changeTimeout;
+		$(document).on('change', 'form.commitmentsForm *', function () {
+			const $form = $(this).closest('form');
+			clearTimeout(changeTimeout);
+			changeTimeout = setTimeout(function () {
+				updateScore($form)
+			}, 500)
+		});
+		updateScore($('form.commitmentsForm'));
+
+
+		const $historyModal = $('#historyModal');
+		$historyModal.on('show.bs.modal', function (event) {
+			const $a = $(event.relatedTarget);
+			const commitmentId = $a.data('commitmentid');
+			const commitmentName = $a.data('commitment');
+			const modal = $(this);
+
+			modal.find('.modal-header p').html(commitmentName);
+			modal.find('.modal-body').html(modal.find('.modal-loader').html());
+
+			$.ajax({
+				url: '/vallalasok/history',
+				method: 'GET',
+				data: {
+					commitmentId: commitmentId,
+				},
+				success: function (data) {
+					modal.find('.modal-body').html(data);
+				},
+			});
+		});
+		$historyModal.on('hidden.bs.modal', function (event) {
+			const modal = $(this);
+			modal.find('.modal-header h3').html('');
+			modal.find('.modal-body').html('');
+		});
 	}
 
 

@@ -5,7 +5,7 @@ $this->title = 'Általános Együttműködési Feltételek';
 
 
 <div class="stat description">
-	<img src="/assets/img/logos/meet_logo.png" alt="MEET logó" class="meetLogo"/>
+	<a href="/"><img src="/assets/img/logos/meet_logo.png" alt="MEET logó" class="meetLogo"/></a>
 	<h2 style="text-align: center;">Műveld és őrizd! Evangélikus Egyházi Teremtésvédelmi program</h2>
 	<h2 style="text-align: center;">Általános Együttműködési Feltételek</h2>
 	<h3 style="text-align: center;">2020. szeptember 1.</h3>
