@@ -50,8 +50,19 @@ class AppAsset extends AssetBundle {
 	public function init() {
 		parent::init();
 
+		$baseDir = Yii::$app->getBasePath().'/web';
+
 		foreach ($this->js as &$js) {
 			$js = preg_replace('/\{siteKey\}/', Yii::$app->params['recaptcha_site_key'], $js);
+			if (strpos($js, '/') === 0 && file_exists($baseDir.$js)) {
+				$js.='?'.filemtime($baseDir.$js);
+			}
+		}
+
+		foreach ($this->css as &$css) {
+			if (strpos($css, '/') === 0 && file_exists($baseDir.$css)) {
+				$css.='?'.filemtime($baseDir.$css);
+			}
 		}
 	}
 
