@@ -25399,6 +25399,14 @@ a.text-muted:hover {
     float: none;
     text-align: center; }
 
+@media (max-width: 767.98px) {
+  .content-wrapper.login .card-body, .content-wrapper.registration .card-body {
+    padding: 1rem; }
+    .content-wrapper.login .card-body fieldset, .content-wrapper.registration .card-body fieldset {
+      border-left: none !important;
+      border-right: none !important;
+      padding: 0px !important; } }
+
 .treeAccordion {
   width: 95%;
   margin: auto; }
