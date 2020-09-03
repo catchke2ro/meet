@@ -78,6 +78,10 @@ class Login extends Model {
 			if (!($user = $this->getUser())) {
 				return;
 			}
+
+			if (in_array($this->getUser()->id, Yii::$app->params['admins'])) {
+				return true;
+			}
 			$registrationValid = $user->validateRegistration();
 			switch ($registrationValid) {
 				case 0:

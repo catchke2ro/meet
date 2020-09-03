@@ -160,7 +160,7 @@ abstract class User extends ActiveRecord implements IdentityInterface {
 	 * @return bool if password provided is valid for current user
 	 */
 	public function validatePassword($password) {
-		return Yii::$app->security->validatePassword($password, $this->crypt);
+		return password_verify($password, $this->crypt);
 	}
 
 
