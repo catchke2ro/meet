@@ -17,6 +17,7 @@ use yii\db\ActiveRecord;
  * @property int                    $id
  * @property string                 $name
  * @property int                    $order
+ * @property bool                   $is_active
  * @property string                 $description
  * @property array|QuestionOption[] $options
  * @property QuestionCategory       $category

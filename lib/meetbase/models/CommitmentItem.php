@@ -18,6 +18,7 @@ use yii\web\Request;
  * @property int                      $id
  * @property string                   $name
  * @property int                      $order
+ * @property bool                     $is_active
  * @property string                   $description
  * @property array|CommitmentOption[] $options
  * @property CommitmentCategory       $category
@@ -36,7 +37,7 @@ abstract class CommitmentItem extends ActiveRecord implements ItemInterface {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return Yii::$app->params['table_prefix'].'commitments';
+		return Yii::$app->params['table_prefix'] . 'commitments';
 	}
 
 
@@ -63,8 +64,8 @@ abstract class CommitmentItem extends ActiveRecord implements ItemInterface {
 	public function getIntervalValue(Request $request, int $instance) {
 		$value = $this->months_min;
 		if ($request->isPost &&
-			!empty($request->getBodyParam('intervals')) &&
-			!empty($request->getBodyParam('options')[$this->id][$instance])
+		    !empty($request->getBodyParam('intervals')) &&
+		    !empty($request->getBodyParam('options')[$this->id][$instance])
 		) {
 			$value = (int) $request->getBodyParam('options')[$this->id][$instance];
 		}

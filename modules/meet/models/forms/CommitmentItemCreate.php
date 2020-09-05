@@ -53,6 +53,11 @@ class CommitmentItemCreate extends Model {
 	 */
 	private $category;
 
+	/**
+	 * @var bool
+	 */
+	public $isActive;
+
 
 	/**
 	 * CommitmentItemCreate constructor.
@@ -75,6 +80,7 @@ class CommitmentItemCreate extends Model {
 			['name', 'required'],
 			['order', 'number'],
 			['description', 'safe'],
+			['isActive', 'safe'],
 			['monthStep', 'integer'],
 			['monthsMin', 'integer'],
 			['monthsMax', 'integer'],
@@ -99,6 +105,7 @@ class CommitmentItemCreate extends Model {
 			$commitmentItem->name = $this->name;
 			$commitmentItem->description = $this->description;
 			$commitmentItem->order = $this->order;
+			$commitmentItem->is_active = $this->isActive;
 			$commitmentItem->commitment_category_id = $this->category->id;
 			$commitmentItem->month_step = $this->monthStep;
 			$commitmentItem->months_max = $this->monthsMax;
@@ -123,6 +130,7 @@ class CommitmentItemCreate extends Model {
 			'name'        => 'Név',
 			'description' => 'Leírás',
 			'order'       => 'Sorrend',
+			'isActive'    => 'Aktív',
 			'monthStep'   => 'Hónapok lépésköz',
 			'monthsMin'   => 'Minimum hónapok',
 			'monthsMax'   => 'Maximum hónapok',

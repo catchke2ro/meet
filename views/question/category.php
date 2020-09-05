@@ -47,6 +47,9 @@ $hasInstances = $questionCategory->has_instances;
 					<?php } ?>
 					<div class="card-body">
 						<?php foreach ($questionCategory->items as $question) { ?>
+							<?php if (!$question->is_active) {
+								continue;
+							} ?>
 							<?=$this->render('question', ['question' => $question, 'instance' => $inst]);?>
 						<?php } ?>
 					</div>

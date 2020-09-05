@@ -25,6 +25,7 @@ $this->title = 'Vállalás módosítása';
 				<?=$form->field($model, 'name')->label('Név')->textInput()?>
 				<?=$form->field($model, 'description')->label('Leírás')->textarea()?>
 				<?=$form->field($model, 'order')->label('Sorrend')->textInput(['type' => 'number'])?>
+				<?=$form->field($model, 'isActive')->label('Aktív', ['class' => 'custom-control-label'])->checkbox()?>
 				<?=$form->field($model, 'monthStep')->label('Hónapok lépésköz')->textInput(['type' => 'number'])?>
 				<?=$form->field($model, 'monthsMin')->label('Minimum hónapok')->textInput(['type' => 'number'])?>
 				<?=$form->field($model, 'monthsMax')->label('Maximum hónapok')->textInput(['type' => 'number'])?>

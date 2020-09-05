@@ -56,6 +56,9 @@ $instanceCount = max($instanceCountRequest, $instanceCountQuestion);
 					<?php } ?>
 					<div class="card-body">
 						<?php foreach ($commitmentCategory->items as $commitment) { ?>
+							<?php if (!$commitment->is_active) {
+								continue;
+							} ?>
 							<?=$this->render('commitment', [
 								'commitment'               => $commitment,
 								'instanceNumber'           => $inst,

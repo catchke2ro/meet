@@ -109,9 +109,15 @@ $this->title = 'Vállalások';
 		?>
 	</div>
 
-	<div class="text-center">
-		<button type="submit" class="btn btn-secondary">Elküldöm a vállalásokat</button>
-	</div>
+	<?php if (!$fill->isApproved()) { ?>
+		<div class="text-center">
+			<p>Legutóbbi vállalásod elfogadásra vár. Amíg ez nem történt meg, nem tudsz új vállalást leadni.</p>
+		</div>
+	<?php } else { ?>
+		<div class="text-center">
+			<button type="submit" class="btn btn-secondary">Elküldöm a vállalásokat</button>
+		</div>
+	<?php } ?>
 </form>
 
 

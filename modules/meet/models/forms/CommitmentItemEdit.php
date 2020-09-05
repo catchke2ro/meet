@@ -29,6 +29,7 @@ class CommitmentItemEdit extends CommitmentItemCreate {
 		$this->commitmentItem = $commitmentItem;
 		$this->name = $commitmentItem->name;
 		$this->order = $commitmentItem->order;
+		$this->isActive = $commitmentItem->is_active;
 		$this->description = $commitmentItem->description;
 		$this->monthStep = $commitmentItem->month_step;
 		$this->monthsMin = $commitmentItem->months_min;
@@ -54,6 +55,7 @@ class CommitmentItemEdit extends CommitmentItemCreate {
 			$this->commitmentItem->name = $this->name;
 			$this->commitmentItem->description = $this->description;
 			$this->commitmentItem->order = $this->order;
+			$this->commitmentItem->is_active = $this->isActive;
 			$this->commitmentItem->month_step = $this->monthStep;
 			$this->commitmentItem->months_max = $this->monthsMax;
 			$this->commitmentItem->months_min = $this->monthsMin;

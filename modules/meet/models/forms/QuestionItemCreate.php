@@ -38,6 +38,11 @@ class QuestionItemCreate extends Model {
 	 */
 	private $category;
 
+	/**
+	 * @var bool
+	 */
+	public $isActive;
+
 
 	/**
 	 * QuestionItemCreate constructor.
@@ -59,6 +64,7 @@ class QuestionItemCreate extends Model {
 			['name', 'trim'],
 			['name', 'required'],
 			['order', 'number'],
+			['isActive', 'safe'],
 			['description', 'safe'],
 		];
 	}
@@ -81,6 +87,7 @@ class QuestionItemCreate extends Model {
 			$questionItem->name = $this->name;
 			$questionItem->description = $this->description;
 			$questionItem->order = $this->order;
+			$questionItem->is_active = $this->isActive;
 			$questionItem->question_category_id = $this->category->id;
 			$success &= $questionItem->save();
 
@@ -102,6 +109,7 @@ class QuestionItemCreate extends Model {
 			'name'        => 'Név',
 			'description' => 'Leírás',
 			'order'       => 'Sorrend',
+			'isActive'    => 'Aktív',
 		];
 	}
 

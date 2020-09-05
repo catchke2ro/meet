@@ -24,6 +24,7 @@ $this->title = 'Kérdés létrehozása';
 				<?=$form->field($model, 'name')->label('Név')->textInput()?>
 				<?=$form->field($model, 'description')->label('Leírás')->textarea()?>
 				<?=$form->field($model, 'order')->label('Sorrend')->textInput(['type' => 'number'])?>
+				<?=$form->field($model, 'isActive')->label('Aktív', ['class' => 'custom-control-label'])->checkbox()?>
 			</div>
 			<div class="card-footer">
 				<?=Html::submitButton('Mentés', ['class' => 'btn btn-primary', 'name' => 'save-button'])?>

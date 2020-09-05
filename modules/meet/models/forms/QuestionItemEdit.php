@@ -29,6 +29,7 @@ class QuestionItemEdit extends QuestionItemCreate {
 		$this->questionItem = $questionItem;
 		$this->name = $questionItem->name;
 		$this->order = $questionItem->order;
+		$this->isActive = $questionItem->is_active;
 		$this->description = $questionItem->description;
 	}
 
@@ -51,6 +52,7 @@ class QuestionItemEdit extends QuestionItemCreate {
 			$this->questionItem->name = $this->name;
 			$this->questionItem->description = $this->description;
 			$this->questionItem->order = $this->order;
+			$this->questionItem->is_active = $this->isActive;
 			$success &= $this->questionItem->save();
 
 			$transaction->commit();
