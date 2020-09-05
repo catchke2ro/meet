@@ -123,9 +123,9 @@ class Registration extends Model {
 			['email', 'email'],
 			['email', 'string', 'max' => 255],
 			['email', 'unique', 'targetClass' => User::class, 'message' => 'Az e-mail címmel már van regisztráció'],
-			//['password', 'required'],
-			//['password', 'string', 'min' => 6],
-			//['password', 'compare', 'compareAttribute' => 'passwordConfirm'],
+			['password', 'required'],
+			['password', 'string', 'min' => 6],
+			['password', 'compare', 'compareAttribute' => 'passwordConfirm'],
 			['orgName', 'required', 'when' => $whenRemoteIdEmpty, 'message' => 'Kötelező, amennyiben nem szerepel az adatbázisban'],
 			['orgAddressZip', 'required', 'when' => $whenRemoteIdEmpty, 'message' => 'Kötelező, amennyiben nem szerepel az adatbázisban'],
 			['orgAddressCity', 'required', 'when' => $whenRemoteIdEmpty, 'message' => 'Kötelező, amennyiben nem szerepel az adatbázisban'],
@@ -139,9 +139,9 @@ class Registration extends Model {
 			['terms', 'required', 'requiredValue' => 1, 'message' => 'A szabályzat elfogadása kötelező!'],
 			['terms2', 'required', 'requiredValue' => 1, 'message' => 'A feltételek elfogadása kötelező!'],
 			['recaptcha_response', 'required', 'message' => 'CAPTCHA hiba'],
-			['recaptcha_response', recaptcha::class]
+			['recaptcha_response', recaptcha::class],
 
-			//['passwordConfirm', 'safe'],
+			['passwordConfirm', 'safe'],
 		];
 	}
 
@@ -214,7 +214,6 @@ class Registration extends Model {
 				$orgEmailContanct->ref_id = $organization->id;
 				$orgEmailContanct->ertek1 = $this->email;
 				$success &= $orgEmailContanct->save();
-
 			} else {
 				$organization = Organization::findOne(['id' => (int) $this->orgRemoteId]);
 			}
@@ -240,14 +239,21 @@ class Registration extends Model {
 			$success &= $personEmailContanct->save();
 
 			$newPositionEvent = Event::createNewPositionEvent($organization, $person);
-			$newRegistrationEvent = Event::createNewRegistrationEvent($organization, $person, $personEmailContanct, $targetFileId);
+			$newRegistrationEvent = Event::createNewRegistrationEvent(
+				$organization,
+				$person,
+				$personEmailContanct,
+				$targetFileId,
+				$this->generateUsername($this->name),
+				password_hash($this->password, PASSWORD_DEFAULT)
+			);
 
 			$success &= $newPositionEvent->save();
 			$success &= $newRegistrationEvent->save();
 
 			$transaction->commit();
 
-			return $success ? [$person->id, $organization->id] : false;
+			return $success ? [$person->id, $organization->id, $targetFile] : false;
 		} catch (\Exception $exception) {
 			$transaction->rollBack();
 			throw $exception;
@@ -275,6 +281,32 @@ class Registration extends Model {
 			'terms'            => 'Adatkezelési szabályzat',
 			'terms2'           => 'Általános Együttműködési Feltételek'
 		];
+	}
+
+
+	/**
+	 * @param string $name
+	 *
+	 * @return string
+	 */
+	protected function generateUsername(string $name) {
+		$usernames = User::find()
+			->select('id')
+			->asArray()->column();
+
+		preg_match('/^([^\s]+)\s+(.*)$/ui', $name, $match);
+		$firstName = implode('', array_map(function ($firstNamePart) {
+			return slug(mb_substr($firstNamePart, 0, 1));
+		}, array_filter(explode(' ', $match[2]))));
+		$lastName = slug(preg_replace('/[^\p{L}]/ui', '', $match[1]));
+		$usernameBase = $firstName.$lastName;
+		$i = 0;
+		do {
+			$username = $usernameBase.($i > 0 ? $i : '');
+			$i++;
+		} while (in_array($username, $usernames));
+
+		return $username;
 	}
 
 

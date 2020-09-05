@@ -44,9 +44,19 @@ class Event extends BaseEvent {
 	 *
 	 * @param string       $fileId
 	 *
+	 * @param string       $username
+	 * @param string       $password
+	 *
 	 * @return Event
 	 */
-	public static function createNewRegistrationEvent(Organization $organization, Person $person, Contact $emailContact, string $fileId) {
+	public static function createNewRegistrationEvent(
+		Organization $organization,
+		Person $person,
+		Contact $emailContact,
+		string $fileId,
+		string $username,
+		string $password
+	) {
 		$event = new Event();
 		$event->erv_kezdet = (new DateTime())->format('Y-m-d');
 		$event->erv_allapot = 1;
@@ -56,6 +66,8 @@ class Event extends BaseEvent {
 		$event->ertek1 = $person->nev;
 		$event->ertek2 = $emailContact->ertek1;
 		$event->ertek3 = "/_authorization-file?id=$fileId&token=";
+		$event->ertek4 = $username;
+		$event->ertek5 = $password;
 
 		return $event;
 	}

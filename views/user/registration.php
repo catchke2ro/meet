@@ -36,6 +36,8 @@ $this->title = 'Regisztráció';
 							<?=$form->field($model, 'name', ['options' => ['class' => 'form-group col-sm-9']])->label('Név')->textInput(['autofocus' => true])?>
 						</div>
 						<?=$form->field($model, 'email')->label('E-mail cím')->textInput()?>
+						<?=$form->field($model, 'password')->label('Jelszó')->passwordInput()?>
+						<?=$form->field($model, 'passwordConfirm')->label('Jelszó megerősítése')->passwordInput()?>
 						<?=$form->field($model, 'orgRemoteId', ['options' => ['class' => 'form-group orgSelector']])
 						        ->label('Kiválasztom az adataimat a központi adatbázisból')
 						        ->dropDownList(array_merge(['' => ' - Nem szereplek az adatbázisban - ']));?>

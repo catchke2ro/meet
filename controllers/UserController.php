@@ -68,7 +68,7 @@ class UserController extends Controller {
 
 		if ($model->load(Yii::$app->request->post())) {
 			if (($return = $model->signup())) {
-				[$personId, $orgId] = $return;
+				[$personId, $orgId, $attachment] = $return;
 				$person = Person::findOne(['id' => $personId]);
 				$organization = Organization::findOne(['id' => $orgId]);
 				$email = $person->getEmail();
@@ -80,6 +80,8 @@ class UserController extends Controller {
 				(new Email())->sendEmail('new_registration_admin', 'meet@lutheran.hu', 'Új regisztráció', [
 					'person' => $person,
 					'organization' => $organization
+				], [
+					$attachment
 				]);
 
 				Yii::$app->session->setFlash('success', 'Sikeresen kezdeményzted a regisztrációdat. E-mail-ben értesítünk, amint aktiváltuk a regisztrációt.');
