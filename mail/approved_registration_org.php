@@ -18,7 +18,7 @@ use yii\base\View;
 
 <p>Szeretettel köszöntjük a <?=$organization->nev;?> szervezetet a Műveld és őrizd! Evangélikus Egyházi Teremtésvédelmi (MEET) program résztvevői között!</p>
 
-<p>Jelen levelünk tájékoztatás, hogy a gyülekezet XXX sorszámú presbiteri határozatának végrehajtása megtörtént. Ezennel a <?=$organization->nev;?> gyülekezet a MEET program hivatalos tagja és <?=$meetReferer ? $meetReferer->nev : 'a';?> megbízott a gyülekezet MEET referensi tisztségét hivatalosan is betölti. A megbízott hozzáférést kapott a MEET program adminisztrációs felületéhez, ahol lehetősége lesz összeállítani és a nyomon követni a gyülekezet teremtésvédelmi programját, munkáját. Kérjük, hogy lehetőségeik szerint támogassák a megbízottat szolgálatában.</p>
+<p>Jelen levelünk tájékoztatás, hogy a gyülekezet presbiteri határozatának végrehajtása megtörtént. Ezennel a <?=$organization->nev;?> gyülekezet a MEET program hivatalos tagja és <?=$meetReferer ? $meetReferer->nev : 'a';?> megbízott a gyülekezet MEET referensi tisztségét hivatalosan is betölti. A megbízott hozzáférést kapott a MEET program adminisztrációs felületéhez, ahol lehetősége lesz összeállítani és a nyomon követni a gyülekezet teremtésvédelmi programját, munkáját. Kérjük, hogy lehetőségeik szerint támogassák a megbízottat szolgálatában.</p>
 
 <p>Szeretettel és tisztelettel ajánljuk figyelmükbe honlapunkat (<a href="http://meet.lutheran.hu">meet.lutheran.hu</a>), ahol aktuális híreink mellett a MEET program résztvevőinek híreiről is tájékozódhatnak, illetve ahova szeretettel várjuk majd a <?=$organization->nev;?> gyülekezet híreit, eseményeit és jó gyakorlatait is.</p>
 
