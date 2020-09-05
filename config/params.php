@@ -5,6 +5,8 @@ return [
 	'senderName'  => 'MEET',
 	'email_url'   => 'http://meet-teszt.lutheran.hu',
 
+	'email_to_org' => false, //Küldjön-e e-maileket a szervezetnek (vezetők, vagy szervezet e-mail címe)
+
 	'table_prefix' => 'meet__t__',
 
 	'recaptcha_site_key'   => '6LehrcMZAAAAAN1eWRgKB5o7QciHrV5o2IyoM1hn',

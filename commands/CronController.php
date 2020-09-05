@@ -43,6 +43,7 @@ class CronController extends Controller {
 
 	/**
 	 *
+	 * @throws Exception
 	 */
 	public function actionSendApprovedRegistrations() {
 		/** @var Event[] $notMailedApprovedRegs */
@@ -54,7 +55,6 @@ class CronController extends Controller {
 
 		foreach ($notMailedApprovedRegs as $notMailedApprovedReg) {
 			if ($notMailedApprovedReg->person && ($email = $notMailedApprovedReg->person->getEmail())) {
-
 				try {
 					$pdfFilename = (new Pdf())->generatePdf('/pdf/mustar', 'Mustarmag.pdf', [
 						'organization' => $notMailedApprovedReg->organization
@@ -69,7 +69,7 @@ class CronController extends Controller {
 					);
 
 
-					if (!empty($notMailedApprovedReg->organization->emailContacts)) {
+					if (!empty($notMailedApprovedReg->organization->emailContacts) && (Yii::$app->params['email_to_org'] ?? false)) {
 						$superintendent = $notMailedApprovedReg->organization->getSuperintendent();
 						$pastor = $notMailedApprovedReg->organization->getPastorGeneral() ?: $notMailedApprovedReg->organization->getPastor();
 						$meetReferer = $notMailedApprovedReg->organization->getMeetReferer();
@@ -94,11 +94,9 @@ class CronController extends Controller {
 					throw $e;
 					//Continue to next event on error
 				}
-
 			}
 		}
 	}
 
 
 }
-
