@@ -69,7 +69,7 @@ class CronController extends Controller {
 					);
 
 
-					if (!empty($notMailedApprovedReg->organization->emailContacts) && (Yii::$app->params['email_to_org'] ?? false)) {
+					/*if (!empty($notMailedApprovedReg->organization->emailContacts) && (Yii::$app->params['email_to_org'] ?? false)) {
 						$superintendent = $notMailedApprovedReg->organization->getSuperintendent();
 						$pastor = $notMailedApprovedReg->organization->getPastorGeneral() ?: $notMailedApprovedReg->organization->getPastor();
 						$meetReferer = $notMailedApprovedReg->organization->getMeetReferer();
@@ -87,7 +87,7 @@ class CronController extends Controller {
 								'meetReferer'    => $meetReferer,
 							]
 						);
-					}
+					}*/
 					$notMailedApprovedReg->ertek2 = 1;
 					$notMailedApprovedReg->save();
 				} catch (Exception $e) {
