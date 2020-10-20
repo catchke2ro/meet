@@ -30,7 +30,7 @@ $this->title = 'Regisztráció';
 				]); ?>
 				<div class="card-body">
 					<fieldset class="border p-3 mb-3">
-						<legend>Regisztráló adatai</legend>
+						<legend>Regisztráló (megbízott személy) adatai</legend>
 						<div class="row">
 							<?=$form->field($model, 'namePrefix', ['options' => ['class' => 'form-group col-sm-3']])->label('Név előtag')->textInput()?>
 							<?=$form->field($model, 'name', ['options' => ['class' => 'form-group col-sm-9']])->label('Név')->textInput(['autofocus' => true])?>
@@ -39,11 +39,11 @@ $this->title = 'Regisztráció';
 						<?=$form->field($model, 'password')->label('Jelszó')->passwordInput()?>
 						<?=$form->field($model, 'passwordConfirm')->label('Jelszó megerősítése')->passwordInput()?>
 						<?=$form->field($model, 'orgRemoteId', ['options' => ['class' => 'form-group orgSelector']])
-						        ->label('Kiválasztom az adataimat a központi adatbázisból')
+						        ->label('Szervezeti egység: kiválasztom a központi adatbázisból:')
 						        ->dropDownList(array_merge(['' => ' - Nem szereplek az adatbázisban - ']));?>
 					</fieldset>
 					<fieldset class="orgData border p-3 mb-3">
-						<legend>Új szervezet regisztrációja</legend>
+						<legend>Új szervezeti egység regisztrációja</legend>
 						<span>Csak amennyiben nem szerepel az adatbázisban</span>
 						<?=$form->field($model, 'orgName')->label('Név');?>
 						<?=$form->field($model, 'orgAddressZip')->label('Irányítószám');?>
@@ -55,7 +55,7 @@ $this->title = 'Regisztráció';
 					<fieldset class="border p-3 mb-3">
 						<legend>Meghatalmazás</legend>
 						<?=$form->field($model, 'pdf')->label(false)
-						        ->hint('<p>Csak pdf fájl tölthető fel. <br /> A meghatalmazás itt tölthető le: <a href="/dokumentumok" target="_blank">Dokumentumok</a> <br /> További információ az <a href="/afe" target="_blank">Általános Együttműködési Feltételekben</a></p>')
+						        ->hint('<p>Csak pdf fájl tölthető fel. <br /> Meghatalmazáshoz határozat minta itt érhető el: <a href="/dokumentumok" target="_blank">Dokumentumok</a> <br /> További információ az <a href="/afe" target="_blank">Általános Együttműködési Feltételekben</a></p>')
 						        ->fileInput()?>
 					</fieldset>
 

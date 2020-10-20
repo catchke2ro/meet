@@ -220,7 +220,7 @@ $(function () {
 		});
 
 		$orgSelector.on('select2:open', function (e) {
-			$('.select2-search__field').attr('placeholder', 'Keress a szervezet nevére');
+			$('.select2-search__field').attr('placeholder', 'Kezdje el gépelni...');
 		});
 		$orgSelector.on('change', function () {
 
