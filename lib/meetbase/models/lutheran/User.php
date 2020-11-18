@@ -2,6 +2,7 @@
 
 namespace meetbase\models\lutheran;
 
+use app\models\AdminOrganization;
 use meetbase\models\traits\SharedModelTrait;
 use Yii;
 use yii\base\Exception;
@@ -72,6 +73,9 @@ abstract class User extends ActiveRecord implements IdentityInterface {
 		if (is_null($this->organizationCache) || $forceReload) {
 			if (!empty(($organizations = $this->getOrganizationsByPositionEvents()))) {
 				$this->organizationCache = reset($organizations);
+			}
+			if (is_null($this->organizationCache) && $this->isAdmin()) {
+				$this->organizationCache = new AdminOrganization();
 			}
 		}
 
@@ -259,6 +263,14 @@ abstract class User extends ActiveRecord implements IdentityInterface {
 	 */
 	public function validateAuthKey($authKey) {
 		return true;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isAdmin(): bool {
+		return in_array($this->id, Yii::$app->params['admins']);
 	}
 
 

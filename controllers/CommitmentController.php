@@ -32,7 +32,7 @@ use yii\web\Request;
  * @package app\controllers
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  */
-class CommitmentController extends Controller {
+class CommitmentController extends BaseController {
 
 	/**
 	 * @var TreeLib
@@ -133,6 +133,7 @@ class CommitmentController extends Controller {
 
 		return $this->render('index', compact(
 			'commitmentCategories',
+			'user',
 			'fill',
 			'modules',
 			'checkedCommitmentOptions'

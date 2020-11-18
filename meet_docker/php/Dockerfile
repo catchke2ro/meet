@@ -13,7 +13,7 @@ RUN apt-get -y upgrade
 RUN apt-get -y install nano wget;
 RUN apt-get -y install libzip-dev libpng-dev;
 
-RUN apt install wkhtmltopdf
+RUN apt-get -y install wkhtmltopdf
 
 #Install and enable xdebug
 RUN pecl install xdebug

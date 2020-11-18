@@ -1,9 +1,12 @@
 <?php
 
+use app\models\AdminOrganization;
 use app\models\CommitmentCategory;
 use app\models\Module;
 use app\models\OrgCommitmentFill;
 use app\models\OrgQuestionFill;
+use app\modules\meet\models\OrganizationType;
+use meetbase\models\lutheran\User;
 
 /**
  * @var $commitmentCategories                     CommitmentCategory[]
@@ -11,18 +14,25 @@ use app\models\OrgQuestionFill;
  * @var $this                                     yii\web\View
  * @var $modules                                  array|Module[]
  * @var $checkedCommitmentOptions                 array
+ * @var $user                                     User
  */
 
 $this->title = 'Vállalások';
 
 ?>
 
+<?=$this->render('/parts/admin-changer', [
+	'user' => $user,
+]);?>
+
 <form method="post" action="" class="commitmentsForm">
 	<input type="hidden" name="_csrf" value="<?=Yii::$app->request->getCsrfToken()?>" />
 	<input type="hidden" name="orgType" value="<?=Yii::$app->user->getIdentity()->getOrgTypeId();?>" />
 
 
-	<?php if (!$fill) {?>
+
+
+	<?php if (!$fill) { ?>
 		<p class="text-center">
 			<span>Amennyiben nem vagy biztos a lenti válaszokban, segítségül válaszolj meg pár kérdést:</span><br />
 			<a href="/kerdesek" class="btn btn-secondary mt-1">Kérdések</a>
@@ -43,7 +53,7 @@ $this->title = 'Vállalások';
 	<?php } ?>
 
 	<?=$this->render('/parts/module-modals', [
-			'modules'       => $modules,
+		'modules' => $modules,
 	]);?>
 	<div class="card modules shadow-none">
 		<input type="hidden" name="targetModule" id="selectedModule"
@@ -51,18 +61,18 @@ $this->title = 'Vállalások';
 		<div class="card-body">
 			<h3>Válassz modult, kitűzött célt!</h3>
 			<ul class="moduleList">
-				<?php foreach ($modules as $module) {?>
+				<?php foreach ($modules as $module) { ?>
 					<li>
-						<?php if ($module->threshold === 0) {?>
+						<?php if ($module->threshold === 0) { ?>
 							<div class="imgWrapper">
-								<img src="/assets/img/modules/meet_modul_<?=$module->slug;?>_szines_kicsi.png" alt="<?=$module->name;?>"/>
+								<img src="/assets/img/modules/meet_modul_<?=$module->slug;?>_szines_kicsi.png" alt="<?=$module->name;?>" />
 							</div>
 							<h5><?=$module->name;?></h5>
 						<?php } else { ?>
 							<a href="javascript:void(0)" class="selectModule" data-moduleid="<?=$module->id;?>">
 								<div class="imgWrapper">
-									<img src="/assets/img/modules/meet_modul_<?=$module->slug;?>_feher_kicsi.png" alt="<?=$module->name;?>" class="notSelected"/>
-									<img src="/assets/img/modules/meet_modul_<?=$module->slug;?>_szines_kicsi.png" alt="<?=$module->name;?>" class="selected"/>
+									<img src="/assets/img/modules/meet_modul_<?=$module->slug;?>_feher_kicsi.png" alt="<?=$module->name;?>" class="notSelected" />
+									<img src="/assets/img/modules/meet_modul_<?=$module->slug;?>_szines_kicsi.png" alt="<?=$module->name;?>" class="selected" />
 								</div>
 								<h5><?=$module->name;?></h5>
 							</a>
@@ -102,21 +112,23 @@ $this->title = 'Vállalások';
 		foreach ($commitmentCategories as $commitmentCategory) {
 			echo $this->render('category', [
 				'commitmentCategory'       => $commitmentCategory,
-				'fill'             => $fill,
+				'fill'                     => $fill,
 				'checkedCommitmentOptions' => $checkedCommitmentOptions
 			]);
 		}
 		?>
 	</div>
 
-	<?php if (!$fill->isApproved()) { ?>
+	<?php if ($fill && !$fill->isApproved()) { ?>
 		<div class="text-center">
 			<p>Legutóbbi vállalásod elfogadásra vár. Amíg ez nem történt meg, nem tudsz új vállalást leadni.</p>
 		</div>
 	<?php } else { ?>
-		<div class="text-center">
-			<button type="submit" class="btn btn-secondary">Elküldöm a vállalásokat</button>
-		</div>
+		<?php if (!($user->getOrganization() instanceof AdminOrganization)) {?>
+			<div class="text-center">
+				<button type="submit" class="btn btn-secondary">Elküldöm a vállalásokat</button>
+			</div>
+		<?php } ?>
 	<?php } ?>
 </form>
 

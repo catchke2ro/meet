@@ -1,15 +1,21 @@
 <?php
 
-use app\models\QuestionCategory;
+use app\models\AdminOrganization;use app\models\QuestionCategory;
+use meetbase\models\lutheran\User;
 
 /**
  * @var $questionCategories QuestionCategory[]
  * @var $this               yii\web\View
+ * @var $user               User
  */
 
 $this->title = 'Kérdések';
 
 ?>
+
+<?=$this->render('/parts/admin-changer', [
+	'user' => $user,
+]);?>
 
 <form method="post" action="">
 	<input type="hidden" name="_csrf" value="<?=Yii::$app->request->getCsrfToken()?>" />
@@ -26,7 +32,12 @@ $this->title = 'Kérdések';
 		?>
 	</div>
 
-	<button type="submit" class="btn btn-primary">Submit</button>
+	<?php if (!($user->getOrganization() instanceof AdminOrganization)) {?>
+		<div class="text-center">
+			<button type="submit" class="btn btn-secondary">Tovább</button>
+		</div>
+	<?php } ?>
+
 </form>
 
 

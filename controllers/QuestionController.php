@@ -24,7 +24,7 @@ use yii\web\Request;
  * @package app\controllers
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  */
-class QuestionController extends Controller {
+class QuestionController extends BaseController {
 
 	/**
 	 * @var TreeLib
@@ -44,6 +44,7 @@ class QuestionController extends Controller {
 		parent::__construct($id, $module, $config);
 		$this->treeLib = $treeLib;
 	}
+
 
 	/**
 	 * {@inheritdoc}
@@ -79,6 +80,7 @@ class QuestionController extends Controller {
 	 * @throws Exception
 	 */
 	public function actionIndex() {
+		$user = Yii::$app->user->getIdentity();
 		$questionCategories = QuestionCategory::find()
 			->innerJoinWith(['orgTypes as orgTypes'])->andWhere(['orgTypes.org_type_id' => Yii::$app->user->getIdentity()->getOrgTypeId()])
 			->with(['items', 'items.options'])
@@ -92,7 +94,8 @@ class QuestionController extends Controller {
 			$this->redirect('/vallalasok?qf='.$questionFillId);
 		}
 		return $this->render('index', compact(
-			'questionCategories'
+			'questionCategories',
+			'user'
 		));
 	}
 
