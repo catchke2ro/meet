@@ -2,6 +2,7 @@
 
 namespace meetbase\models\lutheran;
 
+use meetbase\models\Module;
 use meetbase\models\OrgCommitmentFill;
 use meetbase\models\traits\SharedModelTrait;
 use Yii;
@@ -178,6 +179,25 @@ abstract class Organization extends ActiveRecord {
 	 */
 	public function getLatestCommitmentFill(): ?OrgCommitmentFill {
 		return $this->getCommitmentFills()->orderBy('date DESC')->limit(1)->one();
+	}
+
+
+	/**
+	 * @return OrgCommitmentFill|null
+	 */
+	public function getLatestApprovedCommitmentFill(): ?OrgCommitmentFill {
+		return $this->getCommitmentFills()->orderBy('date DESC')->andWhere(['approved' => 1])->limit(1)->one();
+	}
+
+
+	/**
+	 * @return Module|null
+	 */
+	public function getLatestApprovedModule(): ?Module {
+		if (($fill = $this->getLatestApprovedCommitmentFill())) {
+			return $fill->getFinalModule();
+		}
+		return null;
 	}
 
 

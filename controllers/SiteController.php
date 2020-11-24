@@ -4,10 +4,13 @@ namespace app\controllers;
 
 use app\models\forms\OrgContact;
 use app\models\lutheran\Organization;
+use app\models\Module;
 use app\models\Post;
+use meetbase\models\lutheran\User;
+use Throwable;
 use Yii;
 use yii\helpers\Url;
-use yii\web\Controller;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -17,7 +20,7 @@ use yii\web\Response;
  * @package app\controllers
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  */
-class SiteController extends Controller {
+class SiteController extends BaseController {
 
 
 	/**
@@ -91,12 +94,54 @@ class SiteController extends Controller {
 	 * Displays Home
 	 *
 	 * @return string
+	 * @throws Throwable
 	 */
 	public function actionDocuments() {
 
+		/** @var User $user */
+		$activeModule = null;
+		if (($user = Yii::$app->user->getIdentity()) && ($org = $user->getOrganization())) {
+			if (($module = $org->getLatestApprovedModule())) {
+				$activeModule = $module;
+			} else {
+				$activeModule = Module::firstModule();
+			}
+		}
+
 		Yii::$app->view->params['pageClass'] = 'documents';
 
-		return $this->render('documents');
+		return $this->render('documents', [
+			'user' => $user,
+			'activeModule' => $activeModule
+		]);
+	}
+
+
+	/**
+	 * @param $id
+	 * @param $token
+	 *
+	 * @return \yii\console\Response|Response
+	 * @throws NotFoundHttpException
+	 * @throws HttpException
+	 */
+	public function actionCiDownload($module, $file) {
+		if (!(($module = Module::findOne(['id' => $module])) &&
+			($user = Yii::$app->user->getIdentity()) &&
+			($org = $user->getOrganization()) &&
+			($userModule = $org->getLatestApprovedModule()) &&
+			($module->id === $userModule->id)
+		)) {
+			throw new HttpException(404);
+		}
+
+		$rootDir = Yii::$app->getBasePath().'/storage/ci';
+
+		if (!file_exists($rootDir.'/'.$file)) {
+			throw new HttpException(404);
+		}
+
+		return Yii::$app->response->sendFile($rootDir.'/'.$file);
 	}
 
 

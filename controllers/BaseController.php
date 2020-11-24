@@ -23,8 +23,16 @@ class BaseController extends Controller {
 	 * @throws BadRequestHttpException
 	 */
 	public function beforeAction($action) {
-		if ($this->request->getMethod() === 'POST' && !empty($this->request->getBodyParam('admin_org_type'))) {
+		$reload = false;
+		if ($this->request->getMethod() === 'POST' && !is_null($this->request->getBodyParam('admin_org_type'))) {
 			Yii::$app->session->set('admin_org_type', $this->request->getBodyParam('admin_org_type'));
+			$reload = true;
+		}
+		if ($this->request->getMethod() === 'POST' && !is_null($this->request->getBodyParam('admin_active_module'))) {
+			Yii::$app->session->set('admin_active_module', $this->request->getBodyParam('admin_active_module'));
+			$reload = true;
+		}
+		if ($reload) {
 			$this->refresh();
 			return false;
 		}

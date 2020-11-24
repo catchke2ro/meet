@@ -94,7 +94,8 @@ $config = [
 
 				'/_org-list'           => 'ajax/org-list',
 				'/_authorization-file' => 'user/get-authorization-file',
-				'/_orgs'               => 'ajax/orgs'
+				'/_orgs'               => 'ajax/orgs',
+				'/_ci-download'        => 'site/ci-download'
 			],
 		],
 	],

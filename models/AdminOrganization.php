@@ -34,4 +34,15 @@ class AdminOrganization extends BaseOrganization {
 	}
 
 
+	/**
+	 * @return Module|null
+	 */
+	public function getLatestApprovedModule(): ?\meetbase\models\Module {
+		if (($moduleId = Yii::$app->session->get('admin_active_module'))) {
+			return Module::findOne(['id' => $moduleId]);
+		}
+		return parent::getLatestApprovedModule();
+	}
+
+
 }

@@ -25675,6 +25675,16 @@ div.stat {
 div.stat.modules div.moduleIndent {
   padding-left: 2rem; }
 
+div.stat.documents .moduleCI .card-body ul {
+  list-style-type: none; }
+  div.stat.documents .moduleCI .card-body ul li a {
+    display: flex;
+    align-items: center; }
+  div.stat.documents .moduleCI .card-body ul li img {
+    width: 30px;
+    margin: 0px;
+    margin-right: 5px; }
+
 .btn-primary {
   color: #ffffff; }
 

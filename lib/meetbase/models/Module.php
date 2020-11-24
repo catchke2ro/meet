@@ -47,4 +47,20 @@ abstract class Module extends ActiveRecord {
 	}
 
 
+	/**
+	 * @return array|ActiveRecord[]
+	 */
+	public function getList() {
+		$qb = self::find();
+		$qb->select(['id', 'name']);
+		$modules = [];
+		/** @var Module $module */
+		foreach ($qb->all() as $module) {
+			$modules[$module->id] = $module->name;
+		}
+
+		return $modules;
+	}
+
+
 }

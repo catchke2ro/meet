@@ -1,6 +1,7 @@
 <?php
 
 
+use app\models\Module;
 use ReCaptcha\ReCaptcha;
 
 function menuActiveClass(string $url): string {
@@ -168,6 +169,22 @@ function recaptchaValidator(string $response) {
 
 	$recaptcha = new ReCaptcha($secretKey);
 	$resp = $recaptcha->setExpectedHostname($_SERVER['HTTP_HOST'])
-	                  ->verify($response, $_SERVER['REMOTE_ADDR']);
+		->verify($response, $_SERVER['REMOTE_ADDR']);
 	return $resp->isSuccess();
+}
+
+/**
+ * @param Module $module
+ * @param string $pattern
+ *
+ * @return string|null
+ */
+function getLinkForCI(Module $module, string $pattern): ?string {
+	$rootDir = Yii::$app->getBasePath().'/storage/ci';
+	$moduleDir = sprintf('meet_modul_%s', $module->slug);
+	$file = sprintf($pattern, $module->slug);
+	if (file_exists($rootDir.'/'.$moduleDir.'/'.$file)) {
+		return '/_ci-download?module='.$module->id.'&file='.urlencode($moduleDir.'/'.$file);
+	}
+	return null;
 }
