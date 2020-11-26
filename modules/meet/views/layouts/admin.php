@@ -21,7 +21,7 @@ AppAsset::register($this);
 	<title><?=Html::encode($this->title)?></title>
 	<?php $this->head() ?>
 	<script type="text/javascript" src="/dist/admin.js"></script>
-	<link type="text/css" src="/dist/admin.css"/>
+	<link rel="stylesheet" href="/dist/admin.css"/>
 </head>
 <body class="hold-transition sidebar-mini">
 <?php $this->beginBody() ?>
@@ -44,6 +44,12 @@ AppAsset::register($this);
 						<a href="/meet/modules" class="nav-link">
 							<i class="fa fa-database nav-icon"></i>
 							<p>Modulok</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="/meet/posts" class="nav-link">
+							<i class="fa fa-newspaper-o nav-icon"></i>
+							<p>Bejegyzések</p>
 						</a>
 					</li>
 					<li class="nav-item">

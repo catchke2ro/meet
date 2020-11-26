@@ -52,6 +52,11 @@ class AppAsset extends AssetBundle {
 
 		$baseDir = Yii::$app->getBasePath().'/web';
 
+		if (strpos(Yii::$app->requestedRoute, 'meet/') === 0) {
+			$this->js = [];
+			$this->css = [];
+		}
+
 		foreach ($this->js as &$js) {
 			$js = preg_replace('/\{siteKey\}/', Yii::$app->params['recaptcha_site_key'], $js);
 			if (strpos($js, '/') === 0 && file_exists($baseDir.$js)) {

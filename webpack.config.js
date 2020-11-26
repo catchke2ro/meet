@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const config = {
 	entry: {
 		app: './frontend/app.js',
+		admin: './frontend/admin.js',
 		email: './frontend/email.js',
 		pdf: './frontend/pdf.js'
 	},

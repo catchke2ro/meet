@@ -22,6 +22,8 @@ class Module extends \yii\base\Module {
 	 * @var mixed|object|null
 	 */
 	private $urlRules = [
+		'/upload' => 'meet/upload/index',
+
 		'/question-categories'                 => 'meet/question-categories/index',
 		'/question-categories/create'          => 'meet/question-categories/create',
 		'/question-categories/edit/<id:\d+>'   => 'meet/question-categories/edit',
@@ -56,6 +58,11 @@ class Module extends \yii\base\Module {
 		'/modules/create'          => 'meet/modules/create',
 		'/modules/edit/<id:\d+>'   => 'meet/modules/edit',
 		'/modules/delete/<id:\d+>' => 'meet/modules/delete',
+
+		'/posts'                 => 'meet/posts/index',
+		'/posts/create'          => 'meet/posts/create',
+		'/posts/edit/<id:\d+>'   => 'meet/posts/edit',
+		'/posts/delete/<id:\d+>' => 'meet/posts/delete',
 
 		'/user-commitments'          => 'meet/user-commitments/index',
 		'/user-commitments/<id:\d+>' => 'meet/user-commitments/view',

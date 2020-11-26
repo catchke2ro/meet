@@ -5,6 +5,7 @@ import "bootstrap/dist/js/bootstrap"
 import "admin-lte/dist/js/adminlte"
 import "datatables.net"
 import "datatables.net-bs4"
+import ClassicEditor from './ckeditor/ckeditor'
 
 $(function () {
 
@@ -37,6 +38,77 @@ $(function () {
 		}*/
 
 		$table.DataTable(obj);
+	});
+
+	const csrfToken = $('meta[name=csrf-token]').attr('content');
+
+	$('textarea.ckeditor').each(function() {
+		const textarea = $(this);
+		const uploadType = textarea.data('upload-type');
+		console.log(uploadType);
+		ClassicEditor
+			.create(textarea[0], {
+				removePlugins: ['ImageCaption'],
+				toolbar: {
+					items: [
+						'heading',
+						'fontSize',
+						'|',
+						'bold',
+						'italic',
+						'underline',
+						'strikethrough',
+						'subscript',
+						'superscript',
+						'|',
+						'link',
+						'imageUpload',
+						'mediaEmbed',
+						'insertTable',
+						'|',
+						'bulletedList',
+						'numberedList',
+						'horizontalLine',
+						'|',
+						'blockQuote',
+						'indent',
+						'outdent',
+						'|',
+						'undo',
+						'redo',
+						'|',
+						'removeFormat'
+					]
+				},
+				language: 'hu',
+				image: {
+					toolbar: [
+						'imageTextAlternative',
+						'imageStyle:full',
+						'imageStyle:side',
+						'linkImage'
+					]
+				},
+				table: {
+					contentToolbar: [
+						'tableColumn',
+						'tableRow',
+						'mergeTableCells',
+						'tableCellProperties',
+						'tableProperties'
+					]
+				},
+				licenseKey: '',
+				simpleUpload: {
+					uploadUrl: '/meet/upload',
+					headers: {
+						'X-CSRF-Token': csrfToken,
+						'X-Upload-Type': uploadType
+					}
+				}
+			})
+			.then(editor => {})
+			.catch(error => {});
 	});
 
 
