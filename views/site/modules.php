@@ -31,7 +31,7 @@ $this->title = 'Modulok';
 		<p>A Liliom modulban a közösség saját, egyedi teremtésvédelmi programtervét állítja össze, megfogalmaz magának lehetőségeihez mért célokat. A közösségében megvalósuló teremtésvédelmi programokról hírt ad, meghívást küld a környezetében lévő közösségeknek.</p>
 	</div>
 
-	<img src="/assets/img/stat/2m_3szolovesszo.jpg" alt="Szőlővessző"" />
+	<img src="/assets/img/stat/2m_3szolovesszo.jpg" alt="Szőlővessző" />
 	<h4 class="text-szolovesszo">Szőlővessző</h4>
 	<div class="moduleIndent">
 		<p class="text-szolovesszo">

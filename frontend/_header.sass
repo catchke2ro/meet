@@ -6,17 +6,23 @@
 				flex: 30% 0 0
 				img
 					max-width: 80%
-			.user
+			.right
 				flex: auto 1 1
 				text-align: right
-				.logoutLink
-					font-weight: bold
-				.loggedInName, .notLoggedInName
-					margin-bottom: 0px
-					color: $gray-500
-					span
+				.user
+					.logoutLink
 						font-weight: bold
-						color: $secondary
+					.loggedInName, .notLoggedInName
+						margin-bottom: 0px
+						color: $gray-500
+						span
+							font-weight: bold
+							color: $secondary
+				.langSelector
+					img
+						width: 28px
+						border-radius: 5px
+
 	nav.main-header
 		justify-content: right
 		border-bottom: none

@@ -25663,17 +25663,20 @@ a.text-muted:hover {
     flex: 30% 0 0; }
     .layout-frontend .wrapper header .headerTop .logo img {
       max-width: 80%; }
-  .layout-frontend .wrapper header .headerTop .user {
+  .layout-frontend .wrapper header .headerTop .right {
     flex: auto 1 1;
     text-align: right; }
-    .layout-frontend .wrapper header .headerTop .user .logoutLink {
+    .layout-frontend .wrapper header .headerTop .right .user .logoutLink {
       font-weight: bold; }
-    .layout-frontend .wrapper header .headerTop .user .loggedInName, .layout-frontend .wrapper header .headerTop .user .notLoggedInName {
+    .layout-frontend .wrapper header .headerTop .right .user .loggedInName, .layout-frontend .wrapper header .headerTop .right .user .notLoggedInName {
       margin-bottom: 0px;
       color: #808080; }
-      .layout-frontend .wrapper header .headerTop .user .loggedInName span, .layout-frontend .wrapper header .headerTop .user .notLoggedInName span {
+      .layout-frontend .wrapper header .headerTop .right .user .loggedInName span, .layout-frontend .wrapper header .headerTop .right .user .notLoggedInName span {
         font-weight: bold;
         color: #0088cb; }
+    .layout-frontend .wrapper header .headerTop .right .langSelector img {
+      width: 28px;
+      border-radius: 5px; }
 
 .layout-frontend .wrapper nav.main-header {
   justify-content: right;

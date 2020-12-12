@@ -5,17 +5,17 @@ use app\components\AuthManager;
 use app\models\lutheran\User;
 
 $params = require __DIR__ . '/params.php';
-if (file_exists(__DIR__.'/params.local.php')) {
+if (file_exists(__DIR__ . '/params.local.php')) {
 	$params = array_replace_recursive($params, require __DIR__ . '/params.local.php');
 }
 
 $db = require __DIR__ . '/db.php';
-if (file_exists(__DIR__.'/db.local.php')) {
+if (file_exists(__DIR__ . '/db.local.php')) {
 	$db = array_replace_recursive($db, require __DIR__ . '/db.local.php');
 }
 
 $dbmail = require __DIR__ . '/dbmail.php';
-if (file_exists(__DIR__.'/dbmail.local.php')) {
+if (file_exists(__DIR__ . '/dbmail.local.php')) {
 	$dbmail = array_replace_recursive($dbmail, require __DIR__ . '/dbmail.local.php');
 }
 
@@ -29,7 +29,7 @@ $config = [
 		'@npm'   => '@vendor/npm-asset',
 	],
 	'components' => [
-		'authManager' => [
+		'authManager'  => [
 			'class' => AuthManager::class,
 		],
 		'request'      => [
@@ -91,6 +91,7 @@ $config = [
 				'/vallalasok/history'      => 'commitment/history',
 				'/vallalasok/vege'         => 'commitment/end',
 				'/uzenet'                  => 'site/org-contact',
+				'/en'                      => 'site/description-en',
 
 				'/_org-list'           => 'ajax/org-list',
 				'/_authorization-file' => 'user/get-authorization-file',

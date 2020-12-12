@@ -176,6 +176,20 @@ class SiteController extends BaseController {
 	 *
 	 * @return string
 	 */
+	public function actionDescriptionEn() {
+
+		Yii::$app->view->params['pageClass'] = 'description';
+		Yii::$app->language = 'en-EN';
+
+		return $this->render('descriptionEn');
+	}
+
+
+	/**
+	 * Displays Home
+	 *
+	 * @return string
+	 */
 	public function actionModules() {
 
 		Yii::$app->view->params['pageClass'] = 'modules';

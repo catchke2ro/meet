@@ -10,10 +10,11 @@ use yii\helpers\Html;
 use app\assets\AppAsset;
 
 AppAsset::register($this);
+$lang = Yii::$app->language;
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="<?=Yii::$app->language?>">
+<html lang="<?=$lang?>">
 <head>
 	<meta charset="<?=Yii::$app->charset?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -49,58 +50,70 @@ AppAsset::register($this);
 	<header>
 		<div class="headerTop">
 			<div class="logo"><a href="/"><img src="/assets/img/meet_logo_webre_fektetett.png" alt="MEET"/></a></div>
-			<?php if (!Yii::$app->getUser()->isGuest) { ?>
-				<div class="user">
-					<p class="text-small loggedInName">Belépve: <span><?=Yii::$app->getUser()->getIdentity()->name;?></span></p>
-					<?php echo Html::beginForm(['/user/logout'], 'post', ['id' => 'logoutForm']) . Html::endForm(); ?>
-					<a href="javascript:void(0)" class="btn btn-sm btn-primary logoutLink">Kilépés</a>
+			<div class="right">
+				<?php if($lang === 'hu-HU') { ?>
+					<?php if (!Yii::$app->getUser()->isGuest) { ?>
+						<div class="user">
+							<p class="text-small loggedInName">Belépve: <span><?=Yii::$app->getUser()->getIdentity()->name;?></span></p>
+							<?php echo Html::beginForm(['/user/logout'], 'post', ['id' => 'logoutForm']) . Html::endForm(); ?>
+							<a href="javascript:void(0)" class="btn btn-sm btn-primary logoutLink">Kilépés</a>
+						</div>
+					<?php } else { ?>
+						<div class="user">
+							<p class="text-small notLoggedInName">Ön nincs bejelentkezve!</p>
+							<a href="/belepes" class="btn btn-sm btn-primary">Belépés / Regisztráció</a>
+						</div>
+					<?php } ?>
+				<?php } ?>
+				<div class="langSelector">
+					<?php if($lang !== 'hu-HU') { ?>
+						<a href="/"><img src="/assets/img/hu.png" alt="Magyar"/></a>
+					<?php } else { ?>
+						<a href="/en"><img src="/assets/img/en.png" alt="English"/></a>
+					<?php } ?>
 				</div>
-			<?php } else { ?>
-				<div class="user">
-					<p class="text-small notLoggedInName">Ön nincs bejelentkezve!</p>
-					<a href="/belepes" class="btn btn-sm btn-primary">Belépés / Regisztráció</a>
-				</div>
-			<?php } ?>
+			</div>
 		</div>
 
-		<nav class="main-header navbar navbar-expand-md navbar-white navbar-light">
+		<?php if ($lang === 'hu-HU') {?>
+			<nav class="main-header navbar navbar-expand-md navbar-white navbar-light">
 
-			<!-- Collapse button -->
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Menü">
-				<span class="fa fa-bars"></span> <strong>Menü</strong>
-			</button>
+				<!-- Collapse button -->
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Menü">
+					<span class="fa fa-bars"></span> <strong>Menü</strong>
+				</button>
 
-			<div class="collapse navbar-collapse" id="mainNav">
-				<!-- Left navbar links -->
-				<ul class="navbar-nav">
-					<li class="nav-item">
-						<a href="/programleiras" class="nav-link <?=menuActiveClass('/programleiras');?>">Programleírás</a>
-					</li>
-					<li class="nav-item">
-						<a href="/dokumentumok" class="nav-link <?=menuActiveClass('/dokumentumok');?>">Dokumentumok</a>
-					</li>
-					<li class="nav-item">
-						<a href="/modulok" class="nav-link <?=menuActiveClass('/modulok');?>">Modulok</a>
-					</li>
-					<li class="nav-item">
-						<a href="/aktivitas" class="nav-link <?=menuActiveClass('/aktivitas');?>">Aktivitás</a>
-					</li>
-					<li class="nav-item">
-						<a href="/#resztvevok" class="nav-link">Résztvevők</a>
-					</li>
-					<li class="nav-item">
-						<a href="/#kapcsolat" class="nav-link">Kapcsolat</a>
-					</li>
-
-					<?php if (!Yii::$app->user->isGuest) { ?>
-						<li class="nav-item d-none d-sm-inline-block loggedInMenu">
-							<a href="/vallalasok" class="nav-link <?=menuActiveClass('/vallalasok');?>">Vállalás</a>
+				<div class="collapse navbar-collapse" id="mainNav">
+					<!-- Left navbar links -->
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a href="/programleiras" class="nav-link <?=menuActiveClass('/programleiras');?>">Programleírás</a>
 						</li>
-					<?php } ?>
-				</ul>
-			</div>
+						<li class="nav-item">
+							<a href="/dokumentumok" class="nav-link <?=menuActiveClass('/dokumentumok');?>">Dokumentumok</a>
+						</li>
+						<li class="nav-item">
+							<a href="/modulok" class="nav-link <?=menuActiveClass('/modulok');?>">Modulok</a>
+						</li>
+						<li class="nav-item">
+							<a href="/aktivitas" class="nav-link <?=menuActiveClass('/aktivitas');?>">Aktivitás</a>
+						</li>
+						<li class="nav-item">
+							<a href="/#resztvevok" class="nav-link">Résztvevők</a>
+						</li>
+						<li class="nav-item">
+							<a href="/#kapcsolat" class="nav-link">Kapcsolat</a>
+						</li>
 
-		</nav>
+						<?php if (!Yii::$app->user->isGuest) { ?>
+							<li class="nav-item d-none d-sm-inline-block loggedInMenu">
+								<a href="/vallalasok" class="nav-link <?=menuActiveClass('/vallalasok');?>">Vállalás</a>
+							</li>
+						<?php } ?>
+					</ul>
+				</div>
+			</nav>
+		<?php } ?>
 	</header>
 
 
