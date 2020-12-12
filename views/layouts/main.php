@@ -124,6 +124,28 @@ $lang = Yii::$app->language;
 	</div>
 
 	<footer>
+		<div class="mailchimp">
+			<h4>Feliratkozás az Ararát hírlevelére</h4>
+			<p>Ha szeretnél elsők között értesülni a Magyarországi Evangélikus Egyház teremtésvédelmi tevékenységéről (híreiről, eseményeiről, jógyakorlatairól), akkor iratkozz fel az Ararát hírlevelére a „Feliratkozás” gomb megnyomásával!</p>
+			<p>A feliratkozással hozzájárulsz személyes adataid kezeléséhez, amelyet a <a href="https://zsinat.lutheran.hu/torvenyek/toervenyek/4-2018.-viii.-28.-orszagos-szabalyrendelet-a-magyarorszagi-evangelikus-egyhaz-adatvedelmi-es-adatbiztonsagi-szabalyzatarol-melleklet/B5_MEE%20adatvedelmi%20szabalyzata_20180626.pdf/view" target="_blank">Magyarországi Evangélikus Egyház 4/2018. (VIII. 28.) országos szabályrendeletében</a> foglalt adatvédelmi és adatbiztonsági szabályzat határoz meg.</p>
+
+			<div id="mc_embed_signup">
+				<form action="https://arterm.us7.list-manage.com/subscribe/post?u=ef0e244034a79c398fbf3da29&amp;id=1efc6b60bd" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+					<div id="mc_embed_signup_scroll">
+
+						<div class="mc-field-group form-group">
+							<input type="email" value="" name="EMAIL" class="required email form-control" id="mce-EMAIL" placeholder="E-mail cím" autocomplete="off">
+						</div>
+						<div id="mce-responses" class="clear">
+							<div class="response" id="mce-error-response" style="display:none"></div>
+							<div class="response" id="mce-success-response" style="display:none"></div>
+						</div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+						<div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_ef0e244034a79c398fbf3da29_1efc6b60bd" tabindex="-1" value=""></div>
+						<div class="clear"><input type="submit" value="Feliratkozás" name="subscribe" id="mc-embedded-subscribe" class="button btn btn-secondary"></div>
+					</div>
+				</form>
+			</div>
+		</div>
 		<p><span>Copyright @2020</span>&nbsp;|&nbsp;<a href="/aef">ÁEF</a>&nbsp;|&nbsp;<a href="/impresszum">Impresszum</a></p>
 	</footer>
 

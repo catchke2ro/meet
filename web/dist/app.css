@@ -25641,6 +25641,19 @@ a.text-muted:hover {
   .layout-frontend .wrapper > footer p, .layout-frontend .wrapper > footer a {
     color: #ffffff;
     margin-bottom: 0; }
+  .layout-frontend .wrapper > footer .mailchimp {
+    line-height: 1.4;
+    margin: auto;
+    width: 50%;
+    min-width: 400px;
+    max-width: 600px;
+    padding: 20px 40px; }
+    .layout-frontend .wrapper > footer .mailchimp > p {
+      font-weight: lighter; }
+    .layout-frontend .wrapper > footer .mailchimp h4 {
+      color: white; }
+    .layout-frontend .wrapper > footer .mailchimp #mc_embed_signup {
+      margin-top: 10px; }
 
 .text-mustarmag {
   color: #fdc06e; }
