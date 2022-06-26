@@ -2,7 +2,10 @@
 
 namespace meetbase\models\lutheran;
 
+use Yii;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
+use yii\db\Connection;
 
 /**
  * Class ContactType
@@ -19,6 +22,16 @@ abstract class ContactType extends ActiveRecord {
 	const ID_PHONE = 2;
 	const ID_EMAIL = 1;
 	const ID_GPS = 15;
+
+
+	/**
+	 * @return object|Connection|null
+	 * @throws InvalidConfigException
+	 */
+	public static function getDb() {
+		return Yii::$app->get('dbtk');
+	}
+
 
 	/**
 	 * @return string

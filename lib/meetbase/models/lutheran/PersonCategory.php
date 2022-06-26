@@ -2,7 +2,10 @@
 
 namespace meetbase\models\lutheran;
 
+use Yii;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
+use yii\db\Connection;
 
 /**
  * Class PersonCategory
@@ -15,6 +18,15 @@ use yii\db\ActiveRecord;
  * @property string $rovidnev
  */
 abstract class PersonCategory extends ActiveRecord {
+
+
+	/**
+	 * @return object|Connection|null
+	 * @throws InvalidConfigException
+	 */
+	public static function getDb() {
+		return Yii::$app->get('dbtk');
+	}
 
 
 	/**

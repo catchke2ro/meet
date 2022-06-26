@@ -10,9 +10,9 @@ if (file_exists(__DIR__.'/db.local.php')) {
 	$db = array_replace_recursive($db, require __DIR__ . '/db.local.php');
 }
 
-$dbmail = require __DIR__ . '/dbmail.php';
-if (file_exists(__DIR__.'/dbmail.local.php')) {
-	$dbmail = array_replace_recursive($dbmail, require __DIR__ . '/dbmail.local.php');
+$dbTk = require __DIR__ . '/dbtk.php';
+if (file_exists(__DIR__.'/dbtk.local.php')) {
+	$dbTk = array_replace_recursive($dbTk, require __DIR__ . '/dbtk.local.php');
 }
 
 $config = [
@@ -44,10 +44,13 @@ $config = [
 			'transport' => [
 				'class' => 'Swift_SmtpTransport',
 				'encryption' => 'tls',
-				'host'       => 'smtp.lutheran.hu',
+				//'host'       => 'smtp.lutheran.hu',
+				'host'       => 'in.mailjet.com',
 				'port'       => '587',
-				'username'   => 'meet',
-				'password'   => '5qUvw2QSAcm',
+				//'username'   => 'meet',
+				'username'   => 'd06cb8e360ee26230b0112ac63b270ba',
+				//'password'   => '5qUvw2QSAcm',
+				'password'   => '3f1cfc2311249f5b07efe2d6889d6512',
 			],
 		],
 	],

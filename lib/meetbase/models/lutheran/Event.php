@@ -3,7 +3,10 @@
 namespace meetbase\models\lutheran;
 
 use meetbase\models\traits\SharedModelTrait;
+use Yii;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
+use yii\db\Connection;
 
 /**
  * Class Contact
@@ -46,6 +49,15 @@ use yii\db\ActiveRecord;
 abstract class Event extends ActiveRecord {
 
 	use SharedModelTrait;
+
+
+	/**
+	 * @return object|Connection|null
+	 * @throws InvalidConfigException
+	 */
+	public static function getDb() {
+		return Yii::$app->get('dbtk');
+	}
 
 
 	/**

@@ -2,7 +2,10 @@
 
 namespace meetbase\models\lutheran;
 
+use Yii;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
+use yii\db\Connection;
 
 /**
  * Class Organization
@@ -19,6 +22,15 @@ abstract class OrganizationType extends ActiveRecord {
 	 * @var array|null
 	 */
 	private static $listCache = null;
+
+
+	/**
+	 * @return object|Connection|null
+	 * @throws InvalidConfigException
+	 */
+	public static function getDb() {
+		return Yii::$app->get('dbtk');
+	}
 
 
 	/**

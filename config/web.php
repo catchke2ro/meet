@@ -14,9 +14,9 @@ if (file_exists(__DIR__ . '/db.local.php')) {
 	$db = array_replace_recursive($db, require __DIR__ . '/db.local.php');
 }
 
-$dbmail = require __DIR__ . '/dbmail.php';
-if (file_exists(__DIR__ . '/dbmail.local.php')) {
-	$dbmail = array_replace_recursive($dbmail, require __DIR__ . '/dbmail.local.php');
+$dbTk = require __DIR__ . '/dbtk.php';
+if (file_exists(__DIR__ . '/dbtk.local.php')) {
+	$dbTk = array_replace_recursive($dbTk, require __DIR__ . '/dbtk.local.php');
 }
 
 $config = [
@@ -68,7 +68,7 @@ $config = [
 			],
 		],
 		'db'           => $db,
-		'dbmail'       => $dbmail,
+		'dbtk'         => $dbTk,
 		'urlManager'   => [
 			'enablePrettyUrl' => true,
 			'showScriptName'  => false,

@@ -3,8 +3,11 @@
 namespace meetbase\models\lutheran;
 
 use meetbase\models\traits\SharedModelTrait;
+use Yii;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\db\Connection;
 
 /**
  * Class Person
@@ -12,20 +15,29 @@ use yii\db\ActiveRecord;
  * @package app\models
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  *
- * @property int            $id
- * @property int            $ref_kategoria_id
- * @property string         $nev_elotag
- * @property string         $nev
- * @property int            $vuid
- * @property string         $felhasznalonev
- * @property bool           $erv_allapot
- * @property PersonCategory $personCategory
- * @property User           $user
- * @property Contact        $emailContact
+ * @property int              $id
+ * @property int              $ref_kategoria_id
+ * @property string           $nev_elotag
+ * @property string           $nev
+ * @property int              $vuid
+ * @property string           $felhasznalonev
+ * @property bool             $erv_allapot
+ * @property PersonCategory   $personCategory
+ * @property \app\models\User $user
+ * @property Contact          $emailContact
  */
 abstract class Person extends ActiveRecord {
 
 	use SharedModelTrait;
+
+
+	/**
+	 * @return object|Connection|null
+	 * @throws InvalidConfigException
+	 */
+	public static function getDb() {
+		return Yii::$app->get('dbtk');
+	}
 
 
 	/**
@@ -53,14 +65,6 @@ abstract class Person extends ActiveRecord {
 		])->andOnCondition([
 			'ref_tipus_id' => ContactType::ID_EMAIL
 		]);
-	}
-
-
-	/**
-	 * @return ActiveQuery
-	 */
-	public function getUser() {
-		return $this->hasOne($this->getModelClass(User::class), ['vuid' => 'vuid']);
 	}
 
 
