@@ -3,7 +3,7 @@
 
 namespace app\components;
 
-use app\models\lutheran\User;
+use app\models\User;
 use Yii;
 use yii\rbac\PhpManager;
 
@@ -24,14 +24,14 @@ class AuthManager extends PhpManager {
 	 * @return bool|void
 	 */
 	public function checkAccess($userId, $permissionName, $params = []) {
-		/** @var \meetbase\models\lutheran\User $user */
 		if ($permissionName === 'admin') {
-			$user = User::findOne(['vuid' => $userId]);
-			return $user && in_array($user->id, Yii::$app->params['admins']);
+			$user = User::findOne(['id' => $userId]);
+
+			return $user && $user->isAdmin();
 		}
+
 		return true;
 	}
-
 
 
 }

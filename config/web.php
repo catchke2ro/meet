@@ -2,7 +2,7 @@
 
 
 use app\components\AuthManager;
-use app\models\lutheran\User;
+use app\models\User;
 
 $params = require __DIR__ . '/params.php';
 if (file_exists(__DIR__ . '/params.local.php')) {

@@ -5,8 +5,7 @@ use app\models\CommitmentCategory;
 use app\models\Module;
 use app\models\OrgCommitmentFill;
 use app\models\OrgQuestionFill;
-use app\modules\meet\models\OrganizationType;
-use meetbase\models\lutheran\User;
+use app\models\User;
 
 /**
  * @var $commitmentCategories                     CommitmentCategory[]

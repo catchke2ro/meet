@@ -12,10 +12,10 @@ use app\models\lutheran\Event;
 use app\models\lutheran\Organization;
 use app\models\Module;
 use app\models\QuestionCategory;
-use app\models\lutheran\User;
 use app\models\OrgCommitmentFill;
 use app\models\OrgCommitmentOption;
 use app\models\OrgQuestionFill;
+use app\models\User;
 use DateTime;
 use Exception;
 use http\Exception\InvalidArgumentException;
@@ -169,7 +169,7 @@ class CommitmentController extends BaseController {
 			$targetModuleId = $request->getBodyParam('targetModule');
 			$targetModule = Module::findOne(['id' => $targetModuleId]) ?: Module::find()->orderBy('threshold ASC')->one();
 
-			/** @var \meetbase\models\lutheran\User $user */
+			/** @var User $user */
 			/** @var Organization $organization */
 			$user = Yii::$app->user->getIdentity();
 			if (!($user && ($organization = $user->getOrganization()))) {

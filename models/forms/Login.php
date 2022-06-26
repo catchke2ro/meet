@@ -2,7 +2,7 @@
 
 namespace app\models\forms;
 
-use app\models\lutheran\User;
+use app\models\User;
 use Yii;
 use yii\base\Model;
 
@@ -79,7 +79,7 @@ class Login extends Model {
 				return;
 			}
 
-			if (in_array($this->getUser()->id, Yii::$app->params['admins'])) {
+			if ($this->getUser()->isAdmin()) {
 				return true;
 			}
 			$registrationValid = $user->validateRegistration();
@@ -114,7 +114,7 @@ class Login extends Model {
 	 */
 	protected function getUser() {
 		if ($this->user === null) {
-			$this->user = User::findByUsername(['id' => $this->username]);
+			$this->user = User::findOne(['username' => $this->username]);
 		}
 
 		return $this->user;

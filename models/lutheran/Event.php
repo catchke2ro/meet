@@ -53,9 +53,7 @@ class Event extends BaseEvent {
 		Organization $organization,
 		Person $person,
 		Contact $emailContact,
-		string $fileId,
-		string $username,
-		string $password
+		string $fileId
 	) {
 		$event = new Event();
 		$event->erv_kezdet = (new DateTime())->format('Y-m-d');
@@ -66,8 +64,6 @@ class Event extends BaseEvent {
 		$event->ertek1 = $person->nev;
 		$event->ertek2 = $emailContact->ertek1;
 		$event->ertek3 = "/_authorization-file?id=$fileId&token=";
-		$event->ertek4 = $username;
-		$event->ertek5 = $password;
 
 		return $event;
 	}

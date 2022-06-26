@@ -11,7 +11,7 @@ use app\models\OrgQuestionFill;
 use DateTime;
 use Exception;
 use http\Exception\InvalidArgumentException;
-use meetbase\models\lutheran\User;
+use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;

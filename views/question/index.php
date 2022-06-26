@@ -1,7 +1,7 @@
 <?php
 
 use app\models\AdminOrganization;use app\models\QuestionCategory;
-use meetbase\models\lutheran\User;
+use app\models\User;
 
 /**
  * @var $questionCategories QuestionCategory[]

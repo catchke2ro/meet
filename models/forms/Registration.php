@@ -8,7 +8,8 @@ use app\models\lutheran\ContactType;
 use app\models\lutheran\Event;
 use app\models\lutheran\Organization;
 use app\models\lutheran\Person;
-use app\models\lutheran\User;
+use app\models\User;
+use DateTime;
 use Exception;
 use Yii;
 use yii\base\Model;
@@ -157,6 +158,7 @@ class Registration extends Model {
 		if ($result) {
 			$this->pdf = UploadedFile::getInstance($this, 'pdf');
 		}
+
 		return $result;
 	}
 
@@ -243,10 +245,17 @@ class Registration extends Model {
 				$organization,
 				$person,
 				$personEmailContanct,
-				$targetFileId,
-				$this->generateUsername($this->name),
-				password_hash($this->password, PASSWORD_DEFAULT)
+				$targetFileId
 			);
+
+			$user = new User();
+			$user->email = $this->email;
+			$user->username = $this->generateUsername($this->name);
+			$user->password = password_hash($this->password, PASSWORD_DEFAULT);
+			$user->registered_at = (new DateTime())->format('Y-m-d H:i:s');
+			$user->is_active = false;
+			$user->person_id = $person->id;
+			$success &= $user->save();
 
 			$success &= $newPositionEvent->save();
 			$success &= $newRegistrationEvent->save();
@@ -291,7 +300,7 @@ class Registration extends Model {
 	 */
 	protected function generateUsername(string $name) {
 		$usernames = User::find()
-			->select('id')
+			->select('username')
 			->asArray()->column();
 
 		preg_match('/^([^\s]+)\s+(.*)$/ui', $name, $match);
@@ -299,11 +308,11 @@ class Registration extends Model {
 			return slug(mb_substr($firstNamePart, 0, 1));
 		}, array_filter(explode(' ', $match[2]))));
 		$lastName = slug(preg_replace('/[^\p{L}]/ui', '', $match[1]));
-		$usernameBase = $firstName.$lastName;
+		$usernameBase = $firstName . $lastName;
 		$i = 0;
 		do {
-			$username = $usernameBase.($i > 0 ? $i : '');
-			$i++;
+			$username = $usernameBase . ($i > 0 ? $i : '');
+			$i ++;
 		} while (in_array($username, $usernames));
 
 		return $username;

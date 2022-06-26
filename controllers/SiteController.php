@@ -6,7 +6,7 @@ use app\models\forms\OrgContact;
 use app\models\lutheran\Organization;
 use app\models\Module;
 use app\models\Post;
-use meetbase\models\lutheran\User;
+use app\models\User;
 use Throwable;
 use Yii;
 use yii\helpers\Url;

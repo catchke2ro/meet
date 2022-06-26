@@ -4,7 +4,7 @@
  */
 
 use app\modules\meet\models\OrganizationType;
-use meetbase\models\lutheran\User;
+use app\models\User;
 use app\models\Module;
 
 $selectedOrgType = Yii::$app->session->get('admin_org_type');
