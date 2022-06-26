@@ -1,54 +1,69 @@
+/*!********************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].use[2]!./frontend/pdf.sass ***!
+  \********************************************************************************************************************************************************************/
 body {
   font-family: Nunito, "Helvetica Neue", Arial, sans-serif;
-  margin: 60pt; }
+  margin: 60pt;
+}
 
 table.header {
-  width: 100%; }
-  table.header td.logo {
-    width: 40%; }
-    table.header td.logo img {
-      width: 100%; }
-  table.header td.quote {
-    width: 60%;
-    padding-left: 10pt;
-    padding-right: 50pt;
-    font-size: 11pt;
-    line-height: 16pt; }
+  width: 100%;
+}
+table.header td.logo {
+  width: 40%;
+}
+table.header td.logo img {
+  width: 100%;
+}
+table.header td.quote {
+  width: 60%;
+  padding-left: 10pt;
+  padding-right: 50pt;
+  font-size: 11pt;
+  line-height: 16pt;
+}
 
 h1 {
   font-size: 27pt;
   line-height: 33pt;
   font-weight: lighter;
   text-align: center;
-  margin: 50pt 0pt 10pt; }
+  margin: 50pt 0pt 10pt;
+}
 
 h2 {
   font-size: 14pt;
   line-height: 20pt;
   text-align: center;
   font-weight: normal;
-  margin: 0px; }
+  margin: 0px;
+}
 
 div.content * {
   font-size: 14pt;
-  line-height: 18pt; }
+  line-height: 18pt;
+}
 
 table.signs {
   width: 100%;
-  margin-top: 80pt; }
-  table.signs td {
-    text-align: center; }
-  table.signs .signBlock {
-    display: inline-block;
-    width: 200pt;
-    font-size: 14pt;
-    line-height: 18pt;
-    text-align: center; }
-    table.signs .signBlock span.dots {
-      border-bottom: 1px dotted #282828;
-      display: block;
-      width: 100%;
-      margin-bottom: 5pt; }
-    table.signs .signBlock span.name {
-      font-style: italic; }
-
+  margin-top: 80pt;
+}
+table.signs td {
+  text-align: center;
+}
+table.signs .signBlock {
+  display: inline-block;
+  width: 200pt;
+  font-size: 14pt;
+  line-height: 18pt;
+  text-align: center;
+}
+table.signs .signBlock span.dots {
+  border-bottom: 1px dotted #282828;
+  display: block;
+  width: 100%;
+  margin-bottom: 5pt;
+}
+table.signs .signBlock span.name {
+  font-style: italic;
+}

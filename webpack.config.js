@@ -17,10 +17,13 @@ const config = {
 	module: {
 		rules: [
 			{
-				test: /\.(svg|eot|woff|woff2|ttf)$/,
+				test: /\.(svg|eot|woff|woff2|ttf)(\?v=\d+\.\d+\.\d+)?$/,
 				use: [
 					{
-						loader: 'file-loader'
+						loader: 'file-loader',
+						options: {
+							name: "[name].[ext]"
+						},
 					}
 				]
 			},
@@ -32,14 +35,20 @@ const config = {
 					},
 					{
 						loader: 'css-loader',
+						options: {
+							url: false
+						},
 					},
-					{
+/*					{
 						loader: 'resolve-url-loader',
-					},
+						options: {
+							debug: true
+						}
+					},*/
 					{
 						loader: 'sass-loader',
 						options: {
-							sourceMap: true,
+							sourceMap: true
 						},
 					},
 				],

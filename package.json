@@ -8,34 +8,34 @@
   "license": "ISC",
   "scripts": {
     "clean": "rm dist/bundle.js",
-    "watch": "webpack -d --mode development -w",
-    "build-dev": "webpack -d --mode development",
+    "watch": "webpack --mode development -w",
+    "build-dev": "webpack --mode development",
     "build-prod": "webpack -p --mode production"
   },
   "dependencies": {
-    "admin-lte": "^3.0.5",
-    "bootstrap": "^4.4.0",
-    "font-awesome": "^4.7.0",
-    "ionicons": "^5.0.1",
-    "jquery": "^3.4.1",
-    "lodash": "^4.0.1",
-    "mini-css-extract-plugin": "^0.9.0",
-    "moment": "^2.0.0",
-    "ol": "^6.4.3",
-    "ol-mapbox-style": "^6.1.3",
-    "popper.js": "^1.16.1",
-    "sticky-js": "^1.3.0",
-    "imagesloaded": "^4.1.4"
+    "@fortawesome/fontawesome-free": "^6.1.1",
+    "@popperjs/core": "^2.11.5",
+    "admin-lte": "^3.2.0",
+    "bootstrap": "^4.6.1",
+    "imagesloaded": "^5.0.0",
+    "ionicons": "^6.0.2",
+    "jquery": "^3.6.0",
+    "lodash": "^4.17.21",
+    "mini-css-extract-plugin": "^2.6.1",
+    "moment": "^2.29.3",
+    "ol": "^6.14.1",
+    "ol-mapbox-style": "^8.1.2",
+    "sticky-js": "^1.3.0"
   },
   "devDependencies": {
-    "webpack": "^4.42.0",
-    "webpack-cli": "^3.3.11",
-    "css-loader": "^3.4.2",
-    "sass-loader": "^8.0.2",
-    "file-loader": "^6.0.0",
-    "resolve-url-loader": "^3.1.1",
-    "node-sass": "^4.13.1",
-    "style-loader": "^1.0.0",
-    "lodash-webpack-plugin": "^0.11.5"
+    "css-loader": "^6.7.1",
+    "file-loader": "^6.2.0",
+    "lodash-webpack-plugin": "^0.11.6",
+    "resolve-url-loader": "^5.0.0",
+    "sass": "^1.53.0",
+    "sass-loader": "^13.0.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0"
   }
 }
