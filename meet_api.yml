@@ -1,0 +1,469 @@
+openapi: 3.0.0
+info:
+  title: MEET - Templomkapu API
+  version: 1.0.0
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+  responses:
+    204Empty:
+      description: Üres válasz
+    400Error:
+      description: Érvénytelen kérés
+    401Error:
+      description: Hiányzó / érvénytelen API kulcs
+    403Error:
+      description: Hiányzó jogosultság a végponton
+    422Error:
+      description: Érvénytelen bemeneti adat
+
+  schemas:
+    ElerhetosegInput:
+      type: object
+      properties:
+        erv_allapot:
+          type: integer
+          enum: [0,1]
+        ref_tipus_id:
+          type: integer
+          enum: [1,2,7]
+        ref_szervegyseg_id:
+          type: integer
+        ref_szemely_id:
+          type: integer
+        ref_tabla:
+          type: integer
+          enum: ["szemely__t__szemely", "szervegyseg__t__szervegyseg"]
+        ref_id:
+          type: integer
+        publikus:
+          type: integer
+          enum: [0,1]
+        ertek1:
+          type: string
+        ertek2:
+          type: string
+        ertek3:
+          type: string
+        ertek9:
+          type: string
+        ertek10:
+          type: string
+    Elerhetoseg:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: integer
+        - $ref: '#/components/schemas/ElerhetosegInput'
+
+    SzervegysegInput:
+      type: object
+      properties:
+        nev:
+          type: string
+        ref_regi_id:
+          type: integer
+          enum: [0]
+        ref_kategoria_id:
+          type: integer
+          enum: [3]
+        ref_tipus_id:
+          type: integer
+          enum: [1]
+        erv_allapot:
+          type: integer
+          enum: [0,1]
+
+    Szervegyseg:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: integer
+        - $ref: '#/components/schemas/SzervegysegInput'
+
+    SzemelyInput:
+      type: object
+      properties:
+        nev_elotag:
+          type: string
+        nev:
+          type: string
+        ref_kategoria_id:
+          type: integer
+          enum: [4]
+        erv_allapot:
+          type: integer
+          enum: [0,1]
+
+    Szemely:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: integer
+        - $ref: '#/components/schemas/SzemelyInput'
+
+    EsemenyInput:
+      type: object
+      properties:
+        erv_kezdet:
+          type: string
+          format: date
+        erv_allapot:
+          type: integer
+          enum: [0,1]
+        ref_tipus_id:
+          type: integer
+          enum: [1036,101,102,103,104,105]
+        ref_szervegyseg_id:
+          type: integer
+        ref_szemely_id:
+          type: integer
+        ref_esemeny_id:
+          type: integer
+        ref1_id:
+          type: integer
+        ref2_id:
+          type: integer
+        ref3_id:
+          type: integer
+        ref4_id:
+          type: integer
+        ref5_id:
+          type: integer
+        ref6_id:
+          type: integer
+        ref7_id:
+          type: integer
+        ref8_id:
+          type: integer
+        ref9_id:
+          type: integer
+        ref10_id:
+          type: integer
+        ertek1:
+          type: string
+        ertek2:
+          type: string
+        ertek3:
+          type: string
+        ertek4:
+          type: string
+        ertek5:
+          type: string
+        ertek6:
+          type: string
+        ertek7:
+          type: string
+        ertek8:
+          type: string
+        ertek9:
+          type: string
+        ertek10:
+          type: string
+
+    Esemeny:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: integer
+        - $ref: '#/components/schemas/EsemenyInput'
+
+
+paths:
+  /api/meet/v1/szervegyseg:
+    post:
+      operationId: szervegysegLetrehozas
+      tags:
+        - Szervezeti egység
+      summary: Szervezeti egység létrehozása
+      description: Szervezeti egység létrehozása
+      security:
+        - ApiKeyAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SzervegysegInput'
+
+      responses:
+        '200':
+          description: Szervezeti egység létrehozva
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Szervegyseg'
+        '422':
+          $ref: '#/components/responses/422Error'
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+
+  /api/meet/v1/szervegyseg/id:
+    put:
+      operationId: szervegysegSzerkesztes
+      tags:
+        - Szervezeti egység
+      summary: Szervezeti egység szerkesztése
+      description: Szervezeti egység szerkesztése
+      security:
+        - ApiKeyAuth: [ ]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Szervezeti egység ID-ja
+          schema:
+            type: integer
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SzervegysegInput'
+
+      responses:
+        '200':
+          description: Szervezeti egység sikeresen szerkesztve
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Szervegyseg'
+        '422':
+          $ref: '#/components/responses/422Error'
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+
+  /api/meet/v1/elerhetoseg:
+    post:
+      operationId: elerhetosegLetrehozas
+      tags:
+        - Elérhetőség
+      summary: Elérhetősége létrehozása
+      description: Elérhetőség létrehozása
+      security:
+        - ApiKeyAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ElerhetosegInput'
+
+      responses:
+        '200':
+          description: Elérhetőség létrehozva
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Elerhetoseg'
+        '422':
+          $ref: '#/components/responses/422Error'
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+
+  /api/meet/v1/elerhetoseg/id:
+    put:
+      operationId: elerhetosegSzerkesztes
+      tags:
+        - Elérhetőség
+      summary: Elérhetőség szerkesztése
+      description: Elérhetőség szerkesztése
+      security:
+        - ApiKeyAuth: [ ]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Elérhetőség ID-ja
+          schema:
+            type: integer
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ElerhetosegInput'
+
+      responses:
+        '200':
+          description: Elérhetőség sikeresen szerkesztve
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Elerhetoseg'
+        '422':
+          $ref: '#/components/responses/422Error'
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+
+  /api/meet/v1/szemely:
+    post:
+      operationId: szemelyLetrehozas
+      tags:
+        - Személy
+      summary: Személy létrehozása
+      description: Személy létrehozása
+      security:
+        - ApiKeyAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SzemelyInput'
+
+      responses:
+        '200':
+          description: Személy létrehozva
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Szemely'
+        '422':
+          $ref: '#/components/responses/422Error'
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+
+  /api/meet/v1/szemely/id:
+    put:
+      operationId: szemelySzerkesztes
+      tags:
+        - Személy
+      summary: Személy szerkesztése
+      description: Személy szerkesztése
+      security:
+        - ApiKeyAuth: [ ]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Személy ID-ja
+          schema:
+            type: integer
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SzemelyInput'
+
+      responses:
+        '200':
+          description: Személy sikeresen szerkesztve
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Szemely'
+        '422':
+          $ref: '#/components/responses/422Error'
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+
+  /api/meet/v1/esemeny:
+    post:
+      operationId: esemenyLetrehozas
+      tags:
+        - Esemény
+      summary: Esemény létrehozása
+      description: Esemény létrehozása
+      security:
+        - ApiKeyAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EsemenyInput'
+
+      responses:
+        '200':
+          description: Esemény létrehozva
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Esemeny'
+        '422':
+          $ref: '#/components/responses/422Error'
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+
+  /api/meet/v1/esemeny/id:
+    put:
+      operationId: szemelySzerkesztes
+      tags:
+        - Esemény
+      summary: Esemény szerkesztése
+      description: Esemény szerkesztése
+      security:
+        - ApiKeyAuth: [ ]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Esemény ID-ja
+          schema:
+            type: integer
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EsemenyInput'
+
+      responses:
+        '200':
+          description: Esemény sikeresen szerkesztve
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Esemeny'
+        '422':
+          $ref: '#/components/responses/422Error'
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+
+
