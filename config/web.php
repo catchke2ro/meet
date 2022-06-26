@@ -34,6 +34,9 @@ $config = [
 		],
 		'request'      => [
 			'cookieValidationKey' => 'OMLFrqqEvaSHG2qTgZTAv4W8uIp-FoDa',
+			'trustedHosts'        => [
+				'10.0.3.1'
+			],
 		],
 		'cache'        => [
 			'class' => 'yii\caching\FileCache',

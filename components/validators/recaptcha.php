@@ -38,8 +38,8 @@ class recaptcha extends Validator {
 	public function validateAttribute($model, $attribute) {
 		// extract the attribute value from it's model object
 		$value = $model->$attribute;
-		if (!$this->recaptcha->setExpectedHostname($_SERVER['HTTP_HOST'])
-					   ->verify($value, $_SERVER['REMOTE_ADDR'])
+		if (!$this->recaptcha->setExpectedHostname(Yii::$app->request->getHostName())
+					   ->verify($value, Yii::$app->request->getUserIP())
 					   ->isSuccess()) {
 			$this->addError($model, $attribute, 'CAPTCHA hiba!');
 		}
