@@ -1,5 +1,12 @@
 import "./admin.sass";
 
+import "@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf"
+import "@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2"
+import "@fortawesome/fontawesome-free/webfonts/fa-regular-400.ttf"
+import "@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2"
+import "@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf"
+import "@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
+
 import $ from "jquery"
 import "bootstrap/dist/js/bootstrap"
 import "admin-lte/dist/js/adminlte"

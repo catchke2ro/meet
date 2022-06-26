@@ -5,7 +5,6 @@ import { Point } from 'ol/geom';
 import { Style, Icon } from 'ol/style';
 import * as olProj from "ol/proj"
 import olms from 'ol-mapbox-style';
-import stylefunction from 'ol-mapbox-style/dist/stylefunction';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
