@@ -70,6 +70,12 @@ AppAsset::register($this);
 							<p>Kitöltött vállalások</p>
 						</a>
 					</li>
+					<li class="nav-item">
+						<a href="/meet/users" class="nav-link">
+							<i class="fa fa-user nav-icon"></i>
+							<p>Felhasználók</p>
+						</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

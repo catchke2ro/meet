@@ -2,7 +2,7 @@
 
 namespace app\modules\meet\models\forms;
 
-use app\modules\meet\models\User;
+use app\models\User;
 use Exception;
 use Yii;
 
@@ -19,7 +19,7 @@ class UserEdit extends UserCreate {
 	/**
 	 * @var User|mixed
 	 */
-	private $user;
+	public $user;
 
 
 	/**
@@ -29,13 +29,11 @@ class UserEdit extends UserCreate {
 		$rules = parent::rules();
 
 		foreach ($rules as &$rule) {
-			if ($rule[0] === 'email' && $rule[1] === 'unique') {
+			if (($rule[0] === 'email' && $rule[1] === 'unique') || ($rule[0] === 'username' && $rule[1] === 'unique')) {
 				$rule['filter'] = ['!=', 'id', Yii::$app->request->get('id')];
 			}
-			if ($rule[0] === 'password' && $rule[1] === 'required') {
-				$rule = null;
-			}
 		}
+
 		return array_filter($rules);
 	}
 
@@ -44,15 +42,12 @@ class UserEdit extends UserCreate {
 	 * @param User $user
 	 */
 	public function loadUser(User $user) {
+		$organization = $user->organization ?: $user->getAnyActiveOrganization();
 		$this->user = $user;
-		$this->orgName = $user->organization->name;
-		$this->orgAddress = $user->organization->name;
-		$this->orgPhone = $user->organization->phone;
-		$this->orgCompanyNumber = $user->organization->company_number;
-		$this->orgTaxNumber = $user->organization->tax_number;
-		$this->orgRemoteId = $user->organization->remote_id;
+		$this->username = $user->username;
 		$this->email = $user->email;
-		$this->name = $user->name;
+		$this->orgRemoteId = $organization?->id;
+		$this->isActive = $user->is_active ? 1 : 0;
 		$this->isAdmin = $user->is_admin ? 1 : 0;
 		$this->isApprovedAdmin = $user->is_approved_admin ? 1 : 0;
 		$this->isApprovedBoss = $user->is_approved_boss ? 1 : 0;
@@ -73,22 +68,10 @@ class UserEdit extends UserCreate {
 		$transaction = Yii::$app->db->beginTransaction();
 		try {
 			$success = true;
-			$organization = $this->user->organization;
-			$organization->email = $this->email;
-			$organization->name = $this->orgName;
-			$organization->address = $this->orgAddress;
-			$organization->phone = $this->orgPhone;
-			$organization->company_number = $this->orgCompanyNumber;
-			$organization->tax_number = $this->orgTaxNumber;
-			$organization->remote_id = (int) $this->orgRemoteId;
-			$success &= $organization->save();
 
 			$user = $this->user;
 			$user->email = $this->email;
-			$user->name = $this->name;
-			if ($this->password) {
-				$user->setPassword($this->password);
-			}
+			$user->username = $this->username;
 			$user->is_admin = $this->isAdmin ?: false;
 			$user->is_approved_boss = $this->isApprovedBoss ?: false;
 			$user->is_approved_admin = $this->isApprovedAdmin ?: false;
