@@ -118,7 +118,7 @@ $this->title = 'Vállalások';
 		?>
 	</div>
 
-	<?php if ($fill && !$fill->isApproved()) { ?>
+	<?php if ($fill && $fill instanceof OrgCommitmentFill && !$fill->isApproved()) { ?>
 		<div class="text-center">
 			<p>Legutóbbi vállalásod elfogadásra vár. Amíg ez nem történt meg, nem tudsz új vállalást leadni.</p>
 		</div>

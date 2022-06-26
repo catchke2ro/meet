@@ -18,7 +18,6 @@ use app\models\OrgQuestionFill;
  * @var $checkedCommitmentOptions                 array
  */
 
-$catId = $commitmentCategory->id;
 ?>
 
 <div class="commitment pb-2 <?=$commitment->getCssClass();?>">

@@ -10,7 +10,6 @@ use app\models\QuestionOption;
  * @var $instance int
  */
 
-$catId = $questionCategory->id;
 ?>
 
 <div class="question pb-2 <?=$question->getCssClass();?>">
