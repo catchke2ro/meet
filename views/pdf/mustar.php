@@ -28,7 +28,7 @@ $referer = $organization->getMeetReferer();
 	</tr>
 </table>
 <h1><?=$organization->nev;?></h1>
-<h2><?=$organization->addressContacts ? $organization->addressContacts[0]->ertek2.', ' : null;?><?=strftime('%Y. %B %e.');?></h2>
+<h2><?=$organization->addressContacts ? $organization->addressContacts[0]->ertek2.', ' : null;?><?=date('Y. m. d.');?></h2>
 
 <br />
 
