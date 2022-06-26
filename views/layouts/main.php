@@ -54,7 +54,10 @@ $lang = Yii::$app->language;
 				<?php if($lang === 'hu-HU') { ?>
 					<?php if (!Yii::$app->getUser()->isGuest) { ?>
 						<div class="user">
-							<p class="text-small loggedInName">Belépve: <span><?=Yii::$app->getUser()->getIdentity()->name;?></span></p>
+							<p class="text-small loggedInName">Belépve: <span><?=Yii::$app->getUser()->getIdentity()->getName();?></span></p>
+							<?php if (Yii::$app->getUser()->getIdentity()->isAdmin()) {?>
+								<a href="/meet" class="btn btn-sm btn-secondary">Admin</a>
+							<?php } ?>
 							<?php echo Html::beginForm(['/user/logout'], 'post', ['id' => 'logoutForm']) . Html::endForm(); ?>
 							<a href="javascript:void(0)" class="btn btn-sm btn-primary logoutLink">Kilépés</a>
 						</div>
