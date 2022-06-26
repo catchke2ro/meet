@@ -36,6 +36,24 @@ class Event extends BaseEvent {
 		return $event;
 	}
 
+	/**
+	 * @param Organization $organization
+	 * @param Person       $person
+	 *
+	 * @return Event
+	 */
+	public static function createRegApprovedEvent(Organization $organization, Person $person): Event {
+		$event = new Event();
+		$event->erv_kezdet = (new DateTime())->format('Y-m-d');
+		$event->erv_allapot = Yii::$app->params['org_meet_reg_valid_erv_allapot'];
+		$event->ref_tipus_id = Yii::$app->params['event_type_meet_reg_approved'];
+		$event->ref_szervegyseg_id = $organization->id;
+		$event->ref_szemely_id = $person->id;
+		$event->ertek1 = 1;
+
+		return $event;
+	}
+
 
 	/**
 	 * @param Organization $organization

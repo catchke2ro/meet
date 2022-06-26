@@ -56,40 +56,9 @@ class CronController extends Controller {
 		foreach ($notMailedApprovedRegs as $notMailedApprovedReg) {
 			if ($notMailedApprovedReg->person && ($email = $notMailedApprovedReg->person->getEmail())) {
 				try {
-					$pdfFilename = (new Pdf())->generatePdf('/pdf/mustar', 'Mustarmag.pdf', [
-						'organization' => $notMailedApprovedReg->organization
-					]);
-
-					(new Email())->sendEmail(
-						'approved_registration',
-						$email,
-						'MEET Értesítő sikeres regisztrációról',
-						['person' => $notMailedApprovedReg->person, 'organization' => $notMailedApprovedReg->organization],
-						[$pdfFilename]
-					);
-
-
-					/*if (!empty($notMailedApprovedReg->organization->emailContacts) && (Yii::$app->params['email_to_org'] ?? false)) {
-						$superintendent = $notMailedApprovedReg->organization->getSuperintendent();
-						$pastor = $notMailedApprovedReg->organization->getPastorGeneral() ?: $notMailedApprovedReg->organization->getPastor();
-						$meetReferer = $notMailedApprovedReg->organization->getMeetReferer();
-
-						$emailContact = reset($notMailedApprovedReg->organization->emailContacts);
-						(new Email())->sendEmail(
-							'approved_registration_org',
-							$emailContact->ertek1,
-							'MEET program tagsági felvétel értesítő',
-							[
-								'person'         => $notMailedApprovedReg->person,
-								'organization'   => $notMailedApprovedReg->organization,
-								'superintendent' => $superintendent,
-								'pastor'         => $pastor,
-								'meetReferer'    => $meetReferer,
-							]
-						);
-					}*/
-					$notMailedApprovedReg->ertek2 = 1;
-					$notMailedApprovedReg->save();
+					$user = $notMailedApprovedReg->person->user;
+					$user->is_approved_admin = 1;
+					$user->save();
 				} catch (Exception $e) {
 					throw $e;
 					//Continue to next event on error
