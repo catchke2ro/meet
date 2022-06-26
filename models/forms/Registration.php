@@ -136,7 +136,7 @@ class Registration extends Model {
 			['orgTaxNumber', 'safe'],
 			['orgRemoteId', 'safe'],
 			['pdf', 'required'],
-			['pdf', 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf'],
+			['pdf', 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf', 'checkExtensionByMimeType' => false],
 			['terms', 'required', 'requiredValue' => 1, 'message' => 'A szabályzat elfogadása kötelező!'],
 			['terms2', 'required', 'requiredValue' => 1, 'message' => 'A feltételek elfogadása kötelező!'],
 			['recaptcha_response', 'required', 'message' => 'CAPTCHA hiba'],
