@@ -210,7 +210,7 @@ class CommitmentController extends BaseController {
 				foreach ($instances ?: [] as $instanceNumber => $optionId) {
 					$fillOption = new OrgCommitmentOption();
 					$fillOption->org_commitment_fill_id = $fill->id;
-					$fillOption->custom_input = $customInputs[$commitmentId][$optionId][$instanceNumber] ?: null;
+					$fillOption->custom_input = $customInputs[$commitmentId][$optionId][$instanceNumber] ?? null;
 					$fillOption->commitment_option_id = $optionId;
 
 					$fillOption->months = $intervals[$commitmentId][$instanceNumber] ?? null;

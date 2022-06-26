@@ -150,7 +150,7 @@ class QuestionController extends BaseController {
 				foreach ($instances ?: [] as $instanceNumber => $optionId) {
 					$answer = new OrgQuestionAnswer();
 					$answer->org_question_fill_id = $fill->id;
-					$answer->custom_input = $customInputs[$questionId][$optionId][$instanceNumber] ?: null;
+					$answer->custom_input = $customInputs[$questionId][$optionId][$instanceNumber] ?? null;
 					$answer->question_option_id = $optionId;
 					if (isset($instanceNumsToIds[$categoryId.'_'.$instanceNumber])) {
 						$answer->instance_id = $instanceNumsToIds[$categoryId.'_'.$instanceNumber];
