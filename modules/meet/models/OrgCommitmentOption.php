@@ -2,16 +2,16 @@
 
 namespace app\modules\meet\models;
 
-use meetbase\models\UserCommitmentOption as BaseUserCommitmentOption;
+use meetbase\models\OrgCommitmentOption as BaseUserCommitmentOption;
 
 /**
- * Class UserCommitmentOption
+ * Class OrgCommitmentOption
  *
  * @package   app\modules\meet\models
  * @author    SRG Group <dev@srg.hu>
  * @copyright 2020 SRG Group Kft.
  */
-class UserCommitmentOption extends BaseUserCommitmentOption {
+class OrgCommitmentOption extends BaseUserCommitmentOption {
 
 
 }

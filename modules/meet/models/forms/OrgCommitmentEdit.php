@@ -2,20 +2,21 @@
 
 namespace app\modules\meet\models\forms;
 
-use app\modules\meet\models\UserCommitmentFill;
+use app\models\lutheran\Event;
+use app\modules\meet\models\OrgCommitmentFill;
 use Exception;
 use Yii;
 use yii\base\Model;
 
 /**
- * Class UserCommitmentEdit
+ * Class OrgCommitmentEdit
  *
  * ModuleCreate form
  *
  * @package app\models\forms
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  */
-class UserCommitmentEdit extends Model {
+class OrgCommitmentEdit extends Model {
 
 	/**
 	 * @var int
@@ -38,7 +39,7 @@ class UserCommitmentEdit extends Model {
 	public $comment;
 
 	/**
-	 * @var UserCommitmentFill
+	 * @var OrgCommitmentFill
 	 */
 	protected $fill;
 
@@ -57,13 +58,13 @@ class UserCommitmentEdit extends Model {
 
 
 	/**
-	 * @param UserCommitmentFill $fill
+	 * @param OrgCommitmentFill $fill
 	 */
-	public function loadFill(UserCommitmentFill $fill) {
+	public function loadFill(OrgCommitmentFill $fill) {
 		$this->fill = $fill;
 		$this->manualScore = $fill->manual_score;
 		$this->manualModuleId = $fill->manual_module_id;
-		$this->approved = $fill->approved;
+		$this->approved = $fill->isApproved();
 		$this->comment = $fill->comment;
 	}
 
@@ -71,10 +72,10 @@ class UserCommitmentEdit extends Model {
 	/**
 	 * Signs module up.
 	 *
-	 * @return UserCommitmentFill|null the saved model or null if saving fails
+	 * @return OrgCommitmentFill|null the saved model or null if saving fails
 	 * @throws Exception
 	 */
-	public function edit(): ?UserCommitmentFill {
+	public function edit(): ?OrgCommitmentFill {
 		if (!$this->validate()) {
 			return null;
 		}
@@ -86,7 +87,8 @@ class UserCommitmentEdit extends Model {
 			$this->fill->manual_score = $this->manualScore;
 			$this->fill->manual_module_id = $this->manualModuleId;
 			$this->fill->comment = $this->comment;
-			$this->fill->approved = $this->approved;
+			$regApprovedEvent = Event::createCommitmentApprovedEvent($this->fill->organization, $this->fill);
+			$regApprovedEvent->save();
 			$success &= $this->fill->save();
 
 			$transaction->commit();

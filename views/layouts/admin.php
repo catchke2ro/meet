@@ -70,7 +70,7 @@ AppAsset::register($this);
 						</a>
 					</li>
 					<li class="nav-item">
-						<a href="/admin/user-commitments" class="nav-link">
+						<a href="/admin/org-commitments" class="nav-link">
 							<i class="fa fa-circle nav-icon"></i>
 							<p>Kitöltött vállalások</p>
 						</a>

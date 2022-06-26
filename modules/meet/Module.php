@@ -64,8 +64,8 @@ class Module extends \yii\base\Module {
 		'/posts/edit/<id:\d+>'   => 'meet/posts/edit',
 		'/posts/delete/<id:\d+>' => 'meet/posts/delete',
 
-		'/user-commitments'          => 'meet/user-commitments/index',
-		'/user-commitments/<id:\d+>' => 'meet/user-commitments/view',
+		'/org-commitments'          => 'meet/org-commitments/index',
+		'/org-commitments/view/<id:\d+>' => 'meet/org-commitments/view',
 	];
 
 
@@ -89,4 +89,6 @@ class Module extends \yii\base\Module {
 
 		// custom initialization code goes here
 	}
+
+
 }

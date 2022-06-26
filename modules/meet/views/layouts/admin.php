@@ -65,7 +65,7 @@ AppAsset::register($this);
 						</a>
 					</li>
 					<li class="nav-item">
-						<a href="/meet/user-commitments" class="nav-link">
+						<a href="/meet/org-commitments" class="nav-link">
 							<i class="fa fa-circle nav-icon"></i>
 							<p>Kitöltött vállalások</p>
 						</a>

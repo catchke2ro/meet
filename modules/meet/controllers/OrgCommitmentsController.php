@@ -2,10 +2,9 @@
 
 namespace app\modules\meet\controllers;
 
-use app\modules\meet\models\forms\UserCommitmentEdit;
+use app\modules\meet\models\forms\OrgCommitmentEdit;
 use app\modules\meet\models\Module;
-use app\modules\meet\models\UserCommitmentFill;
-use app\modules\meet\models\UserCommitmentOption;
+use app\modules\meet\models\OrgCommitmentFill;
 use Exception;
 use Yii;
 use yii\db\ActiveQuery;
@@ -21,7 +20,7 @@ use yii\web\Response;
  * @package app\controllers
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  */
-class UserCommitmentsController extends AbstractAdminController {
+class OrgCommitmentsController extends AbstractAdminController {
 
 
 	/**
@@ -29,7 +28,7 @@ class UserCommitmentsController extends AbstractAdminController {
 	 */
 	public function actionIndex() {
 		if (Yii::$app->request->isAjax) {
-			return $this->handlaDTAjax(UserCommitmentFill::class, function (ActiveQuery $qb) {
+			return $this->handlaDTAjax(OrgCommitmentFill::class, function (ActiveQuery $qb) {
 				$qb->with(['options', 'options.commitmentOption']);
 			});
 		}
@@ -43,33 +42,32 @@ class UserCommitmentsController extends AbstractAdminController {
 	 * @throws Exception
 	 */
 	public function actionView($id) {
-		/** @var UserCommitmentFill $userCommitmentFill */
-		$userCommitmentFill = UserCommitmentFill::find()->andWhere(['id' => $id])
+		/** @var OrgCommitmentFill $OrgCommitmentFill */
+		$OrgCommitmentFill = OrgCommitmentFill::find()->andWhere(['id' => $id])
 			->with([
 				'options',
 				'options.commitmentOption',
 				'options.commitmentOption.item',
-				'options.commitmentOption.item.category',
-				'user'
+				'options.commitmentOption.item.category'
 			])
 			->one();
-		if (!($userCommitmentFill)) {
+		if (!($OrgCommitmentFill)) {
 			throw new HttpException(404);
 		}
-		Yii::$app->view->params['pageClass'] = 'userCommitmentFillView';
+		Yii::$app->view->params['pageClass'] = 'OrgCommitmentFillView';
 
-		$model = new UserCommitmentEdit();
-		$model->loadFill($userCommitmentFill);
+		$model = new OrgCommitmentEdit();
+		$model->loadFill($OrgCommitmentFill);
 		if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
 			if (($savedFill = $model->edit())) {
 				Yii::$app->session->setFlash('success', 'Kitöltés sikeresen módosítva');
 
-				return $this->redirect(Url::to('/meet/user-commitments?id=' . $savedFill->id));
+				return $this->redirect(Url::to('/meet/org-commitments?id=' . $savedFill->id));
 			}
 		}
 
-		$options = $userCommitmentFill->options;
-		usort($options, function (UserCommitmentOption $a, UserCommitmentOption $b) {
+		$options = $OrgCommitmentFill->options;
+		usort($options, function (\meetbase\models\OrgCommitmentOption $a, \meetbase\models\OrgCommitmentOption $b) {
 			if ($a->commitmentOption->item->category->id === $b->commitmentOption->item->category->id) {
 				return $a->commitmentOption->item->order < $b->commitmentOption->item->order ? - 1 : 1;
 			} else {
@@ -83,7 +81,7 @@ class UserCommitmentsController extends AbstractAdminController {
 		}
 
 		return $this->render('view', [
-			'fill'    => $userCommitmentFill,
+			'fill'    => $OrgCommitmentFill,
 			'options' => $options,
 			'modules' => $modules,
 			'model'   => $model

@@ -1,17 +1,17 @@
 <?php
 /**
  * @var $this    \yii\web\View
- * @var $fill    UserCommitmentFill
- * @var $options UserCommitmentOption[]
- * @var $model   UserCommitmentEdit
+ * @var $fill    OrgCommitmentFill
+ * @var $options OrgCommitmentOption[]
+ * @var $model   OrgCommitmentEdit
  * @var $modules array
  */
 
 use app\lib\OrgTypes;
-use app\modules\meet\models\forms\UserCommitmentEdit;
+use app\modules\meet\models\forms\OrgCommitmentEdit;
 use app\modules\meet\models\OrganizationType;
-use app\modules\meet\models\UserCommitmentFill;
-use app\modules\meet\models\UserCommitmentOption;
+use app\modules\meet\models\OrgCommitmentFill;
+use app\modules\meet\models\OrgCommitmentOption;
 use yii\bootstrap4\ActiveForm;
 use yii\helpers\Html;
 
@@ -30,8 +30,8 @@ $this->title = 'Vállalás megtekintése #' . $fill->id;
 					<dt class="col-sm-3">Dátum</dt>
 					<dd class="col-sm-9"><?=(new DateTime($fill->date))->format('Y. m. d. H:i:s');?></dd>
 
-					<dt class="col-sm-3">Felhasználó</dt>
-					<dd class="col-sm-9">#<?=$fill->user->id;?> - <?=$fill->user->name;?></dd>
+					<dt class="col-sm-3">Szervezeti egység</dt>
+					<dd class="col-sm-9">#<?=$fill->organization->id;?> - <?=$fill->organization->nev;?></dd>
 
 					<dt class="col-sm-3">Szervezet típusa</dt>
 					<dd class="col-sm-9"><?=OrganizationType::getList()[$fill->org_type] ?? null;?></dd>
@@ -52,7 +52,7 @@ $this->title = 'Vállalás megtekintése #' . $fill->id;
 			<div class="card-header">
 				<h4>Változtatható információk</h4>
 			</div>
-			<?php $form = ActiveForm::begin(['id' => 'form-user-commitment-edit', 'enableClientScript' => false]); ?>
+			<?php $form = ActiveForm::begin(['id' => 'form-org-commitments-edit', 'enableClientScript' => false]); ?>
 			<div class="card-body">
 				<?=$form->field($model, 'manualScore')->label('Egyedi pontszám')->textInput(['type' => 'number'])?>
 				<?=$form->field($model, 'manualModuleId')->label('Egyedi modul')
@@ -88,8 +88,8 @@ $this->title = 'Vállalás megtekintése #' . $fill->id;
 						<?php
 						$item = $option->commitmentOption->item;
 						$category = $option->commitmentOption->item->category;
-						$categoryName = $prevCat !== $category->id ? $category->name : null;
-						$itemName = $prevItem !== $item->id ? $item->name : null;
+						$categoryName = (isset($prevCat) && $prevCat !== $category->id) ? $category->name : null;
+						$itemName = (isset($prevItem) && $prevItem) !== $item->id ? $item->name : null;
 
 						$value = $option->commitmentOption->name;
 						if ($option->custom_input) {

@@ -4,19 +4,16 @@ namespace app\modules\meet\models;
 
 use app\modules\meet\models\interfaces\DataTableModelInterface;
 use DateTime;
-use meetbase\models\UserCommitmentFill as BaseUserCommitmentFill;
-use Yii;
-use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
+use meetbase\models\OrgCommitmentFill as BaseOrgCommitmentFill;
 
 /**
- * Class UserCommitmentFill
+ * Class OrgCommitmentFill
  *
  * @package   app\modules\meet\models
  * @author    SRG Group <dev@srg.hu>
  * @copyright 2020 SRG Group Kft.
  */
-class UserCommitmentFill extends BaseUserCommitmentFill implements DataTableModelInterface {
+class OrgCommitmentFill extends BaseOrgCommitmentFill implements DataTableModelInterface {
 
 
 	/**
@@ -26,8 +23,8 @@ class UserCommitmentFill extends BaseUserCommitmentFill implements DataTableMode
 		return [
 			'id'           => $this->id,
 			'date'         => (new DateTime($this->date))->format('Y. m. d. H:i:s'),
-			'user'         => $this->user->name,
-			'targetModule' => $this->targetModule ? $this->targetModule->name : null,
+			'user'         => $this->organization->nev,
+			'targetModule' => $this->targetModule?->name,
 			'score'        => $this->getScore()
 		];
 	}
@@ -38,7 +35,7 @@ class UserCommitmentFill extends BaseUserCommitmentFill implements DataTableMode
 	 */
 	public function getDataTableActions(): array {
 		return [
-			'view' => '<a href="/meet/user-commitments?id=' . $this->id . '" class="fa fa-eye" title="Megtekintés, szerkesztés"></a>',
+			'view' => '<a href="/meet/org-commitments/view?id=' . $this->id . '" class="fa fa-eye" title="Megtekintés, szerkesztés"></a>',
 		];
 	}
 

@@ -39,7 +39,7 @@ class CommitmentInstance extends BaseCommitmentInstance {
 	 * @return ActiveQuery
 	 */
 	public function getUserCommitmentOptions() {
-		return $this->hasMany(UserCommitmentOption::class, ['instance_id' => 'id']);
+		return $this->hasMany(OrgCommitmentOption::class, ['instance_id' => 'id']);
 	}
 
 
