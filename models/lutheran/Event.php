@@ -90,6 +90,25 @@ class Event extends BaseEvent {
 
 
 	/**
+	 * @param Organization      $organization
+	 * @param OrgCommitmentFill $fill
+	 *
+	 * @return Event
+	 */
+	public static function createCommitmentApprovedEvent(Organization $organization, \meetbase\models\OrgCommitmentFill $fill) {
+		$event = new Event();
+		$event->erv_kezdet = (new DateTime())->format('Y-m-d');
+		$event->erv_allapot = 1;
+		$event->ref_tipus_id = Yii::$app->params['event_type_meet_commitment_approved'];
+		$event->ref_szervegyseg_id = $organization->id;
+		$event->ref1_id = $fill->id;
+		$event->ertek1 = 1;
+
+		return $event;
+	}
+
+
+	/**
 	 * @param int    $orgId
 	 * @param string $name
 	 * @param string $email
