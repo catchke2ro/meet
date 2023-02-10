@@ -50,7 +50,7 @@ abstract class Module extends ActiveRecord {
 	/**
 	 * @return array|ActiveRecord[]
 	 */
-	public function getList() {
+	public static function getList() {
 		$qb = self::find();
 		$qb->select(['id', 'name']);
 		$modules = [];
