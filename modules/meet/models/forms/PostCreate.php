@@ -91,10 +91,14 @@ class PostCreate extends Model {
 			$post->title = $this->title;
 			$post->intro = $this->intro;
 			$post->text = $this->text;
-			$post->image = $this->image;
+			if ($this->image) {
+				$fileName = Upload::renameFile($this->image);
+				$this->image->saveAs(Upload::getUploadDir(Upload::TYPE_POST).'/'.$fileName);
+				$post->image = $fileName;
+			}
 			$post->date = $this->date;
 			$post->order = $this->order;
-			$post->tags = $this->tags;
+			$post->tags = json_encode(array_values(explode("\n", $this->tags)));
 			$success &= $post->save();
 
 			$transaction->commit();
