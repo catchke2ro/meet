@@ -31,7 +31,7 @@ class Upload extends Model {
 	 */
 	public function rules() {
 		return [
-			['file', 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+			['file', 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'checkExtensionByMimeType' => false],
 		];
 	}
 

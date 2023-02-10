@@ -69,7 +69,7 @@ class PostCreate extends Model {
 			['tags', 'trim'],
 			['order', 'number'],
 			['date', 'date', 'format' => 'php:Y-m-d'],
-			['image', 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+			['image', 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'checkExtensionByMimeType' => false],
 		];
 	}
 
