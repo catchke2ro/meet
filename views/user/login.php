@@ -20,7 +20,7 @@ $this->title = 'Belépés';
 						<p class="mb-1">Amennyiben még nem regisztrált, itt megteheti:</p>
 						<a class="btn btn-secondary" href="/regisztracio">Regisztráció</a>
 					</div>
-					<?=$form->field($model, 'username')->label('Felhasználónév')->textInput(['autofocus' => true])?>
+					<?=$form->field($model, 'email')->label('E-mail cím')->textInput(['autofocus' => true])?>
 					<?=$form->field($model, 'password')->label('Jelszó')->passwordInput()?>
 				</div>
 				<div class="card-footer">
