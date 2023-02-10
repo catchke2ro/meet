@@ -106,12 +106,9 @@ class PostsController extends AbstractAdminController {
 		if (!($post = Post::findOne(['id' => $id]))) {
 			throw new HttpException(404);
 		}
-		foreach ($post->orgTypes as $orgType) {
-			$orgType->delete();
-		}
 		$post->delete();
 
-		Yii::$app->session->setFlash('success', 'Modul sikeresen törölve');
+		Yii::$app->session->setFlash('success', 'Post sikeresen törölve');
 
 		return $this->redirect(Url::to('/meet/posts'));
 	}
