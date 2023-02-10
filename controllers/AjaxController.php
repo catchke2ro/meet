@@ -65,7 +65,6 @@ class AjaxController extends Controller {
 		$qb->innerJoinWith('orgType as orgType');
 		$qb->joinWith('addressContacts as addressContact');
 		$qb->joinWith('gpsContacts as gpsContact');
-		$qb->joinWith('commitmentFills');
 		$orgs = $qb->all();
 
 		$orgs = array_map(function (Organization $organization) use ($approvedFillIds) {
