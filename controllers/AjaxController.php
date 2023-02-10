@@ -85,10 +85,10 @@ class AjaxController extends Controller {
 				'orgTypeId'      => $organization->orgType->id,
 				'orgTypeName'    => $organization->orgType->nev,
 				'name'           => $organization->nev,
-				'address'        => !empty($organization->addressContacts) ? reset($organization->addressContacts)->getAddressString() : null,
-				'coordinates'    => !empty($organization->gpsContacts) ? reset($organization->gpsContacts)->getCooridnates() : null,
-				'lastModuleId'   => $lastModule->id,
-				'lastModuleName' => $lastModule->name,
+				'address'        => !empty($organization->addressContacts) ? $organization->addressContacts[0]->getAddressString() : null,
+				'coordinates'    => !empty($organization->gpsContacts) ? $organization->gpsContacts[0]->getCooridnates() : null,
+				'lastModuleId'   => $lastModule?->id,
+				'lastModuleName' => $lastModule?->name,
 				'markerIcon'     => '/assets/img/map_markers/terkepikon_' . $this->getMarker($organization, $lastModule) . '.png'
 			];
 		}, $orgs);
