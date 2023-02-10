@@ -40,7 +40,8 @@ $this->title = 'Regisztráció';
 						<?=$form->field($model, 'passwordConfirm')->label('Jelszó megerősítése')->passwordInput()?>
 						<?=$form->field($model, 'orgRemoteId', ['options' => ['class' => 'form-group orgSelector']])
 						        ->label('Szervezeti egység: kiválasztom a központi adatbázisból:')
-						        ->dropDownList(array_merge(['' => ' - Nem szereplek az adatbázisban - ']));?>
+						        ->dropDownList(array_merge(['' => ' - ']))
+								->hint('A legördülő menüben gépeléssel tudsz keresni meglévő szervezeti egységek között. Amennyiben nem található a szervezet, alább adja meg a szervezet adatait!');?>
 					</fieldset>
 					<fieldset class="orgData border p-3 mb-3">
 						<legend>Új szervezeti egység regisztrációja</legend>

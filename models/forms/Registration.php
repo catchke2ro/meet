@@ -134,6 +134,7 @@ class Registration extends Model {
 			['orgPhone', 'required', 'when' => $whenRemoteIdEmpty, 'message' => 'Kötelező, amennyiben nem szerepel az adatbázisban'],
 			['orgCompanyNumber', 'safe'],
 			['orgTaxNumber', 'safe'],
+			['orgRemoteId', 'required'],
 			['orgRemoteId', 'safe'],
 			['pdf', 'required'],
 			['pdf', 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf', 'checkExtensionByMimeType' => false],
@@ -285,7 +286,7 @@ class Registration extends Model {
 			'orgPhone'         => 'Szervezet telefonszáma',
 			'orgCompanyNumber' => 'Szervezet cégjegyzékszáma',
 			'orgTaxNumber'     => 'Szervezet adószáma',
-			'orgRemoteId'      => 'Adatbázis',
+			'orgRemoteId'      => 'Szervezeti egység',
 			'pdf'              => 'Meghatalmazás',
 			'terms'            => 'Adatkezelési szabályzat',
 			'terms2'           => 'Általános Együttműködési Feltételek'

@@ -37,7 +37,7 @@ class AjaxController extends Controller {
 			}, $orgs);
 		}
 
-		array_unshift($orgs, ['id' => '', 'text' => ' - Nem szereplek az adatbázisban - ']);
+		array_unshift($orgs, ['id' => '', 'text' => ' - ']);
 
 		return $this->asJson([
 			'results' => $orgs
