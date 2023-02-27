@@ -38,6 +38,7 @@ $config = [
 			],
 		],
 		'db'          => $db,
+		'dbtk'          => $dbTk,
 		'mailer'       => [
 			'class'            => 'yii\swiftmailer\Mailer',
 			'useFileTransport' => false,
