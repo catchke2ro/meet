@@ -24,7 +24,14 @@ $this->title = 'Belépés';
 					<?=$form->field($model, 'password')->label('Jelszó')->passwordInput()?>
 				</div>
 				<div class="card-footer">
-					<?=Html::submitButton('Belépés', ['class' => 'btn btn-primary', 'name' => 'signup-button'])?>
+					<div class="row">
+						<div class="col-md-6">
+							<?=Html::submitButton('Belépés', ['class' => 'btn btn-primary', 'name' => 'signup-button'])?>
+						</div>
+						<div class="col-md-6 text-right forgotPwdLinkContainer">
+							<?=Html::a('Elfelejtettem a jelszavam', ['user/forgot-password'])?>
+						</div>
+					</div>
 				</div>
 				<?php ActiveForm::end(); ?>
 			</div>

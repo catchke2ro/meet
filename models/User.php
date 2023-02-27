@@ -28,6 +28,8 @@ use yii\web\IdentityInterface;
  * @property bool              is_admin
  * @property bool              is_approved_admin
  * @property bool              is_approved_boss
+ * @property string            password_reset_token
+ * @property string            password_reset_expires_at
  * @property int               person_id
  * @property Person|null       person
  * @property Organization|null $organization
