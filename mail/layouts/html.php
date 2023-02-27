@@ -49,7 +49,7 @@ use yii\web\View;
 					<table role="presentation" border="0" cellpadding="0" cellspacing="0">
 						<tr>
 							<td class="content-block">
-								<span>meet.lutheran.hu</span>
+								<span><?=Yii::$app->params['email_url_display'];?></span>
 							</td>
 						</tr>
 					</table>

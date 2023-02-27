@@ -20,6 +20,6 @@ use yii\base\View;
 	A tervező program működéséről, a modulokról és az önbevallás rendszeréről részletes tájékoztatót találsz honlapunkon, de bármilyen kérdésed esetén keres bennünket bizalommal.
 </p>
 
-<p>Ajánljuk figyelmedbe a <a href="http://meet.lutheran.hu/aktivitas">http://meet.lutheran.hu/aktivitas</a> oldalt, ahol követheted aktuális híreinket, a MEET program résztvevőinek híreit, és ahova szeretettel várjuk majd a Te gyülekezetednek híreit, eseményeit és jó gyakorlatait is.</p>
+<p>Ajánljuk figyelmedbe a <a href="<?=Yii::$app->params['email_url'];?>/aktivitas"><?=Yii::$app->params['email_url_display'];?>/aktivitas</a> oldalt, ahol követheted aktuális híreinket, a MEET program résztvevőinek híreit, és ahova szeretettel várjuk majd a Te gyülekezetednek híreit, eseményeit és jó gyakorlatait is.</p>
 
 <p>Üdvözlettel,<br />A MEET Csapat nevében:<br />Koltai Zsuzsi – koordinátor</p>
