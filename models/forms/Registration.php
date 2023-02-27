@@ -134,7 +134,6 @@ class Registration extends Model {
 			['orgPhone', 'required', 'when' => $whenRemoteIdEmpty, 'message' => 'Kötelező, amennyiben nem szerepel az adatbázisban'],
 			['orgCompanyNumber', 'safe'],
 			['orgTaxNumber', 'safe'],
-			['orgRemoteId', 'required'],
 			['orgRemoteId', 'safe'],
 			['pdf', 'required'],
 			['pdf', 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf', 'checkExtensionByMimeType' => false],
