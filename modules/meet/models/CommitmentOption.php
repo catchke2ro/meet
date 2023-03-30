@@ -35,8 +35,8 @@ class CommitmentOption extends BaseCommitmentOption implements DataTableModelInt
 	 */
 	public function getDataTableActions(): array {
 		return [
-			'edit'   => '<a href="/meet/commitment-options/edit?id=' . $this->id . '" class="fa fa-pencil" title="Szerkesztés"></a>',
-			'delete' => '<a href="/meet/commitment-options/delete?id=' . $this->id . '" class="fa fa-trash" title="Törlés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
+			'edit'   => '<a href="/meet/commitment-options/edit/' . $this->id . '" class="fa fa-pencil" title="Szerkesztés"></a>',
+			'delete' => '<a href="/meet/commitment-options/delete/' . $this->id . '" class="fa fa-trash" title="Törlés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
 		];
 	}
 

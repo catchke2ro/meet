@@ -35,8 +35,8 @@ class CommitmentItem extends BaseCommitmentItem implements DataTableModelInterfa
 	public function getDataTableActions(): array {
 		return [
 			'items'  => '<a href="/meet/commitment-options?itemId=' . $this->id . '" class="fa fa-list" title="Opciók"></a>',
-			'edit'   => '<a href="/meet/commitment-items/edit?id=' . $this->id . '" class="fa fa-pencil" title="Szerkesztés"></a>',
-			'delete' => '<a href="/meet/commitment-items/delete?id=' . $this->id . '" class="fa fa-trash" title="Törlés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
+			'edit'   => '<a href="/meet/commitment-items/edit/' . $this->id . '" class="fa fa-pencil" title="Szerkesztés"></a>',
+			'delete' => '<a href="/meet/commitment-items/delete/' . $this->id . '" class="fa fa-trash" title="Törlés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
 		];
 	}
 

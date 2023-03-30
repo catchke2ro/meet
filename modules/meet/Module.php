@@ -3,13 +3,19 @@
 namespace app\modules\meet;
 
 use Yii;
+use yii\base\BootstrapInterface;
 
-class Module extends \yii\base\Module {
+/**
+ * Class Module
+ *
+ * @package app\modules\meet
+ * @author  Adam Balint <catchke2ro@miheztarto.hu>
+ */
+class Module extends \yii\base\Module implements BootstrapInterface {
 
 	public $controllerNamespace = 'app\modules\meet\controllers';
 
-	public $name                = 'MEET';
-
+	public $name = 'MEET';
 
 	public $defaultRoute = 'index';
 
@@ -22,61 +28,68 @@ class Module extends \yii\base\Module {
 	 * @var mixed|object|null
 	 */
 	private $urlRules = [
-		'/upload' => 'meet/upload/index',
+		'upload' => 'meet/upload/index',
 
-		'/question-categories'                 => 'meet/question-categories/index',
-		'/question-categories/create'          => 'meet/question-categories/create',
-		'/question-categories/edit/<id:\d+>'   => 'meet/question-categories/edit',
-		'/question-categories/delete/<id:\d+>' => 'meet/question-categories/delete',
+		'question-categories'                 => 'question-categories/index',
+		'question-categories/create'          => 'question-categories/create',
+		'question-categories/edit/<id:\d+>'   => 'question-categories/edit',
+		'question-categories/delete/<id:\d+>' => 'question-categories/delete',
 
-		'/question-items/<categoryId:\d+>'        => 'meet/question-items/index',
-		'/question-items/create/<categoryId:\d+>' => 'meet/question-items/create',
-		'/question-items/edit/<id:\d+>'           => 'meet/question-items/edit',
-		'/question-items/delete/<id:\d+>'         => 'meet/question-items/delete',
+		'question-items/<categoryId:\d+>'        => 'question-items/index',
+		'question-items/create/<categoryId:\d+>' => 'question-items/create',
+		'question-items/edit/<id:\d+>'           => 'question-items/edit',
+		'question-items/delete/<id:\d+>'         => 'question-items/delete',
 
-		'/question-options/<itemId:\d+>'        => 'meet/question-options/index',
-		'/question-options/create/<itemId:\d+>' => 'meet/question-options/create',
-		'/question-options/edit/<id:\d+>'       => 'meet/question-options/edit',
-		'/question-options/delete/<id:\d+>'     => 'meet/question-options/delete',
+		'question-options/<itemId:\d+>'        => 'question-options/index',
+		'question-options/create/<itemId:\d+>' => 'question-options/create',
+		'question-options/edit/<id:\d+>'       => 'question-options/edit',
+		'question-options/delete/<id:\d+>'     => 'question-options/delete',
 
-		'commitment-categories'                 => 'meet/commitment-categories/index',
-		'commitment-categories/create'          => 'meet/commitment-categories/create',
-		'commitment-categories/edit/<id:\d+>'   => 'meet/commitment-categories/edit',
-		'commitment-categories/delete/<id:\d+>' => 'meet/commitment-categories/delete',
+		'commitment-categories'                 => 'commitment-categories/index',
+		'commitment-categories/create'          => 'commitment-categories/create',
+		'commitment-categories/edit/<id:\d+>'   => 'commitment-categories/edit',
+		'commitment-categories/delete/<id:\d+>' => 'commitment-categories/delete',
 
-		'/commitment-items/<categoryId:\d+>'        => 'meet/commitment-items/index',
-		'/commitment-items/create/<categoryId:\d+>' => 'meet/commitment-items/create',
-		'/commitment-items/edit/<id:\d+>'           => 'meet/commitment-items/edit',
-		'/commitment-items/delete/<id:\d+>'         => 'meet/commitment-items/delete',
+		'commitment-items/<categoryId:\d+>'        => 'commitment-items/index',
+		'commitment-items/create/<categoryId:\d+>' => 'commitment-items/create',
+		'commitment-items/edit/<id:\d+>'           => 'commitment-items/edit',
+		'commitment-items/delete/<id:\d+>'         => 'commitment-items/delete',
 
-		'/commitment-options/<itemId:\d+>'        => 'meet/commitment-options/index',
-		'/commitment-options/create/<itemId:\d+>' => 'meet/commitment-options/create',
-		'/commitment-options/edit/<id:\d+>'       => 'meet/commitment-options/edit',
-		'/commitment-options/delete/<id:\d+>'     => 'meet/commitment-options/delete',
+		'commitment-options/<itemId:\d+>'        => 'commitment-options/index',
+		'commitment-options/create/<itemId:\d+>' => 'commitment-options/create',
+		'commitment-options/edit/<id:\d+>'       => 'commitment-options/edit',
+		'commitment-options/delete/<id:\d+>'     => 'commitment-options/delete',
 
-		'/modules'                 => 'meet/modules/index',
-		'/modules/create'          => 'meet/modules/create',
-		'/modules/edit/<id:\d+>'   => 'meet/modules/edit',
-		'/modules/delete/<id:\d+>' => 'meet/modules/delete',
+		'modules'                 => 'modules/index',
+		'modules/create'          => 'modules/create',
+		'modules/edit/<id:\d+>'   => 'modules/edit',
+		'modules/delete/<id:\d+>' => 'modules/delete',
 
-		'/posts'                 => 'meet/posts/index',
-		'/posts/create'          => 'meet/posts/create',
-		'/posts/edit/<id:\d+>'   => 'meet/posts/edit',
-		'/posts/delete/<id:\d+>' => 'meet/posts/delete',
+		'posts'                 => 'posts/index',
+		'posts/create'          => 'posts/create',
+		'posts/edit/<id:\d+>'   => 'posts/edit',
+		'posts/delete/<id:\d+>' => 'posts/delete',
 
-		'/org-commitments'          => 'meet/org-commitments/index',
-		'/org-commitments/view/<id:\d+>' => 'meet/org-commitments/view',
+		'users'                 => 'users/index',
+		'users/create'          => 'users/create',
+		'users/edit/<id:\d+>'   => 'users/edit',
+		'users/delete/<id:\d+>' => 'users/delete',
+
+		'org-commitments'          => 'org-commitments/index',
+		'org-commitments/<id:\d+>' => 'org-commitments/view',
+
+		'trees/<id:\d+>' => 'trees/index',
 	];
 
 
 	/**
-	 * {@inheritdoc}
+	 * @param $app
+	 *
+	 * @return void
+	 * @throws \yii\base\InvalidConfigException
 	 */
-	public function init() {
-		parent::init();
-
-
-		Yii::setAlias('meetbase', __DIR__.'/meetbase');
+	public function bootstrap($app) {
+		Yii::setAlias('meetbase', __DIR__ . '/meetbase');
 
 		$configUrlRule = [
 			'prefix' => $this->urlPrefix,
@@ -86,8 +99,14 @@ class Module extends \yii\base\Module {
 		$rule = Yii::createObject($configUrlRule);
 
 		Yii::$app->urlManager->addRules([$rule], false);
+	}
 
-		// custom initialization code goes here
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function init() {
+		parent::init();
 	}
 
 

@@ -64,7 +64,7 @@ class User extends ActiveRecord implements DataTableModelInterface, IdentityInte
 	 */
 	public function getDataTableActions(): array {
 		return [
-			'edit' => '<a href="/meet/users/edit?id=' . $this->id . '" class="fa fa-pencil" title="Szerkesztés"></a>'
+			'edit' => '<a href="/meet/users/edit/' . $this->id . '" class="fa fa-pencil" title="Szerkesztés"></a>'
 		];
 	}
 

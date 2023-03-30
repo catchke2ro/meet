@@ -35,8 +35,8 @@ class QuestionOption extends BaseQuestionOption implements DataTableModelInterfa
 	 */
 	public function getDataTableActions(): array {
 		return [
-			'edit'   => '<a href="/meet/question-options/edit?id=' . $this->id . '" class="fa fa-pencil" title="Szereksztés"></a>',
-			'delete' => '<a href="/meet/question-options/delete?id=' . $this->id . '" class="fa fa-trash" title="Törlés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
+			'edit'   => '<a href="/meet/question-options/edit/' . $this->id . '" class="fa fa-pencil" title="Szereksztés"></a>',
+			'delete' => '<a href="/meet/question-options/delete/' . $this->id . '" class="fa fa-trash" title="Törlés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
 		];
 	}
 

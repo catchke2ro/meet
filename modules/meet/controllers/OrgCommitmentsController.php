@@ -62,7 +62,7 @@ class OrgCommitmentsController extends AbstractAdminController {
 			if (($savedFill = $model->edit())) {
 				Yii::$app->session->setFlash('success', 'Kitöltés sikeresen módosítva');
 
-				return $this->redirect(Url::to('/meet/org-commitments?id=' . $savedFill->id));
+				return $this->redirect(Url::to('/meet/org-commitments/' . $savedFill->id));
 			}
 		}
 

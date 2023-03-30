@@ -35,7 +35,7 @@ class OrgCommitmentFill extends BaseOrgCommitmentFill implements DataTableModelI
 	 */
 	public function getDataTableActions(): array {
 		return [
-			'view' => '<a href="/meet/org-commitments/view?id=' . $this->id . '" class="fa fa-eye" title="Megtekintés, szerkesztés"></a>',
+			'view' => '<a href="/meet/org-commitments/' . $this->id . '" class="fa fa-eye" title="Megtekintés, szerkesztés"></a>',
 		];
 	}
 

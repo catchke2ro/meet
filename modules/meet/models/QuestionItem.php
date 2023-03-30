@@ -35,8 +35,8 @@ class QuestionItem extends BaseQuestionItem implements DataTableModelInterface {
 	public function getDataTableActions(): array {
 		return [
 			'items'  => '<a href="/meet/question-options?itemId=' . $this->id . '" class="fa fa-list" title="Opciók"></a>',
-			'edit'   => '<a href="/meet/question-items/edit?id=' . $this->id . '" class="fa fa-pencil" title="Szereksztés"></a>',
-			'delete' => '<a href="/meet/question-items/delete?id=' . $this->id . '" class="fa fa-trash" title="Törlés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
+			'edit'   => '<a href="/meet/question-items/edit/' . $this->id . '" class="fa fa-pencil" title="Szereksztés"></a>',
+			'delete' => '<a href="/meet/question-items/delete/' . $this->id . '" class="fa fa-trash" title="Törlés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
 		];
 	}
 

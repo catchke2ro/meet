@@ -42,8 +42,8 @@ class CommitmentCategory extends BaseCommitmentCategory implements DataTableMode
 	public function getDataTableActions(): array {
 		return [
 			'items'  => '<a href="/meet/commitment-items?categoryId=' . $this->id . '" class="fa fa-list" title="Vállalások"></a>',
-			'edit'   => '<a href="/meet/commitment-categories/edit?id=' . $this->id . '" class="fa fa-pencil" title="Szerkesztés"></a>',
-			'delete' => '<a href="/meet/commitment-categories/delete?id=' . $this->id . '" class="fa fa-trash" title="Törlés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
+			'edit'   => '<a href="/meet/commitment-categories/edit/' . $this->id . '" class="fa fa-pencil" title="Szerkesztés"></a>',
+			'delete' => '<a href="/meet/commitment-categories/delete/' . $this->id . '" class="fa fa-trash" title="Törlés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
 		];
 	}
 

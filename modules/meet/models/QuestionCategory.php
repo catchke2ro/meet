@@ -41,8 +41,8 @@ class QuestionCategory extends BaseQuestionCategory implements DataTableModelInt
 	public function getDataTableActions(): array {
 		return [
 			'items'  => '<a href="/meet/question-items?categoryId=' . $this->id . '" class="fa fa-list" title="Kérdések"></a>',
-			'edit'   => '<a href="/meet/question-categories/edit?id=' . $this->id . '" class="fa fa-pencil" title="Szereksztés"></a>',
-			'delete' => '<a href="/meet/question-categories/delete?id=' . $this->id . '" class="fa fa-trash" title="Törlés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
+			'edit'   => '<a href="/meet/question-categories/edit/' . $this->id . '" class="fa fa-pencil" title="Szereksztés"></a>',
+			'delete' => '<a href="/meet/question-categories/delete/' . $this->id . '" class="fa fa-trash" title="Törlés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
 		];
 	}
 

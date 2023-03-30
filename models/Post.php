@@ -96,8 +96,8 @@ class Post extends ActiveRecord implements DataTableModelInterface {
 	 */
 	public function getDataTableActions(): array {
 		return [
-			'edit'   => '<a href="/meet/posts/edit?id=' . $this->id . '" class="fa fa-pencil" title="Szerkesztés"></a>',
-			'delete' => '<a href="/meet/posts/delete?id=' . $this->id . '" class="fa fa-trash" title="Törlés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
+			'edit'   => '<a href="/meet/posts/edit/' . $this->id . '" class="fa fa-pencil" title="Szerkesztés"></a>',
+			'delete' => '<a href="/meet/posts/delete/' . $this->id . '" class="fa fa-trash" title="Törlés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
 		];
 	}
 
