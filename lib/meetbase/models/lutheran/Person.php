@@ -8,6 +8,7 @@ use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Connection;
+use yii\db\Expression;
 
 /**
  * Class Person
@@ -60,11 +61,10 @@ abstract class Person extends ActiveRecord {
 	 * @return ActiveQuery
 	 */
 	public function getEmailContact() {
-		return $this->hasOne($this->getModelClass(Contact::class), [
-			'ref_szemely_id' => 'id'
-		])->andOnCondition([
-			'ref_tipus_id' => ContactType::ID_EMAIL
-		]);
+		return $this->hasOne($this->getModelClass(Contact::class), ['ref_szemely_id' => 'id'])
+			->andOnCondition(['ref_tipus_id' => ContactType::ID_EMAIL])
+			->andOnCondition(['in', 'erv_allapot', [1, 2]])
+			->andOnCondition(['>=', 'coalesce(erv_veg, now())', new Expression('NOW()')]);
 	}
 
 

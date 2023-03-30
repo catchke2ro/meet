@@ -8,6 +8,7 @@
 namespace app\commands;
 
 use app\components\Email;
+use app\models\lutheran\Organization;
 use app\models\lutheran\Person;
 use Yii;
 use yii\base\View;
@@ -35,6 +36,16 @@ class TestController extends Controller {
 
 
 	public function actionTest() {
+		$organization = Organization::findOne(['id' => 11801]);
+
+		echo "Pastor general {$organization->getPastorGeneral()?->nev}\n";
+		echo "Pastor {$organization->getPastor()?->nev}\n";
+		echo "Super {$organization->getSuperintendent()?->nev}\n";
+		echo "Meet {$organization->getMeetReferer()?->nev}\n";
+
+		die();
+
+
 		$person = Person::findOne(['id' => 213766]);
 		$email = $person->getEmail();
 

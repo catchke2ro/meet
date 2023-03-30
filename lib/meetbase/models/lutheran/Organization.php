@@ -10,6 +10,7 @@ use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Connection;
+use yii\db\Expression;
 
 /**
  * Class Organization
@@ -98,6 +99,8 @@ abstract class Organization extends ActiveRecord {
 		$qb->andOnCondition([
 			'registrationEvent.ref_tipus_id' => Yii::$app->params['event_type_meet_reg']
 		]);
+		$qb->andOnCondition(['in', 'registrationEvent.erv_allapot', [1,2]]);
+		$qb->andOnCondition(['>=', 'coalesce(registrationEvent.erv_veg, now())', new Expression('NOW()')]);
 
 		return $qb;
 	}
@@ -112,6 +115,8 @@ abstract class Organization extends ActiveRecord {
 			'positionEvent.ref_tipus_id' => Yii::$app->params['event_type_pozicio'],
 			'positionEvent.ref2_id'      => Yii::$app->params['position_meet_referer']
 		]);
+		$qb->andOnCondition(['in', 'positionEvent.erv_allapot', [1,2]]);
+		$qb->andOnCondition(['>=', 'coalesce(positionEvent.erv_veg, now())', new Expression('NOW()')]);
 		$qb->multiple = false;
 
 		return $qb;
@@ -126,6 +131,8 @@ abstract class Organization extends ActiveRecord {
 		$qb->andOnCondition([
 			'phoneContact.ref_tipus_id' => ContactType::ID_PHONE
 		]);
+		$qb->andOnCondition(['in', 'phoneContact.erv_allapot', [1,2]]);
+		$qb->andOnCondition(['>=', 'coalesce(phoneContact.erv_veg, now())', new Expression('NOW()')]);
 		return $qb;
 	}
 
@@ -139,6 +146,8 @@ abstract class Organization extends ActiveRecord {
 		$qb->andOnCondition([
 			'emailContact.ref_tipus_id' => ContactType::ID_EMAIL
 		]);
+		$qb->andOnCondition(['in', 'emailContact.erv_allapot', [1,2]]);
+		$qb->andOnCondition(['>=', 'coalesce(emailContact.erv_veg, now())', new Expression('NOW()')]);
 		return $qb;
 	}
 
@@ -152,6 +161,8 @@ abstract class Organization extends ActiveRecord {
 		$qb->andOnCondition([
 			'addressContact.ref_tipus_id' => ContactType::ID_ADDRESS
 		]);
+		$qb->andOnCondition(['in', 'addressContact.erv_allapot', [1,2]]);
+		$qb->andOnCondition(['>=', 'coalesce(addressContact.erv_veg, now())', new Expression('NOW()')]);
 		return $qb;
 	}
 
@@ -164,6 +175,8 @@ abstract class Organization extends ActiveRecord {
 		$qb->andOnCondition([
 			'gpsContact.ref_tipus_id' => ContactType::ID_GPS
 		]);
+		$qb->andOnCondition(['in', 'gpsContact.erv_allapot', [1,2]]);
+		$qb->andOnCondition(['>=', 'coalesce(gpsContact.erv_veg, now())', new Expression('NOW()')]);
 		return $qb;
 	}
 
@@ -225,6 +238,8 @@ abstract class Organization extends ActiveRecord {
 			->andWhere(['event.ref_tipus_id' => Yii::$app->params['event_type_pozicio']])
 			->andWhere(['event.ref2_id' => $role])
 			->andWhere(['organization.id' => $this->id])
+			->andWhere(['in', 'event.erv_allapot', [1,2]])
+			->andWhere(['>=', 'coalesce(`event`.`erv_veg`, now())', new Expression('NOW()')])
 			->one();
 	}
 

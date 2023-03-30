@@ -14,6 +14,7 @@ use app\models\lutheran\Organization;
 use Exception;
 use Yii;
 use yii\console\Controller;
+use yii\db\Expression;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -51,6 +52,8 @@ class CronController extends Controller {
 			->andWhere(['ref_tipus_id' => Yii::$app->params['event_type_meet_reg_approved']])
 			->andWhere(['ertek1' => 1])
 			->andWhere(['<>', 'ertek2', 1])
+			->andWhere(['in', 'erv_allapot', [1,2]])
+			->andWhere(['>=', 'coalesce(erv_veg, now())', new Expression('NOW()')])
 			->all();
 
 		foreach ($notMailedApprovedRegs as $notMailedApprovedReg) {

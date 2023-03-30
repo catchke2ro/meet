@@ -11,6 +11,7 @@ use meetbase\models\traits\SharedModelTrait;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * Class OrgCommitmentFill
@@ -206,6 +207,8 @@ abstract class OrgCommitmentFill extends ActiveRecord implements FillInterface {
 			->andWhere(['ref1_id' => $this->id])
 			->andWhere(['ref_tipus_id' => Yii::$app->params['event_type_meet_commitment_approved']])
 			->andWhere(['ertek1' => 1])
+			->andWhere(['in', 'erv_allapot', [1,2]])
+			->andWhere(['>=', 'coalesce(erv_veg, now())', new Expression('NOW()')])
 			->one());
 	}
 

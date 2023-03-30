@@ -7,6 +7,7 @@ use app\models\lutheran\Organization;
 use app\models\Module;
 use app\models\OrgCommitmentFill;
 use Yii;
+use yii\db\Expression;
 use yii\web\Controller;
 
 /**
@@ -51,6 +52,8 @@ class AjaxController extends Controller {
 		}, Event::find()
 			->andWhere(['ref_tipus_id' => Yii::$app->params['event_type_meet_commitment_approved']])
 			->andWhere(['ertek1' => 1])
+			->andWhere(['in', 'erv_allapot', [1,2]])
+			->andWhere(['>=', 'coalesce(erv_veg, now())', new Expression('NOW()')])
 			->all()
 		);
 
