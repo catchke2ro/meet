@@ -45,38 +45,46 @@ return [
 		],
 		'gyulekezet' => [
 			1, //egyházközség
+			101, //országos egyház
+			201, //egyházkerület
+			301, //egyházmegye
 			1201, //társegyház
 			1301, //leányegyház
 			1401, //fiókegyház
-			1801, //bíróság
+			1801, //szórvány
+			2629, //templom
 		],
 		'iroda'      => [
 			501, //egyesület/alapítvány
 			601, //országos munkaág
 			1601, //testület
 			1701, //bíróság
-			2601, //telephely
-			2602, //zsinat
-			2603, //presbitérium
-			2604, //képviselőtestület
-			2605, //közgyűlés
 			2606, //bizottság
 			2607, //gazdasági
-			2620, //munkacsoport
+			2608, //törvényelőkészítő
+			2609, //építési és ingatlanügyi
+			2615, //sajtó
+			2618, //jelölő- és szavazatszámláló
+			2619, //igazgatótanács
+			2621, //püspöki tanács
 			2622, //számvevőszék
 			2624, //országos iroda
 			2625, //országos iroda osztálya
-			2626, //egyházkormányzati egységek
+			2626, //egyházkormányzati egységek,
+			2630, //LMK
+			2633, //országos iroda alosztálya
 		],
-		'konyvtar'   => [],
+		'konyvtar'   => [
+			2616 //gyűjteményi
+		],
 		'oktatas'    => [
+			401, //intézmény
 			2611, //nevelési-oktatási
 			2612, //ifjúsági és gyermek
 			2627, //tanszék
 			2628, //EHE szervezeti egység
 		],
 		'szallas'    => [
-			401, //intézmény
 		],
 	],
 	'token'               => 'yVeU5UcUWgRs9niTrmoZ32UIg1baUsPC',
