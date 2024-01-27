@@ -68,5 +68,17 @@ class CommitmentCategory extends BaseCommitmentCategory implements DataTableMode
 		];
 	}
 
+	/**
+	 * @return void
+	 */
+	public function organizeCategories(): void {
+		$allCategories = self::find()->orderBy(['order' => SORT_ASC, 'id' => SORT_DESC])->all();
+		$i = 1;
+		foreach ($allCategories as $category) {
+			$category->order = $i++;
+			$category->save();
+		}
+	}
+
 
 }

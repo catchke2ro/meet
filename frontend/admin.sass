@@ -49,3 +49,77 @@ table.dataTable
 aside.main-sidebar .sidebar
 	background-color: transparent
 
+.tooltip-inner
+	max-width: 300px
+
+table.tree
+
+	tbody
+		&.categories
+			.treeRow
+				background-color: rgba($primary, 0.2)
+		&.items
+			.treeRow
+				background-color: rgba($body-color, 0.2)
+		&.options
+			.treeRow
+				background-color: rgba($secondary, 0.15)
+
+
+	td.treeRow
+		display: flex
+		gap: 10px
+		line-height: 30px
+		border-top: 1px solid $white
+		& > button
+			width: 22px
+		& > div
+			display: flex
+			flex-wrap: wrap
+			flex: 1 1 auto
+			.order, .active
+				flex: 0 0 30px
+			.active
+				text-align: center
+				.fa-close
+					color: $danger
+				.fa-check
+					color: $success
+			.name
+				flex: 1 1 auto
+			.description
+				flex: 0 0 100%
+				font-size: $font-size-xs
+			.months
+				font-size: $font-size-sm
+			.actions
+				flex: 0 0 120px
+				text-align: right
+				p
+					display: inline-block
+				a
+					margin: 0 3px
+					&.disabled
+						color: $gray-500
+		p
+			margin-bottom: 0px
+
+	.expandable-body
+		& > td
+			& > div
+				padding: 0 0 10px 0px
+		.table
+			width: calc(100% - 30px)
+			margin-left: 30px
+
+
+.treeModal
+	.modal-body
+		height: 75vh
+		overflow: auto
+		form
+			button[type=submit]
+				display: none
+
+
+

@@ -2,6 +2,7 @@
 
 namespace app\modules\meet\controllers;
 
+use app\modules\meet\controllers\traits\ReorderTrait;
 use app\modules\meet\models\CommitmentCategory;
 use app\modules\meet\models\forms\CommitmentCategoryCreate;
 use app\modules\meet\models\forms\CommitmentCategoryEdit;
@@ -25,6 +26,7 @@ use yii\web\Response;
  */
 class CommitmentCategoriesController extends AbstractAdminController {
 
+	use ReorderTrait;
 
 	/**
 	 * @return string
@@ -47,17 +49,23 @@ class CommitmentCategoriesController extends AbstractAdminController {
 
 		if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
 			if (($commitmentCategory = $model->create())) {
+				$commitmentCategory->organizeCategories();
 				Yii::$app->session->setFlash('success', 'Vállalás kategória sikeresen létrehozva');
-				return $this->redirect(Url::to('/meet/commitment-categories'));
+
+				if (!$this->request->isAjax) {
+					return $this->redirect(Url::to('/meet/commitment-categories'));
+				}
+			} else {
+				$this->response->setStatusCode(422);
 			}
 		}
 
 		Yii::$app->view->params['pageClass'] = 'commitmentCategoryCreate';
 
 		return $this->render('create', [
-			'orgTypes' => OrganizationType::getList(),
+			'orgTypes'           => OrganizationType::getList(),
 			'questionCategories' => $this->getQuestionCategoryList(),
-			'model' => $model
+			'model'              => $model
 		]);
 	}
 
@@ -77,16 +85,22 @@ class CommitmentCategoriesController extends AbstractAdminController {
 
 		if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
 			if (($commitmentCategory = $model->edit())) {
+				$commitmentCategory->organizeCategories();
 				Yii::$app->session->setFlash('success', 'Vállalás kategória sikeresen módosítva');
-				return $this->redirect(Url::to('/meet/commitment-categories'));
+
+				if (!$this->request->isAjax) {
+					return $this->redirect(Url::to('/meet/commitment-categories'));
+				}
+			} else {
+				$this->response->setStatusCode(422);
 			}
 		}
 		Yii::$app->view->params['pageClass'] = 'commitmentCategoryEdit';
 
 		return $this->render('edit', [
-			'orgTypes' => OrganizationType::getList(),
+			'orgTypes'           => OrganizationType::getList(),
 			'questionCategories' => $this->getQuestionCategoryList(),
-			'model' => $model,
+			'model'              => $model,
 		]);
 	}
 
@@ -110,7 +124,28 @@ class CommitmentCategoriesController extends AbstractAdminController {
 		$commitmentCategory->delete();
 
 		Yii::$app->session->setFlash('success', 'Vállalás kategória sikeresen törölve');
+
 		return $this->redirect(Url::to('/meet/commitment-categories'));
+	}
+
+
+	/**
+	 * @param $id
+	 * @param $direction
+	 *
+	 * @return string|Response
+	 * @throws HttpException
+	 */
+	public function actionReorder($id, $direction) {
+		/** @var CommitmentCategory $commitmentItem */
+		if (!($commitmentCategory = CommitmentCategory::findOne(['id' => $id]))) {
+			throw new HttpException(404);
+		}
+
+		$categories = CommitmentCategory::find()->orderBy(['order' => SORT_ASC, 'id' => SORT_DESC])->all();
+
+		$this->doReorder($commitmentCategory, $categories, null, $direction);
+		$commitmentCategory->organizeCategories();
 	}
 
 
@@ -122,6 +157,7 @@ class CommitmentCategoriesController extends AbstractAdminController {
 		foreach (QuestionCategory::find()->orderBy('name asc')->all() as $questionCategory) {
 			$questionCategories[$questionCategory->id] = $questionCategory->name;
 		}
+
 		return $questionCategories;
 	}
 

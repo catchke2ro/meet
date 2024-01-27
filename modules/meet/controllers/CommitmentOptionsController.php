@@ -2,6 +2,7 @@
 
 namespace app\modules\meet\controllers;
 
+use app\modules\meet\controllers\traits\ReorderTrait;
 use app\modules\meet\models\CommitmentItem;
 use app\modules\meet\models\CommitmentOption;
 use app\modules\meet\models\forms\CommitmentOptionCreate;
@@ -25,6 +26,7 @@ use yii\web\Response;
  */
 class CommitmentOptionsController extends AbstractAdminController {
 
+	use ReorderTrait;
 
 	/**
 	 * @param $itemId
@@ -64,9 +66,14 @@ class CommitmentOptionsController extends AbstractAdminController {
 
 		if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
 			if (($commitmentOption = $model->create())) {
+				$item->organizeOrders();
 				Yii::$app->session->setFlash('success', 'Kérdés sikeresen létrehozva');
 
-				return $this->redirect(Url::to('/meet/commitment-options?itemId=' . $itemId));
+				if (!$this->request->isAjax) {
+					return $this->redirect(Url::to('/meet/commitment-options?itemId=' . $itemId));
+				}
+			} else {
+				$this->response->setStatusCode(422);
 			}
 		}
 
@@ -92,9 +99,14 @@ class CommitmentOptionsController extends AbstractAdminController {
 
 		if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
 			if (($commitmentOption = $model->edit())) {
+				$commitmentOption->item->organizeOrders();
 				Yii::$app->session->setFlash('success', 'Kérdés sikeresen módosítva');
 
-				return $this->redirect(Url::to('/meet/commitment-options?itemId=' . $commitmentOption->commitment_id));
+				if (!$this->request->isAjax) {
+					return $this->redirect(Url::to('/meet/commitment-options?itemId=' . $commitmentOption->commitment_id));
+				}
+			} else {
+				$this->response->setStatusCode(422);
 			}
 		}
 		Yii::$app->view->params['pageClass'] = 'commitmentOptionEdit';
@@ -125,6 +137,25 @@ class CommitmentOptionsController extends AbstractAdminController {
 		Yii::$app->session->setFlash('success', 'Kérdés sikeresen törölve');
 
 		return $this->redirect(Url::to('/meet/commitment-options?itemId=' . $itemId));
+	}
+
+
+	/**
+	 * @param $id
+	 * @param $direction
+	 *
+	 * @return string|Response
+	 * @throws HttpException
+	 */
+	public function actionReorder($id, $direction) {
+		/** @var CommitmentOption $commitmentOption */
+		if (!($commitmentOption = CommitmentOption::findOne(['id' => $id]))) {
+			throw new HttpException(404);
+		}
+
+		$item = $commitmentOption->item;
+
+		$this->doReorder($commitmentOption, $item, 'options', $direction);
 	}
 
 

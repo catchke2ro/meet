@@ -57,6 +57,7 @@ class CommitmentCategoryCreate extends Model {
 			['name', 'trim'],
 			['name', 'required'],
 			['order', 'number'],
+			['order', 'required'],
 			['hasInstances', 'boolean'],
 			['orgTypes', 'safe'],
 			['description', 'safe'],

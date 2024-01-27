@@ -13,6 +13,7 @@ import "admin-lte/dist/js/adminlte"
 import "datatables.net"
 import "datatables.net-bs4"
 import ClassicEditor from './ckeditor/ckeditor'
+import './components/tree'
 
 $(function () {
 
@@ -117,6 +118,18 @@ $(function () {
 			.then(editor => {})
 			.catch(error => {});
 	});
+
+
+	/*$('*[data-widget="treeview"]').each(function($treeview) {
+		$treeview.Treeview();
+	});*/
+
+	//$('#expandable-table-header-row').ExpandableTable('toggleRow');
+
+
+	$('[data-toggle="tooltip"]').tooltip({
+		'html': true
+	})
 
 
 });

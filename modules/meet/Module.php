@@ -45,20 +45,23 @@ class Module extends \yii\base\Module implements BootstrapInterface {
 		'question-options/edit/<id:\d+>'       => 'question-options/edit',
 		'question-options/delete/<id:\d+>'     => 'question-options/delete',
 
-		'commitment-categories'                 => 'commitment-categories/index',
-		'commitment-categories/create'          => 'commitment-categories/create',
-		'commitment-categories/edit/<id:\d+>'   => 'commitment-categories/edit',
-		'commitment-categories/delete/<id:\d+>' => 'commitment-categories/delete',
+		'commitment-categories'                              => 'commitment-categories/index',
+		'commitment-categories/create'                       => 'commitment-categories/create',
+		'commitment-categories/edit/<id:\d+>'                => 'commitment-categories/edit',
+		'commitment-categories/delete/<id:\d+>'              => 'commitment-categories/delete',
+		'commitment-categories/reorder/<id:\d+>/<direction>' => 'commitment-categories/reorder',
 
-		'commitment-items/<categoryId:\d+>'        => 'commitment-items/index',
-		'commitment-items/create/<categoryId:\d+>' => 'commitment-items/create',
-		'commitment-items/edit/<id:\d+>'           => 'commitment-items/edit',
-		'commitment-items/delete/<id:\d+>'         => 'commitment-items/delete',
+		'commitment-items/<categoryId:\d+>'             => 'commitment-items/index',
+		'commitment-items/create/<categoryId:\d+>'      => 'commitment-items/create',
+		'commitment-items/edit/<id:\d+>'                => 'commitment-items/edit',
+		'commitment-items/delete/<id:\d+>'              => 'commitment-items/delete',
+		'commitment-items/reorder/<id:\d+>/<direction>' => 'commitment-items/reorder',
 
-		'commitment-options/<itemId:\d+>'        => 'commitment-options/index',
-		'commitment-options/create/<itemId:\d+>' => 'commitment-options/create',
-		'commitment-options/edit/<id:\d+>'       => 'commitment-options/edit',
-		'commitment-options/delete/<id:\d+>'     => 'commitment-options/delete',
+		'commitment-options/<itemId:\d+>'                 => 'commitment-options/index',
+		'commitment-options/create/<itemId:\d+>'          => 'commitment-options/create',
+		'commitment-options/edit/<id:\d+>'                => 'commitment-options/edit',
+		'commitment-options/delete/<id:\d+>'              => 'commitment-options/delete',
+		'commitment-options/reorder/<id:\d+>/<direction>' => 'commitment-options/reorder',
 
 		'modules'                 => 'modules/index',
 		'modules/create'          => 'modules/create',
@@ -78,7 +81,7 @@ class Module extends \yii\base\Module implements BootstrapInterface {
 		'org-commitments'          => 'org-commitments/index',
 		'org-commitments/<id:\d+>' => 'org-commitments/view',
 
-		'trees/<id:\d+>' => 'trees/index',
+		'trees/<type>' => 'trees/index',
 	];
 
 

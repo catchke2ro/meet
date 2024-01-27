@@ -16,6 +16,18 @@ use yii\web\Response;
  */
 abstract class AbstractAdminController extends Controller {
 
+
+	/**
+	 * @return void
+	 */
+	public function init() {
+		parent::init();
+		if (Yii::$app->request->isAjax) {
+			$this->layout = 'admin-ajax';
+		}
+	}
+
+
 	/**
 	 * @param string       $className
 	 *

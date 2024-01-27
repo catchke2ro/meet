@@ -70,10 +70,26 @@ class CommitmentOptionCreate extends Model {
 			['name', 'trim'],
 			['name', 'required'],
 			['order', 'number'],
+			['order', 'required'],
 			['description', 'safe'],
 			['isCustomInput', 'safe'],
 			['score', 'number'],
+			['score', 'required'],
 		];
+	}
+
+
+	/**
+	 * @param $data
+	 * @param $formName
+	 *
+	 * @return bool
+	 */
+	public function load($data, $formName = null) {
+		if (empty($data['CommitmentOptionCreate']['order'])) {
+			$data['CommitmentOptionCreate']['order'] = CommitmentOption::find()->where(['commitment_id' => $this->item->id])->max('`order`') + 1;
+		}
+		return parent::load($data, $formName);
 	}
 
 

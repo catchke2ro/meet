@@ -4,6 +4,7 @@ namespace app\modules\meet\models;
 
 use app\modules\meet\models\interfaces\DataTableModelInterface;
 use meetbase\models\CommitmentItem as BaseCommitmentItem;
+use ReflectionException;
 
 /**
  * Class CommitmentItem

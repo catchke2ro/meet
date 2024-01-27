@@ -79,6 +79,7 @@ class CommitmentItemCreate extends Model {
 			['name', 'trim'],
 			['name', 'required'],
 			['order', 'number'],
+			['order', 'required'],
 			['description', 'safe'],
 			['isActive', 'safe'],
 			['monthStep', 'integer'],

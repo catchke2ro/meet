@@ -2,6 +2,7 @@
 
 namespace app\modules\meet\controllers;
 
+use app\modules\meet\controllers\traits\ReorderTrait;
 use app\modules\meet\models\CommitmentCategory;
 use app\modules\meet\models\CommitmentItem;
 use app\modules\meet\models\forms\CommitmentItemCreate;
@@ -25,6 +26,7 @@ use yii\web\Response;
  */
 class CommitmentItemsController extends AbstractAdminController {
 
+	use ReorderTrait;
 
 	/**
 	 * @param $categoryId
@@ -64,15 +66,21 @@ class CommitmentItemsController extends AbstractAdminController {
 
 		if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
 			if (($commitmentItem = $model->create())) {
+				$category->organizeOrders();
 				Yii::$app->session->setFlash('success', 'Vállalás sikeresen létrehozva');
-				return $this->redirect(Url::to('/meet/commitment-items?categoryId='.$categoryId));
+
+				if (!$this->request->isAjax) {
+					return $this->redirect(Url::to('/meet/commitment-items?categoryId=' . $categoryId));
+				}
+			} else {
+				$this->response->setStatusCode(422);
 			}
 		}
 
 		Yii::$app->view->params['pageClass'] = 'commitmentItemCreate';
 
 		return $this->render('create', [
-			'model' => $model,
+			'model'    => $model,
 			'category' => $category
 		]);
 	}
@@ -91,14 +99,20 @@ class CommitmentItemsController extends AbstractAdminController {
 
 		if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
 			if (($commitmentItem = $model->edit())) {
+				$commitmentItem->category->organizeOrders();
 				Yii::$app->session->setFlash('success', 'Vállalás sikeresen módosítva');
-				return $this->redirect(Url::to('/meet/commitment-items?categoryId='.$commitmentItem->commitment_category_id));
+
+				if (!$this->request->isAjax) {
+					return $this->redirect(Url::to('/meet/commitment-items?categoryId=' . $commitmentItem->commitment_category_id));
+				}
+			} else {
+				$this->response->setStatusCode(422);
 			}
 		}
 		Yii::$app->view->params['pageClass'] = 'commitmentItemEdit';
 
 		return $this->render('edit', [
-			'model' => $model,
+			'model'    => $model,
 			'category' => $commitmentItem->category
 		]);
 	}
@@ -121,7 +135,27 @@ class CommitmentItemsController extends AbstractAdminController {
 		$commitmentItem->delete();
 
 		Yii::$app->session->setFlash('success', 'Vállalás sikeresen törölve');
-		return $this->redirect(Url::to('/meet/commitment-items?categoryId='.$categoryId));
+
+		return $this->redirect(Url::to('/meet/commitment-items?categoryId=' . $categoryId));
+	}
+
+
+	/**
+	 * @param $id
+	 * @param $direction
+	 *
+	 * @return string|Response
+	 * @throws HttpException
+	 */
+	public function actionReorder($id, $direction) {
+		/** @var CommitmentItem $commitmentItem */
+		if (!($commitmentItem = CommitmentItem::findOne(['id' => $id]))) {
+			throw new HttpException(404);
+		}
+
+		$category = $commitmentItem->category;
+
+		$this->doReorder($commitmentItem, $category, 'items', $direction);
 	}
 
 

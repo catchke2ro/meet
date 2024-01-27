@@ -3,6 +3,7 @@
 
 use app\models\Module;
 use ReCaptcha\ReCaptcha;
+use yii\db\ActiveQuery;
 
 function menuActiveClass(string $url): string {
 	return preg_match('/^'.preg_quote($url, '/').'/i', Yii::$app->request->url) ? 'active' : '';

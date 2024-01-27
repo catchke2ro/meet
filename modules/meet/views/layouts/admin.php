@@ -76,6 +76,12 @@ AppAsset::register($this);
 							<p>Felhasználók</p>
 						</a>
 					</li>
+					<li class="nav-item">
+						<a href="/meet/trees" class="nav-link">
+							<i class="fa fa-folder-tree nav-icon"></i>
+							<p>Vállalás-fa</p>
+						</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

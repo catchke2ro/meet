@@ -59,7 +59,7 @@ trait WithOptionsTrait {
 		$reflectionClass = new ReflectionClass($this);
 		$className = str_replace('Item', 'Option', $reflectionClass->getName());
 		$slug = strtolower(str_replace('Item', '', $reflectionClass->getShortName()));
-		return $this->hasMany($className, [$slug.'_id' => 'id']);
+		return $this->hasMany($className, [$slug.'_id' => 'id'])->orderBy(['order' => SORT_ASC]);
 	}
 
 
