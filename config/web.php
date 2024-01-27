@@ -38,6 +38,9 @@ $config = [
 				'10.0.3.1'
 			],
 		],
+		'session' => [
+			'timeout' => 86400
+		],
 		'cache'        => [
 			'class' => 'yii\caching\FileCache',
 		],
