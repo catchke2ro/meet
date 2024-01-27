@@ -37143,7 +37143,7 @@ blockquote.quote-gray-dark h6 {
 }
 
 .text-xs {
-  font-size: 0.75rem !important;
+  font-size: 10px !important;
 }
 
 .text-sm {
@@ -51451,4 +51451,85 @@ table.dataTable td:last-child a {
 
 aside.main-sidebar .sidebar {
   background-color: transparent;
+}
+
+.tooltip-inner {
+  max-width: 300px;
+}
+
+table.tree tbody.categories .treeRow {
+  background-color: rgba(109, 192, 103, 0.2);
+}
+table.tree tbody.items .treeRow {
+  background-color: rgba(128, 128, 128, 0.2);
+}
+table.tree tbody.options .treeRow {
+  background-color: rgba(0, 136, 203, 0.15);
+}
+table.tree td.treeRow {
+  display: flex;
+  gap: 10px;
+  line-height: 30px;
+  border-top: 1px solid #fff;
+}
+table.tree td.treeRow > button {
+  width: 22px;
+}
+table.tree td.treeRow > div {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+}
+table.tree td.treeRow > div .order, table.tree td.treeRow > div .active {
+  flex: 0 0 30px;
+}
+table.tree td.treeRow > div .active {
+  text-align: center;
+}
+table.tree td.treeRow > div .active .fa-close {
+  color: #dc3545;
+}
+table.tree td.treeRow > div .active .fa-check {
+  color: #6dc067;
+}
+table.tree td.treeRow > div .name {
+  flex: 1 1 auto;
+}
+table.tree td.treeRow > div .description {
+  flex: 0 0 100%;
+  font-size: 10px;
+}
+table.tree td.treeRow > div .months {
+  font-size: 0.875rem;
+}
+table.tree td.treeRow > div .actions {
+  flex: 0 0 120px;
+  text-align: right;
+}
+table.tree td.treeRow > div .actions p {
+  display: inline-block;
+}
+table.tree td.treeRow > div .actions a {
+  margin: 0 3px;
+}
+table.tree td.treeRow > div .actions a.disabled {
+  color: #808080;
+}
+table.tree td.treeRow p {
+  margin-bottom: 0px;
+}
+table.tree .expandable-body > td > div {
+  padding: 0 0 10px 0px;
+}
+table.tree .expandable-body .table {
+  width: calc(100% - 30px);
+  margin-left: 30px;
+}
+
+.treeModal .modal-body {
+  height: 75vh;
+  overflow: auto;
+}
+.treeModal .modal-body form button[type=submit] {
+  display: none;
 }

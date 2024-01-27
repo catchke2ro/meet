@@ -37022,7 +37022,7 @@ blockquote.quote-gray-dark h6 {
 }
 
 .text-xs {
-  font-size: 0.75rem !important;
+  font-size: 10px !important;
 }
 
 .text-sm {
@@ -51643,6 +51643,9 @@ readers do not read off random characters that represent icons */
     padding: 0px !important;
   }
 }
+.content-wrapper.login .card-footer .forgotPwdLinkContainer, .content-wrapper.registration .card-footer .forgotPwdLinkContainer {
+  line-height: 2.3rem;
+}
 
 .treeAccordion {
   width: 95%;
@@ -51667,7 +51670,7 @@ readers do not read off random characters that represent icons */
   font-size: 2rem;
 }
 .treeAccordion .card.qcCategory > .card-header > .titles {
-  flex: auto 1 0;
+  flex: auto 1 1;
 }
 .treeAccordion .card.qcCategory > .card-header > .titles .card-title, .treeAccordion .card.qcCategory > .card-header > .titles .card-subtitle {
   display: block;
