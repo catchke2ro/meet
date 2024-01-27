@@ -3,7 +3,7 @@
 return [
 	'senderEmail'       => 'meet@lutheran.hu',
 	'senderName'        => 'MEET',
-	'email_url'         => 'https://meet-teszt.lutheran.hu',
+	'email_url'         => 'https://meetteszt.lutheran.hu',
 	'email_url_display' => 'meet-teszt.lutheran.hu',
 
 	'email_to_org' => false, //Küldjön-e e-maileket a szervezetnek (vezetők, vagy szervezet e-mail címe)
