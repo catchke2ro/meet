@@ -44,3 +44,10 @@ composer.lock
 config/*.local.php
 
 storage/pdf
+
+setCodingStandardPaths
+/runtime
+/web/.user.ini
+
+/web/assets/img/posts
+/web/assets/img/posts/*
