@@ -29,7 +29,7 @@ use app\models\OrgQuestionFill;
 				<div class="form-group options">
 					<?php $customInputOptionId = null; ?>
 					<?php foreach ($commitment->options as $key => $option) { ?>
-						<?php if ($option->is_custom_input) {
+						<?php if ($option->isCustomInput) {
 							$customInputOptionId = $option->id;
 						} ?>
 						<div class="icheck-greensea">
@@ -40,7 +40,7 @@ use app\models\OrgQuestionFill;
 								   value="<?=$option->id;?>"
 								   name="options[<?=$commitment->id;?>][<?=$instanceNumber;?>]"
 								   id="opt<?=$commitment->id?>_<?=$option->id?>_<?=$instanceNumber;?>"
-								   data-custominput="<?=$option->is_custom_input ? 1 : 0;?>"
+								   data-custominput="<?=$option->isCustomInput ? 1 : 0;?>"
 								<?=in_array($option->id, $checkedCommitmentOptions ?: []) ? 'checked' : '';?>
 								   autocomplete="off">
 							<label for="opt<?=$commitment->id?>_<?=$option->id?>_<?=$instanceNumber;?>"

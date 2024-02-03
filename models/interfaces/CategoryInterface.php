@@ -15,7 +15,7 @@ interface CategoryInterface {
 	/**
 	 * @return ActiveQuery
 	 */
-	public function getItems();
+	public function getItems(): ActiveQuery;
 
 
 	/**
@@ -23,7 +23,7 @@ interface CategoryInterface {
 	 *
 	 * @return int
 	 */
-	public function getInstanceCount(Request $request);
+	public function getInstanceCount(Request $request): int;
 
 
 }

@@ -14,10 +14,7 @@ use yii\validators\Validator;
  */
 class recaptcha extends Validator {
 
-	/**
-	 * @var \ReCaptcha\ReCaptcha
-	 */
-	protected $recaptcha;
+	protected \ReCaptcha\ReCaptcha $recaptcha;
 
 
 	/**
@@ -35,12 +32,12 @@ class recaptcha extends Validator {
 	 * @param Model  $model
 	 * @param string $attribute
 	 */
-	public function validateAttribute($model, $attribute) {
+	public function validateAttribute($model, $attribute): void {
 		// extract the attribute value from it's model object
 		$value = $model->$attribute;
 		if (!$this->recaptcha->setExpectedHostname(Yii::$app->request->getHostName())
-					   ->verify($value, Yii::$app->request->getUserIP())
-					   ->isSuccess()) {
+			->verify($value, Yii::$app->request->getUserIP())
+			->isSuccess()) {
 			$this->addError($model, $attribute, 'CAPTCHA hiba!');
 		}
 	}

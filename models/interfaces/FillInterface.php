@@ -3,12 +3,10 @@
 
 namespace app\models\interfaces;
 
-
 use app\models\CommitmentCategory;
 use app\models\CommitmentInstance;
 use app\models\CommitmentItem;
 use app\models\QuestionInstance;
-use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -29,7 +27,7 @@ interface FillInterface {
 	 *
 	 * @return mixed
 	 */
-	public function getInstanceCountForCategory(CommitmentCategory $commitmentCategory);
+	public function getInstanceCountForCategory(CommitmentCategory $commitmentCategory): int;
 
 
 	/**
@@ -51,7 +49,7 @@ interface FillInterface {
 
 	/**
 	 * @param CommitmentItem $commitment
-	 * @param int            $instanceNumber
+	 * @param int            $instanceNumberNumber
 	 *
 	 * @return mixed
 	 */

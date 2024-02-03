@@ -9,7 +9,7 @@ use app\models\QuestionCategory;
  */
 
 $catId = $questionCategory->id;
-$hasInstances = $questionCategory->has_instances;
+$hasInstances = $questionCategory->hasInstances;
 ?>
 
 <div class="card card-primary qcCategory questionCategory <?=$hasInstances ? 'hasInstances' : null;?>"

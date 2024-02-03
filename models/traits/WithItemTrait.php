@@ -16,7 +16,7 @@ trait WithItemTrait {
 	 * @return ActiveQuery
 	 * @throws \ReflectionException
 	 */
-	public function getItem() {
+	public function getItem(): ActiveQuery {
 		$reflectionClass = new ReflectionClass($this);
 		$className = str_replace('Option', 'Item', $reflectionClass->getName());
 		$slug = strtolower(str_replace('Option', '', $reflectionClass->getShortName()));

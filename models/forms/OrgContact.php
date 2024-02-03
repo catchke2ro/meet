@@ -3,8 +3,8 @@
 namespace app\models\forms;
 
 use app\components\validators\recaptcha;
-use app\models\lutheran\Event;
-use app\models\lutheran\Organization;
+use app\models\Contact;
+use app\models\Organization;
 use Yii;
 use yii\base\Model;
 
@@ -18,45 +18,32 @@ use yii\base\Model;
  */
 class OrgContact extends Model {
 
-	/**
-	 * @var int
-	 */
-	public $orgId;
+	public ?int $orgId = null;
 
-	/**
-	 * @var string
-	 */
-	public $email;
+	public ?string $email = null;
 
-	/**
-	 * @var string
-	 */
-	public $name;
+	public ?string $name = null;
 
-	/**
-	 * @var string
-	 */
-	public $message;
+	public ?string $message = null;
 
-	/**
-	 * @var string
-	 */
-	public $recaptcha_response;
+	public ?string $recaptchaResponse = null;
 
 
 	/**
 	 * @inheritdoc
 	 */
-	public function rules() {
+	public function rules(): array {
 		return [
 			['name', 'trim'],
 			['name', 'required'],
+			['name', 'string', 'max' => 1024],
 			['email', 'trim'],
 			['email', 'required'],
 			['email', 'email'],
+			['name', 'string', 'max' => 1024],
 			['message', 'required'],
-			['recaptcha_response', 'required', 'message' => 'CAPTCHA hiba'],
-			['recaptcha_response', recaptcha::class],
+			['recaptchaResponse', 'required', 'message' => 'CAPTCHA hiba'],
+			['recaptchaResponse', recaptcha::class],
 			['orgId', 'required'],
 			['orgId', 'orgIdExists']
 		];
@@ -66,7 +53,7 @@ class OrgContact extends Model {
 	/**
 	 * @param $value
 	 */
-	public function orgIdExists($value) {
+	public function orgIdExists($value): void {
 		if (Organization::findOne(['id' => $value])) {
 			$this->addError('orgId', 'Érvénytelen adatok');
 		}
@@ -75,33 +62,38 @@ class OrgContact extends Model {
 
 	/**
 	 * Signs user up.
-	 *
-	 * @return bool|null
+	 * @return Contact|bool
 	 */
-	public function signup() {
+	public function contact(): Contact|bool {
 		if (!$this->validate()) {
 			return false;
 		}
 
 		$transaction = Yii::$app->db->beginTransaction();
 		try {
-			$success = true;
+			$contact = new Contact();
+			$contact->email = $this->email;
+			$contact->name = $this->name;
+			$contact->message = $this->message;
+			$contact->organizationId = $this->orgId;
+			$contact->date = (new \DateTime())->format('Y-m-d H:i:s');
+			$success = $contact->save();
 
-			$newMessageEvent = Event::createNewMessageEvent($this->orgId, $this->email, $this->name, $this->message);
-			$success &= $newMessageEvent->save();
 			$transaction->commit();
 
-			return $success;
+			return $success ? $contact : false;
 		} catch (\Exception $exception) {
 			$transaction->rollBack();
 		}
+
+		return false;
 	}
 
 
 	/**
 	 * @return array
 	 */
-	public function attributeLabels() {
+	public function attributeLabels(): array {
 		return [
 			'email'   => 'E-mail cím',
 			'name'    => 'Név',

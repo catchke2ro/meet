@@ -5,6 +5,7 @@
  */
 
 use app\models\forms\Registration;
+use app\models\OrganizationType;
 use yii\bootstrap4\ActiveForm;
 use yii\helpers\Html;
 
@@ -31,42 +32,46 @@ $this->title = 'Regisztráció';
 				<div class="card-body">
 					<fieldset class="border p-3 mb-3">
 						<legend>Regisztráló (megbízott személy) adatai</legend>
-						<div class="row">
-							<?=$form->field($model, 'namePrefix', ['options' => ['class' => 'form-group col-sm-3']])->label('Név előtag')->textInput()?>
-							<?=$form->field($model, 'name', ['options' => ['class' => 'form-group col-sm-9']])->label('Név')->textInput(['autofocus' => true])?>
-						</div>
-						<?=$form->field($model, 'email')->label('E-mail cím')->textInput()?>
+						<?=$form->field($model, 'refereeName')->label('Név')->textInput(['autofocus' => true])?>
+						<?=$form->field($model, 'refereeEmail')->label('E-mail cím')->textInput(['type' => 'email'])?>
 						<?=$form->field($model, 'password')->label('Jelszó')->passwordInput()?>
 						<?=$form->field($model, 'passwordConfirm')->label('Jelszó megerősítése')->passwordInput()?>
-						<?=$form->field($model, 'orgRemoteId', ['options' => ['class' => 'form-group orgSelector']])
-						        ->label('Szervezeti egység: kiválasztom a központi adatbázisból:')
-						        ->dropDownList(array_merge(['' => ' - ']))
-								->hint('A legördülő menüben gépeléssel tudsz keresni meglévő szervezeti egységek között. Amennyiben nem található a szervezet, alább adja meg a szervezet adatait!');?>
 					</fieldset>
 					<fieldset class="orgData border p-3 mb-3">
-						<legend>Új szervezeti egység regisztrációja</legend>
-						<span>Csak amennyiben nem szerepel az adatbázisban</span>
+						<legend>Szervezeti egység adatai</legend>
+						<?=$form->field($model, 'orgType', ['options' => ['class' => 'form-group orgTypeSelector']])
+							->dropDownList(OrganizationType::getList());?>
 						<?=$form->field($model, 'orgName')->label('Név');?>
 						<?=$form->field($model, 'orgAddressZip')->label('Irányítószám');?>
 						<?=$form->field($model, 'orgAddressCity')->label('Település');?>
 						<?=$form->field($model, 'orgAddressStreet')->label('Utca, házszám...');?>
-						<?=$form->field($model, 'orgPhone')->label('Telefonszám');?>
+						<?=$form->field($model, 'orgPhone')->label('Telefonszám')->textInput(['type' => 'tel']);?>
+						<?=$form->field($model, 'orgEmail')->label('E-mail cím')->textInput(['type' => 'email']);?>
+					</fieldset>
+					<fieldset class="orgData border p-3 mb-3">
+						<legend>Lelkész adatai</legend>
+						<?=$form->field($model, 'pastorName')->label('Név');?>
+						<?=$form->field($model, 'pastorEmail')->label('E-mail cím')->textInput(['type' => 'email']);?>
+					</fieldset>
+					<fieldset class="orgData border p-3 mb-3">
+						<legend>Felügyelő adatai</legend>
+						<?=$form->field($model, 'superintendentName')->label('Név');?>
 					</fieldset>
 
 					<fieldset class="border p-3 mb-3">
 						<legend>Meghatalmazás</legend>
 						<?=$form->field($model, 'pdf')->label(false)
-						        ->hint('<p>Csak pdf fájl tölthető fel. <br /> Meghatalmazáshoz határozat minta itt érhető el: <a href="/dokumentumok" target="_blank">Dokumentumok</a> <br /> További információ az <a href="/afe" target="_blank">Általános Együttműködési Feltételekben</a></p>')
-						        ->fileInput()?>
+							->hint('<p>Csak pdf fájl tölthető fel. <br /> Meghatalmazáshoz határozat minta itt érhető el: <a href="/dokumentumok" target="_blank">Dokumentumok</a> <br /> További információ az <a href="/afe" target="_blank">Általános Együttműködési Feltételekben</a></p>')
+							->fileInput()?>
 					</fieldset>
 
 					<?=$form->field($model, 'terms')
-					        ->label('Regisztrációmmal hozzájárulok személyes adataim kezeléséhez, amelyet a <a href="https://zsinat.lutheran.hu/torvenyek/toervenyek/4-2018.-viii.-28.-orszagos-szabalyrendelet-a-magyarorszagi-evangelikus-egyhaz-adatvedelmi-es-adatbiztonsagi-szabalyzatarol-melleklet/B5_MEE%20adatvedelmi%20szabalyzata_20180626.pdf/view" target="_blank">Magyarországi Evangélikus Egyház 4/2018. (VIII. 28.) országos szabályrendeletében</a> foglalt adatvédelmi és adatbiztonsági szabályzat határoz meg.', ['class' => 'custom-control-label'])
-					        ->checkbox();?>
+						->label('Regisztrációmmal hozzájárulok személyes adataim kezeléséhez, amelyet a <a href="https://zsinat.lutheran.hu/torvenyek/toervenyek/4-2018.-viii.-28.-orszagos-szabalyrendelet-a-magyarorszagi-evangelikus-egyhaz-adatvedelmi-es-adatbiztonsagi-szabalyzatarol-melleklet/B5_MEE%20adatvedelmi%20szabalyzata_20180626.pdf/view" target="_blank">Magyarországi Evangélikus Egyház 4/2018. (VIII. 28.) országos szabályrendeletében</a> foglalt adatvédelmi és adatbiztonsági szabályzat határoz meg.', ['class' => 'custom-control-label'])
+						->checkbox();?>
 					<?=$form->field($model, 'terms2')
 						->label('Az <a href="/afe" target="_blank">Általános Együttműködési Feltételeket</a> elolvastam.', ['class' => 'custom-control-label'])
 						->checkbox();?>
-					<?=$form->field($model, 'recaptcha_response')->label(false)->textInput(['type' => 'hidden']);?>
+					<?=$form->field($model, 'recaptchaResponse')->label(false)->textInput(['type' => 'hidden']);?>
 				</div>
 				<div class="card-footer">
 					<?=Html::submitButton('Regisztráció', [

@@ -2,26 +2,26 @@
 
 namespace app\models;
 
-use app\modules\meet\models\interfaces\DataTableModelInterface;
+use app\models\interfaces\DataTableModelInterface;
+use DateTimeInterface;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * Class Post
  *
- * @property int    id
- * @property string title
- * @property string image
- * @property array  tags
- * @property string intro
- * @property string text
- * @property int    date
- * @property int    order
+ * @property int               id
+ * @property string            title
+ * @property string            image
+ * @property array             tags
+ * @property string            intro
+ * @property string            text
+ * @property DateTimeInterface date
+ * @property int               order
  *
  * @package app\models
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  */
-class Post extends ActiveRecord implements DataTableModelInterface {
+class Post extends BaseModel implements DataTableModelInterface {
 
 	const IMAGE_BASE = '/assets/img/posts';
 
@@ -30,7 +30,7 @@ class Post extends ActiveRecord implements DataTableModelInterface {
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return Yii::$app->params['table_prefix'].'posts';
+		return 'posts';
 	}
 
 
@@ -65,8 +65,10 @@ class Post extends ActiveRecord implements DataTableModelInterface {
 		$tags = $this->getTagsArray();
 		if (is_array($tags) && $tags) {
 			$firstTag = reset($tags);
+
 			return slug($firstTag);
 		}
+
 		return null;
 	}
 
@@ -84,9 +86,9 @@ class Post extends ActiveRecord implements DataTableModelInterface {
 	 */
 	public function toDataTableArray(): array {
 		return [
-			'id'        => $this->id,
-			'title'      => $this->title,
-			'order'      => $this->order,
+			'id'    => $this->id,
+			'title' => $this->title,
+			'order' => $this->order,
 		];
 	}
 
@@ -96,8 +98,8 @@ class Post extends ActiveRecord implements DataTableModelInterface {
 	 */
 	public function getDataTableActions(): array {
 		return [
-			'edit'   => '<a href="/meet/posts/edit/' . $this->id . '" class="fa fa-pencil" title="Szerkesztés"></a>',
-			'delete' => '<a href="/meet/posts/delete/' . $this->id . '" class="fa fa-trash" title="Törlés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
+			'edit'   => '<a href="/admin/posts/edit/' . $this->id . '" class="fa fa-pencil" title="Szerkesztés"></a>',
+			'delete' => '<a href="/admin/posts/delete/' . $this->id . '" class="fa fa-trash" title="Törlés" onclick="return confirm(\'Biztos törlöd?\')"></a>',
 		];
 	}
 

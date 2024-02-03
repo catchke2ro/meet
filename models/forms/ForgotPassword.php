@@ -6,7 +6,7 @@ use app\components\validators\recaptcha;
 use yii\base\Model;
 
 /**
- * Class Registration
+ * Class ForgotPassword
  *
  * Registration form
  *
@@ -15,28 +15,22 @@ use yii\base\Model;
  */
 class ForgotPassword extends Model {
 
-	/**
-	 * @var string
-	 */
-	public $email;
+	public ?string $email = null;
 
-	/**
-	 * @var string
-	 */
-	public $recaptcha_response;
+	public ?string $recaptchaResponse = null;
 
 
 	/**
 	 * @inheritdoc
 	 */
-	public function rules() {
+	public function rules(): array {
 		return [
 			['email', 'trim'],
 			['email', 'required'],
 			['email', 'email'],
 			['email', 'string', 'max' => 255],
-			['recaptcha_response', 'required', 'message' => 'CAPTCHA hiba'],
-			['recaptcha_response', recaptcha::class],
+			['recaptchaResponse', 'required', 'message' => 'CAPTCHA hiba'],
+			['recaptchaResponse', recaptcha::class],
 		];
 	}
 
@@ -44,9 +38,9 @@ class ForgotPassword extends Model {
 	/**
 	 * Signs user up.
 	 *
-	 * @return bool|array|null
+	 * @return bool|string
 	 */
-	public function submit() {
+	public function submit(): bool|string {
 		if (!$this->validate()) {
 			return false;
 		}
@@ -58,7 +52,7 @@ class ForgotPassword extends Model {
 	/**
 	 * @return array
 	 */
-	public function attributeLabels() {
+	public function attributeLabels(): array {
 		return [
 			'email' => 'E-mail cím'
 		];

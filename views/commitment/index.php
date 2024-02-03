@@ -24,7 +24,7 @@ $this->title = 'Vállalások';
 	'user' => $user,
 ]);?>
 
-<form method="post" action="" class="commitmentsForm">
+<form method="post" action="" class="commitmentsForm" novalidate>
 	<input type="hidden" name="_csrf" value="<?=Yii::$app->request->getCsrfToken()?>" />
 	<input type="hidden" name="orgType" value="<?=Yii::$app->user->getIdentity()->getOrgTypeId();?>" />
 
@@ -118,7 +118,7 @@ $this->title = 'Vállalások';
 		?>
 	</div>
 
-	<?php if ($fill && $fill instanceof OrgCommitmentFill && !$fill->isApproved()) { ?>
+	<?php if ($fill && $fill instanceof OrgCommitmentFill && !$fill->isApproved) { ?>
 		<div class="text-center">
 			<p>Legutóbbi vállalásod elfogadásra vár. Amíg ez nem történt meg, nem tudsz új vállalást leadni.</p>
 		</div>

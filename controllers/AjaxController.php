@@ -2,13 +2,12 @@
 
 namespace app\controllers;
 
-use app\models\lutheran\Event;
-use app\models\lutheran\Organization;
 use app\models\Module;
+use app\models\Organization;
 use app\models\OrgCommitmentFill;
 use Yii;
-use yii\db\Expression;
 use yii\web\Controller;
+use yii\web\Response;
 
 /**
  * Class AjaxController
@@ -24,58 +23,50 @@ class AjaxController extends Controller {
 	 *
 	 * @param null $term
 	 *
-	 * @return string
+	 * @return Response
 	 */
-	public function actionOrgList($term = null) {
-		$orgs = [];
+	public function actionOrgList($term = null): Response {
+		$organizations = [];
 		if ($term && strlen($term) >= 2) {
-			$orgs = Organization::getList($term, Yii::$app->params['registration_org_types'], false);
-			$orgs = array_map(function (Organization $organization) {
+			$organizations = Organization::getList($term, Yii::$app->params['registration_org_types'], false);
+			$organizations = array_map(function (Organization $organization) {
 				return [
 					'id'   => $organization->id,
-					'text' => $organization->nev
+					'text' => $organization->name
 				];
-			}, $orgs);
+			}, $organizations);
 		}
 
-		array_unshift($orgs, ['id' => '', 'text' => ' - ']);
+		array_unshift($organizations, ['id' => '', 'text' => ' - ']);
 
 		return $this->asJson([
-			'results' => $orgs
+			'results' => $organizations
 		]);
 	}
 
 
-	public function actionOrgs() {
-		$approvedFillIds = array_map(function (Event $event) {
-			return $event->ref1_id;
-		}, Event::find()
-			->andWhere(['ref_tipus_id' => Yii::$app->params['event_type_meet_commitment_approved']])
-			->andWhere(['ertek1' => 1])
-			->andWhere(['in', 'erv_allapot', [1,2]])
-			->andWhere(['>=', 'coalesce(erv_veg, now())', new Expression('NOW()')])
-			->all()
-		);
-
+	/**
+	 * @return Response
+	 */
+	public function actionOrganizations(): Response {
 		$qb = Organization::find();
 		$qb->from(Organization::tableName() . ' AS organization');
 		$qb->select([
 			'organization.id',
-			'organization.ref_tipus_id',
-			'organization.nev'
+			'organization.organization_type_id',
+			'organization.name'
 		]);
-		$qb->innerJoinWith('positionEvent as positionEvent');
-		$qb->innerJoinWith('orgType as orgType');
-		$qb->joinWith('addressContacts as addressContact');
-		$qb->joinWith('gpsContacts as gpsContact');
-		$orgs = $qb->all();
+		$qb->innerJoinWith('organizationType as organizationType');
+		$qb->joinWith('commitmentFills as commitmentFills');
+		$qb->joinWith('addresses as addresses');
+		$qb->andWhere(['organization.is_active' => 1]);
+		$organizations = $qb->all();
 
-		$orgs = array_map(function (Organization $organization) use ($approvedFillIds) {
+		$organizations = array_map(function (Organization $organization) {
 			$lastModule = null;
+			/** @var OrgCommitmentFill[] $fills */
 			if (($fills = $organization->commitmentFills)) {
-				$fills = array_filter($fills, function (OrgCommitmentFill $orgCommitmentFill) use ($approvedFillIds) {
-					return in_array($orgCommitmentFill->id, $approvedFillIds);
-				});
+				$fills = array_filter($fills, fn(OrgCommitmentFill $orgCommitmentFill) => $orgCommitmentFill->isApproved);
 				usort($fills, function (OrgCommitmentFill $a, OrgCommitmentFill $b) {
 					return strtotime($a->date) <= strtotime($b->date) ? - 1 : 1;
 				});
@@ -85,18 +76,18 @@ class AjaxController extends Controller {
 
 			return [
 				'orgId'          => $organization->id,
-				'orgTypeId'      => $organization->orgType->id,
-				'orgTypeName'    => $organization->orgType->nev,
-				'name'           => $organization->nev,
-				'address'        => !empty($organization->addressContacts) ? $organization->addressContacts[0]->getAddressString() : null,
-				'coordinates'    => !empty($organization->gpsContacts) ? $organization->gpsContacts[0]->getCooridnates() : null,
+				'orgTypeId'      => $organization->organizationTypeId,
+				'orgTypeName'    => $organization->organizationType->name,
+				'name'           => $organization->name,
+				'address'        => $organization->address?->getAddressString(),
+				'coordinates'    => $organization->address?->getLatLng(),
 				'lastModuleId'   => $lastModule?->id,
 				'lastModuleName' => $lastModule?->name,
 				'markerIcon'     => '/assets/img/map_markers/terkepikon_' . $this->getMarker($organization, $lastModule) . '.png'
 			];
-		}, $orgs);
+		}, $organizations);
 
-		return $this->asJson($orgs);
+		return $this->asJson($organizations);
 	}
 
 
@@ -106,17 +97,12 @@ class AjaxController extends Controller {
 	 *
 	 * @return string
 	 */
-	protected function getMarker(Organization $organization, ?Module $module) {
+	protected function getMarker(Organization $organization, ?Module $module): string {
 		$moduleSlug = $module ? $module->slug : Module::firstModule()->slug;
-		$typeSlug = Yii::$app->params['defult_marker_group'];
-		foreach (Yii::$app->params['marker_groups'] as $slug => $ids) {
-			if (in_array($organization->orgType->id, $ids)) {
-				$typeSlug = $slug;
-				break;
-			}
-		}
+		$typeSlug = $organization->organizationType->slug;
 
 		return $moduleSlug . '_' . $typeSlug;
 	}
+
 
 }

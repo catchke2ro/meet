@@ -2,7 +2,6 @@
 
 namespace app\lib;
 
-
 use app\models\CommitmentOption;
 use app\models\interfaces\CategoryInterface;
 use app\models\interfaces\ItemInterface;
@@ -18,12 +17,6 @@ use yii\db\ActiveRecord;
  */
 class TreeLib {
 
-	/**
-	 * TreeLib constructor.
-	 */
-	public function __construct() {
-	}
-
 
 	/**
 	 * @param array|ActiveRecord[]|CategoryInterface[] $categories
@@ -33,8 +26,8 @@ class TreeLib {
 	public function populateTree(array $categories): array {
 		/**
 		 * @var $category ActiveRecord|CategoryInterface
-		 * @var $item ActiveRecord|ItemInterface
-		 * @var $option ActiveRecord|OptionInterface
+		 * @var $item     ActiveRecord|ItemInterface
+		 * @var $option   ActiveRecord|OptionInterface
 		 */
 		$categoriesByItems = [];
 		foreach ($categories as $category) {
@@ -53,6 +46,7 @@ class TreeLib {
 				}
 			}
 		}
+
 		return $categoriesByItems;
 	}
 

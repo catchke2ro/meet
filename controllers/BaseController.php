@@ -22,7 +22,7 @@ class BaseController extends Controller {
 	 * @return bool
 	 * @throws BadRequestHttpException
 	 */
-	public function beforeAction($action) {
+	public function beforeAction($action): bool {
 		$reload = false;
 		if ($this->request->getMethod() === 'POST' && !is_null($this->request->getBodyParam('admin_org_type'))) {
 			Yii::$app->session->set('admin_org_type', $this->request->getBodyParam('admin_org_type'));
@@ -34,8 +34,10 @@ class BaseController extends Controller {
 		}
 		if ($reload) {
 			$this->refresh();
+
 			return false;
 		}
+
 		return parent::beforeAction($action);
 	}
 

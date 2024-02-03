@@ -29,7 +29,7 @@ $this->title = 'Elfelejtett jelszó';
 				]); ?>
 				<div class="card-body">
 					<?=$form->field($model, 'email')->label('E-mail cím')->textInput()?>
-					<?=$form->field($model, 'recaptcha_response')->label(false)->textInput(['type' => 'hidden']);?>
+					<?=$form->field($model, 'recaptchaResponse')->label(false)->textInput(['type' => 'hidden']);?>
 				</div>
 				<div class="card-footer">
 					<?=Html::submitButton('Küldés', [

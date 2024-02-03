@@ -14,16 +14,11 @@ if (file_exists(__DIR__ . '/db.local.php')) {
 	$db = array_replace_recursive($db, require __DIR__ . '/db.local.php');
 }
 
-$dbTk = require __DIR__ . '/dbtk.php';
-if (file_exists(__DIR__ . '/dbtk.local.php')) {
-	$dbTk = array_replace_recursive($dbTk, require __DIR__ . '/dbtk.local.php');
-}
-
 $config = [
 	'language'   => 'hu-HU',
 	'id'         => 'basic',
 	'basePath'   => dirname(__DIR__),
-	'bootstrap'  => ['log', 'meet'],
+	'bootstrap'  => ['log', 'admin'],
 	'aliases'    => [
 		'@bower' => '@vendor/bower-asset',
 		'@npm'   => '@vendor/npm-asset',
@@ -38,8 +33,10 @@ $config = [
 				'10.0.3.1'
 			],
 		],
-		'session' => [
-			'timeout' => 86400
+		'session'      => [
+			'timeout'      => 86400,
+			'class'        => 'yii\web\Session',
+			'cookieParams' => ['lifetime' => 86400]
 		],
 		'cache'        => [
 			'class' => 'yii\caching\FileCache',
@@ -64,6 +61,15 @@ $config = [
 				'password'   => '5qUvw2QSAcm',
 			],
 		],
+		'i18n'         => [
+			'translations' => [
+				'meet' => [
+					'class'          => 'yii\i18n\PhpMessageSource',
+					'basePath'       => '@app/messages', // if advanced application, set @frontend/messages
+					'sourceLanguage' => 'hu',
+				],
+			],
+		],
 		'log'          => [
 			'traceLevel' => YII_DEBUG ? 3 : 0,
 			'targets'    => [
@@ -74,7 +80,6 @@ $config = [
 			],
 		],
 		'db'           => $db,
-		'dbtk'         => $dbTk,
 		'urlManager'   => [
 			'enablePrettyUrl' => true,
 			'showScriptName'  => false,
@@ -103,18 +108,18 @@ $config = [
 
 				'/_org-list'           => 'ajax/org-list',
 				'/_authorization-file' => 'user/get-authorization-file',
-				'/_orgs'               => 'ajax/orgs',
+				'/_orgs'               => 'ajax/organizations',
 				'/_ci-download'        => 'site/ci-download'
 			],
 		],
 	],
 	'params'     => $params,
 	'modules'    => [
-		'meet' => [
-			'class'     => 'app\modules\meet\Module',
+		'admin' => [
+			'class'     => 'app\modules\admin\Module',
 			'layout'    => 'admin',
 			'as access' => [
-				'class' => \yii\filters\AccessControl::className(),
+				'class' => \yii\filters\AccessControl::class,
 				'rules' => [
 					[
 						'allow' => true,

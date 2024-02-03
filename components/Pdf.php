@@ -15,10 +15,7 @@ use yii\base\View;
  */
 class Pdf extends Component {
 
-	/**
-	 * @var
-	 */
-	protected $pdfCss = '/web/dist/pdfCss.css';
+	protected string $pdfCss = '/web/dist/pdfCss.css';
 
 
 	/**
@@ -28,19 +25,17 @@ class Pdf extends Component {
 	 *
 	 * @return string
 	 */
-	public function generatePdf(string $template, string $filename, array $vars = []) {
+	public function generatePdf(string $template, string $filename, array $vars = []): string {
 
 		$view = new View();
 		$html = $view->render($template, $vars);
 
-		$snappy = new \Knp\Snappy\Pdf('xvfb-run /usr/local/bin/wkhtmltopdf', [
-			'enable-local-file-access' => true
-		]);
+		$weasy = new \Pontedilana\PhpWeasyPrint\Pdf('/usr/bin/weasyprint');
 
 		$baseDir = Yii::$app->getBasePath() . '/storage/pdf';
 		$file = $baseDir . '/' . $filename;
 
-		$snappy->generateFromHtml($html, $file, [], true);
+		$weasy->generateFromHtml($html, $file, [], true);
 
 		return $baseDir . '/' . $filename;
 	}

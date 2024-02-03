@@ -2,9 +2,10 @@
 
 namespace app\controllers;
 
+use app\components\Email;
 use app\models\forms\OrgContact;
-use app\models\lutheran\Organization;
 use app\models\Module;
+use app\models\Organization;
 use app\models\Post;
 use app\models\User;
 use Throwable;
@@ -26,7 +27,7 @@ class SiteController extends BaseController {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function actions() {
+	public function actions(): array {
 		return [
 			'error'   => [
 				'class' => 'yii\web\ErrorAction',
@@ -41,10 +42,9 @@ class SiteController extends BaseController {
 
 	/**
 	 * Displays Home
-	 *
 	 * @return string
 	 */
-	public function actionHome() {
+	public function actionHome(): string {
 		Yii::$app->view->params['pageClass'] = 'home';
 
 		return $this->render('home');
@@ -53,10 +53,9 @@ class SiteController extends BaseController {
 
 	/**
 	 * Displays Home
-	 *
 	 * @return string
 	 */
-	public function actionTerms() {
+	public function actionTerms(): string {
 
 		Yii::$app->view->params['pageClass'] = 'terms';
 
@@ -66,10 +65,9 @@ class SiteController extends BaseController {
 
 	/**
 	 * Displays Home
-	 *
 	 * @return string
 	 */
-	public function actionImpressum() {
+	public function actionImpressum(): string {
 
 		Yii::$app->view->params['pageClass'] = 'impressum';
 
@@ -82,7 +80,7 @@ class SiteController extends BaseController {
 	 *
 	 * @return string
 	 */
-	public function actionAef() {
+	public function actionAef(): string {
 
 		Yii::$app->view->params['pageClass'] = 'aef';
 
@@ -96,7 +94,7 @@ class SiteController extends BaseController {
 	 * @return string
 	 * @throws Throwable
 	 */
-	public function actionDocuments() {
+	public function actionDocuments(): string {
 
 		/** @var User $user */
 		$activeModule = null;
@@ -111,21 +109,21 @@ class SiteController extends BaseController {
 		Yii::$app->view->params['pageClass'] = 'documents';
 
 		return $this->render('documents', [
-			'user' => $user,
+			'user'         => $user,
 			'activeModule' => $activeModule
 		]);
 	}
 
 
 	/**
-	 * @param $id
-	 * @param $token
+	 * @param $module
+	 * @param $file
 	 *
-	 * @return \yii\console\Response|Response
-	 * @throws NotFoundHttpException
+	 * @return Response
 	 * @throws HttpException
+	 * @throws Throwable
 	 */
-	public function actionCiDownload($module, $file) {
+	public function actionCiDownload($module, $file): Response {
 		if (!(($module = Module::findOne(['id' => $module])) &&
 			($user = Yii::$app->user->getIdentity()) &&
 			($org = $user->getOrganization()) &&
@@ -135,13 +133,13 @@ class SiteController extends BaseController {
 			throw new HttpException(404);
 		}
 
-		$rootDir = Yii::$app->getBasePath().'/storage/ci';
+		$rootDir = Yii::$app->getBasePath() . '/storage/ci';
 
-		if (!file_exists($rootDir.'/'.$file)) {
+		if (!file_exists($rootDir . '/' . $file)) {
 			throw new HttpException(404);
 		}
 
-		return Yii::$app->response->sendFile($rootDir.'/'.$file);
+		return Yii::$app->response->sendFile($rootDir . '/' . $file);
 	}
 
 
@@ -150,7 +148,7 @@ class SiteController extends BaseController {
 	 *
 	 * @return string
 	 */
-	public function actionParticipants() {
+	public function actionParticipants(): string {
 
 		Yii::$app->view->params['pageClass'] = 'participants';
 
@@ -160,10 +158,9 @@ class SiteController extends BaseController {
 
 	/**
 	 * Displays Home
-	 *
 	 * @return string
 	 */
-	public function actionDescription() {
+	public function actionDescription(): string {
 
 		Yii::$app->view->params['pageClass'] = 'description';
 
@@ -173,10 +170,9 @@ class SiteController extends BaseController {
 
 	/**
 	 * Displays Home
-	 *
 	 * @return string
 	 */
-	public function actionDescriptionEn() {
+	public function actionDescriptionEn(): string {
 
 		Yii::$app->view->params['pageClass'] = 'description';
 		Yii::$app->language = 'en-EN';
@@ -187,10 +183,9 @@ class SiteController extends BaseController {
 
 	/**
 	 * Displays Home
-	 *
 	 * @return string
 	 */
-	public function actionModules() {
+	public function actionModules(): string {
 
 		Yii::$app->view->params['pageClass'] = 'modules';
 
@@ -201,12 +196,13 @@ class SiteController extends BaseController {
 	/**
 	 * @return string
 	 */
-	public function actionPosts() {
+	public function actionPosts(): string {
 		$posts = Post::find()
 			->orderBy('order ASC')
 			->all();
 
 		Yii::$app->view->params['pageClass'] = 'posts';
+
 		return $this->render('posts', [
 			'posts' => $posts
 		]);
@@ -214,12 +210,12 @@ class SiteController extends BaseController {
 
 
 	/**
-	 * @param $orgId
+	 * @param int|null $orgId
 	 *
-	 * @return string|Response
+	 * @return Response|string
 	 * @throws NotFoundHttpException
 	 */
-	public function actionOrgContact($orgId) {
+	public function actionOrgContact(?int $orgId): Response|string {
 		$model = new OrgContact();
 
 		if (!($organization = Organization::findOne(['id' => $orgId]))) {
@@ -227,9 +223,17 @@ class SiteController extends BaseController {
 		}
 
 		if ($model->load(Yii::$app->request->post())) {
-			if ($model->signup()) {
-				Yii::$app->session->setFlash('error', 'Sikeres üzenetküldés!');
+			if (($contact = $model->contact())) {
+				(new Email())->sendEmail('org_contact', $contact->email, 'Kapcsolatfelvétel MEET-en keresztül', [
+					'contact' => $contact,
+					'organization' => $organization
+				]);
+
+				Yii::$app->session->setFlash('success', 'Sikeres üzenetküldés!');
+
 				return $this->redirect(Url::to('/'));
+			} else {
+				Yii::$app->session->setFlash('error', 'Hiba történt az üzenetküldés során!');
 			}
 		}
 
@@ -238,7 +242,7 @@ class SiteController extends BaseController {
 		Yii::$app->view->params['pageClass'] = 'orgContact';
 
 		return $this->render('orgContact', [
-			'model' => $model,
+			'model'        => $model,
 			'organization' => $organization
 		]);
 	}

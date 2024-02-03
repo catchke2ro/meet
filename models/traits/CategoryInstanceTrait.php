@@ -2,8 +2,6 @@
 
 namespace app\models\traits;
 
-use app\models\QuestionOption;
-use yii\db\ActiveQuery;
 use yii\web\Request;
 
 /**
@@ -18,10 +16,10 @@ trait CategoryInstanceTrait {
 	 *
 	 * @return int
 	 */
-	public function getInstanceCount(Request $request) {
+	public function getInstanceCount(Request $request): int {
 		$count = 1;
 		if ($request->isPost &&
-			$this->has_instances &&
+			$this->hasInstances &&
 			!empty($request->getBodyParam('options'))
 		) {
 			foreach ($this->items as $question) {

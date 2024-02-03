@@ -17,10 +17,7 @@ use yii\base\ViewEvent;
  */
 class Email extends Component {
 
-	/**
-	 * @var
-	 */
-	protected $emailCss = '/web/dist/email.css';
+	protected string $emailCss = '/web/dist/email.css';
 
 
 	/**
@@ -30,7 +27,7 @@ class Email extends Component {
 	 * @param array  $vars
 	 * @param array  $attachments
 	 */
-	public function sendEmail(string $template, $to, string $subject, array $vars = [], array $attachments = []) {
+	public function sendEmail(string $template, $to, string $subject, array $vars = [], array $attachments = []): void {
 		/** @var View $view */
 		$mailer = Yii::$app->mailer;
 		$view = $mailer->getView();
@@ -53,10 +50,10 @@ class Email extends Component {
 	/**
 	 * @param ViewEvent $event
 	 */
-	public function postHtml(ViewEvent $event) {
+	public function postHtml(ViewEvent $event): void {
 		if ($event->output) {
 			$cssToInlineStyles = new CssToInlineStyles();
-			$event->output = $cssToInlineStyles->convert($event->output, file_get_contents(Yii::$app->getBasePath().$this->emailCss));
+			$event->output = $cssToInlineStyles->convert($event->output, file_get_contents(Yii::$app->getBasePath() . $this->emailCss));
 		}
 	}
 

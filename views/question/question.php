@@ -19,7 +19,7 @@ use app\models\QuestionOption;
 		<div class="form-group options">
 			<?php $customInputOptionId = null; ?>
 			<?php foreach ($question->options as $key => $option) { ?>
-				<?php if ($option->is_custom_input) {
+				<?php if ($option->isCustomInput) {
 					$customInputOptionId = $option->id;
 				} ?>
 				<div class="icheck-greensea">
@@ -30,7 +30,7 @@ use app\models\QuestionOption;
 						   value="<?=$option->id;?>"
 						   name="options[<?=$question->id;?>][<?=$instance;?>]"
 						   id="opt<?=$question->id?>_<?=$option->id?>_<?=$instance;?>"
-						   data-custominput="<?=$option->is_custom_input ? 1 : 0;?>"
+						   data-custominput="<?=$option->isCustomInput ? 1 : 0;?>"
 						<?=$option->isChecked(Yii::$app->request, $instance) ? 'checked' : '';?>
 						   autocomplete="off">
 					<label for="opt<?=$question->id?>_<?=$option->id?>_<?=$instance;?>"

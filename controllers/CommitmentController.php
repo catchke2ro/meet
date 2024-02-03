@@ -8,23 +8,23 @@ use app\models\CommitmentInstance;
 use app\models\CommitmentItem;
 use app\models\CommitmentOption;
 use app\models\interfaces\FillInterface;
-use app\models\lutheran\Event;
-use app\models\lutheran\Organization;
 use app\models\Module;
-use app\models\QuestionCategory;
+use app\models\Organization;
 use app\models\OrgCommitmentFill;
 use app\models\OrgCommitmentOption;
 use app\models\OrgQuestionFill;
+use app\models\QuestionCategory;
 use app\models\User;
 use DateTime;
 use Exception;
-use http\Exception\InvalidArgumentException;
+use InvalidArgumentException;
+use Throwable;
 use Yii;
 use yii\filters\AccessControl;
-use yii\web\Controller;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Request;
+use yii\web\Response;
 
 /**
  * Class CommitmentController
@@ -33,11 +33,6 @@ use yii\web\Request;
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  */
 class CommitmentController extends BaseController {
-
-	/**
-	 * @var TreeLib
-	 */
-	private $treeLib;
 
 
 	/**
@@ -48,19 +43,18 @@ class CommitmentController extends BaseController {
 	 * @param TreeLib $treeLib
 	 * @param array   $config
 	 */
-	public function __construct($id, $module, TreeLib $treeLib, $config = []) {
+	public function __construct($id, $module, protected TreeLib $treeLib, array $config = []) {
 		parent::__construct($id, $module, $config);
-		$this->treeLib = $treeLib;
 	}
 
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function behaviors() {
+	public function behaviors(): array {
 		return [
 			'access' => [
-				'class' => AccessControl::className(),
+				'class' => AccessControl::class,
 				'rules' => [
 					[
 						'actions' => ['index', 'score', 'history', 'end'],
@@ -76,7 +70,7 @@ class CommitmentController extends BaseController {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function actions() {
+	public function actions(): array {
 		return [];
 	}
 
@@ -84,13 +78,17 @@ class CommitmentController extends BaseController {
 	/**
 	 * Displays commitment form
 	 *
-	 * @return string
-	 * @throws Exception
+	 * @return Response|string
+	 * @throws HttpException
+	 * @throws NotFoundHttpException
+	 * @throws Throwable
+	 * @throws \yii\db\Exception
 	 */
-	public function actionIndex() {
+	public function actionIndex(): Response|string {
 		/** @var FillInterface $fill */
 		$fill = null;
 		/** @var User $user */
+		$organization = null;
 		$user = Yii::$app->user->getIdentity();
 		if (!($user && ($organization = $user->getOrganization()))) {
 			throw new NotFoundHttpException();
@@ -147,7 +145,7 @@ class CommitmentController extends BaseController {
 	 * @return string
 	 * @throws Exception
 	 */
-	public function actionEnd() {
+	public function actionEnd(): string {
 		return $this->render('end');
 	}
 
@@ -159,10 +157,12 @@ class CommitmentController extends BaseController {
 	 *
 	 * @param array   $categoriesByCommitments
 	 *
-	 * @return string
-	 * @throws Exception
+	 * @return int
+	 * @throws NotFoundHttpException
+	 * @throws Throwable
+	 * @throws \yii\db\Exception
 	 */
-	protected function save(Request $request, array $categoriesByCommitments) {
+	protected function save(Request $request, array $categoriesByCommitments): int {
 		try {
 			$transaction = Yii::$app->db->beginTransaction();
 
@@ -177,15 +177,15 @@ class CommitmentController extends BaseController {
 			}
 
 			$orgType = $request->getBodyParam('orgType');
-			if (!($orgType && $orgType == $organization->orgType->id)) {
+			if (!($orgType && $orgType == $organization->organizationTypeId)) {
 				throw new InvalidArgumentException('Invalid input parameters');
 			}
 
 			$fill = (new OrgCommitmentFill());
-			$fill->org_id = $organization->id;
-			$fill->target_module_id = $targetModule->id;
+			$fill->orgId = $organization->id;
+			$fill->targetModuleId = $targetModule->id;
 			$fill->date = (new DateTime())->format('Y-m-d H:i:s');
-			$fill->org_type = $orgType;
+			$fill->orgTypeId = $orgType;
 			$fill->save();
 
 			$options = $request->getBodyParam('options') ?: [];
@@ -200,7 +200,7 @@ class CommitmentController extends BaseController {
 				foreach ($categoryInstances as $num => $instanceName) {
 					$instance = new CommitmentInstance();
 					$instance->name = $instanceName ?: $num;
-					$instance->commitment_category_id = $categoryId;
+					$instance->commitmentCategoryId = $categoryId;
 					$instance->save();
 					$instanceNumsToIds[$categoryId . '_' . $num] = $instance->id;
 				}
@@ -209,23 +209,20 @@ class CommitmentController extends BaseController {
 				$categoryId = $categoriesByCommitments[$commitmentId] ?? null;
 				foreach ($instances ?: [] as $instanceNumber => $optionId) {
 					$fillOption = new OrgCommitmentOption();
-					$fillOption->org_commitment_fill_id = $fill->id;
-					$fillOption->custom_input = $customInputs[$commitmentId][$optionId][$instanceNumber] ?? null;
-					$fillOption->commitment_option_id = $optionId;
+					$fillOption->orgCommitmentFillId = $fill->id;
+					$fillOption->customInput = $customInputs[$commitmentId][$optionId][$instanceNumber] ?? null;
+					$fillOption->commitmentOptionId = $optionId;
 
 					$fillOption->months = $intervals[$commitmentId][$instanceNumber] ?? null;
 					if ($fillOption->months && isset($intervalMultipliers[$commitmentId][$instanceNumber])) {
 						$fillOption->months *= $intervalMultipliers[$commitmentId][$instanceNumber];
 					}
 					if (isset($instanceNumsToIds[$categoryId . '_' . $instanceNumber])) {
-						$fillOption->instance_id = $instanceNumsToIds[$categoryId . '_' . $instanceNumber];
+						$fillOption->instanceId = $instanceNumsToIds[$categoryId . '_' . $instanceNumber];
 					}
 					$fillOption->save();
 				}
 			}
-
-			$event = Event::createNewCommitmentEvent($organization, $user->person, $fill);
-			$event->save();
 
 			$transaction->commit();
 
@@ -238,8 +235,10 @@ class CommitmentController extends BaseController {
 
 
 	/**
+	 * @return void
+	 * @throws Throwable
 	 */
-	public function actionScore() {
+	public function actionScore(): void {
 		$request = Yii::$app->request;
 
 		$commitmentCategories = CommitmentCategory::find()
@@ -293,11 +292,10 @@ class CommitmentController extends BaseController {
 
 
 		$response = Yii::$app->response;
-		$response->format = \yii\web\Response::FORMAT_JSON;
-		$response->format = \yii\web\Response::FORMAT_JSON;
+		$response->format = Response::FORMAT_JSON;
 		$response->data = [
 			'score'                  => $score,
-			'currentModule'          => $currentModule ? $currentModule->name : null,
+			'currentModule'          => $currentModule?->name,
 			'nextModule'             => $nextModule ? $nextModule->name : null,
 			'nextModulePercentage'   => $nextModulePercentage,
 			'targetModulePercentage' => $targetModulePercentage
@@ -313,7 +311,7 @@ class CommitmentController extends BaseController {
 	 * @throws \Throwable
 	 * @throws \yii\db\Exception
 	 */
-	public function actionHistory($commitmentId) {
+	public function actionHistory($commitmentId): string {
 		/** @var User $user */
 		$user = Yii::$app->user->getIdentity();
 		$this->layout = false;

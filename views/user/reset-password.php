@@ -30,7 +30,7 @@ $this->title = 'Jelszó visszaállítása';
 				<div class="card-body">
 					<?=$form->field($model, 'password')->label('Jelszó')->passwordInput()?>
 					<?=$form->field($model, 'passwordConfirm')->label('Jelszó megerősítése')->passwordInput()?>
-					<?=$form->field($model, 'recaptcha_response')->label(false)->textInput(['type' => 'hidden']);?>
+					<?=$form->field($model, 'recaptchaResponse')->label(false)->textInput(['type' => 'hidden']);?>
 					<?=$form->field($model, 'token')->label(false)->textInput(['type' => 'hidden', 'value' => $token]);?>
 				</div>
 				<div class="card-footer">

@@ -3,10 +3,14 @@
 
 use app\models\Module;
 use ReCaptcha\ReCaptcha;
-use yii\db\ActiveQuery;
 
+/**
+ * @param string $url
+ *
+ * @return string
+ */
 function menuActiveClass(string $url): string {
-	return preg_match('/^'.preg_quote($url, '/').'/i', Yii::$app->request->url) ? 'active' : '';
+	return preg_match('/^' . preg_quote($url, '/') . '/i', Yii::$app->request->url) ? 'active' : '';
 }
 
 
@@ -18,7 +22,8 @@ function menuActiveClass(string $url): string {
  * @return string|null
  */
 function reduceMonths(int $months): ?string {
-	foreach ([
+	foreach (
+		[
 			12 => 'év',
 			6  => 'félév',
 			3  => 'negyedév',
@@ -35,19 +40,15 @@ function reduceMonths(int $months): ?string {
 
 
 /**
- * @param $step
+ * @param int $step
  *
  * @return int
  */
-function getIntervalMultiplier($step): int {
-	switch ($step) {
-		case 12:
-		case 6:
-		case 3:
-			return $step;
-		default:
-			return 1;
-	}
+function getIntervalMultiplier(int $step): int {
+	return match ($step) {
+		12, 6, 3 => $step,
+		default => 1,
+	};
 }
 
 
@@ -57,14 +58,10 @@ function getIntervalMultiplier($step): int {
  * @return int
  */
 function getIntervalStep(int $step): int {
-	switch ($step) {
-		case 12:
-		case 6:
-		case 3:
-			return 1;
-		default:
-			return $step;
-	}
+	return match ($step) {
+		12, 6, 3 => 1,
+		default => $step,
+	};
 }
 
 
@@ -74,34 +71,26 @@ function getIntervalStep(int $step): int {
  *
  * @return float|int
  */
-function getIntervalThreshold(int $threshold, int $step) {
-	switch ($step) {
-		case 12:
-		case 6:
-		case 3:
-			return $threshold / $step;
-		default:
-			return $threshold;
-	}
+function getIntervalThreshold(int $threshold, int $step): float|int {
+	return match ($step) {
+		12, 6, 3 => $threshold / $step,
+		default => $threshold,
+	};
 }
 
 
 /**
- * @param $step
+ * @param int $step
  *
  * @return string
  */
 function getIntervalName(int $step): string {
-	switch ($step) {
-		case 12:
-			return 'év';
-		case 6:
-			return 'félév';
-		case 3:
-			return 'negyedév';
-		default:
-			return 'hónap';
-	}
+	return match ($step) {
+		12 => 'év',
+		6 => 'félév',
+		3 => 'negyedév',
+		default => 'hónap',
+	};
 }
 
 
@@ -123,12 +112,13 @@ function convertIntervalValue(?int $value, int $step): int {
 /**
  * Generates slug from the string with a character map
  *
- * @param string $string Input string
- * @param string|null $lang Language code for character map
- * @param bool $onlyLetters If true, special characters won't be replaced to '-'
- * @return mixed|string
+ * @param string      $string      Input string
+ * @param string|null $lang        Language code for character map
+ * @param bool        $onlyLetters If true, special characters won't be replaced to '-'
+ *
+ * @return string
  */
-function slug($string = '', $lang = null, $onlyLetters = false) {
+function slug(string $string = '', ?string $lang = null, bool $onlyLetters = false): string {
 	$slugArray = include __DIR__ . '/slugcharmap.php';
 
 	$slug = mb_strtolower(strip_tags(trim($string))); //Convert to lower case
@@ -150,27 +140,31 @@ function slug($string = '', $lang = null, $onlyLetters = false) {
 	$trUnicodeArray = $slugArray['unicode'] ?? [];
 	foreach ($trUnicodeArray as $replacement => $chars) {
 		$chars = array_map(function ($code) {
-			return '\x{'.$code.'}';
+			return '\x{' . $code . '}';
 		}, $chars);
-		$slug = preg_replace('/['.implode('', $chars).']/', $replacement, $slug);
+		$slug = preg_replace('/[' . implode('', $chars) . ']/', $replacement, $slug);
 	}
 
 	$slug = preg_replace('/[^a-z0-9\-_]/', '', $slug); //Replace special characters
 	$slug = preg_replace('/[\-]+/', $hyphenRpl, $slug);
 	$slug = preg_replace('/\-$/', '', $slug);
+
 	return $slug;
 }
 
 
 /**
+ * @param string $response
+ *
  * @return bool
  */
-function recaptchaValidator(string $response) {
+function recaptchaValidator(string $response): bool {
 	$secretKey = Yii::$app->params['recaptcha_secret_key'] ?? null;
 
 	$recaptcha = new ReCaptcha($secretKey);
 	$resp = $recaptcha->setExpectedHostname($_SERVER['HTTP_HOST'])
 		->verify($response, $_SERVER['REMOTE_ADDR']);
+
 	return $resp->isSuccess();
 }
 
@@ -181,11 +175,12 @@ function recaptchaValidator(string $response) {
  * @return string|null
  */
 function getLinkForCI(Module $module, string $pattern): ?string {
-	$rootDir = Yii::$app->getBasePath().'/storage/ci';
+	$rootDir = Yii::$app->getBasePath() . '/storage/ci';
 	$moduleDir = sprintf('meet_modul_%s', $module->slug);
 	$file = sprintf($pattern, $module->slug);
-	if (file_exists($rootDir.'/'.$moduleDir.'/'.$file)) {
-		return '/_ci-download?module='.$module->id.'&file='.urlencode($moduleDir.'/'.$file);
+	if (file_exists($rootDir . '/' . $moduleDir . '/' . $file)) {
+		return '/_ci-download?module=' . $module->id . '&file=' . urlencode($moduleDir . '/' . $file);
 	}
+
 	return null;
 }

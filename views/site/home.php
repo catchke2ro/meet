@@ -8,12 +8,16 @@ $this->title = 'Főoldal';
 		<div id="heroSlider" class="carousel slide" data-ride="carousel">
 			<ol class="carousel-indicators">
 				<?php for ($i = 0; $i < 8; $i ++) { ?>
-					<li data-target="#heroSliderIndicators" data-slide-to="<?=$i;?>" <?php if ($i === 0) { ?>class="active"<?php } ?>></li>
+					<li data-target="#heroSliderIndicators" data-slide-to="<?=$i;?>" <?php if ($i === 0) {
+						?>class="active"<?php
+																		   } ?>></li>
 				<?php } ?>
 			</ol>
 			<div class="carousel-inner">
 				<?php for ($i = 0; $i < 8; $i ++) { ?>
-					<div class="carousel-item <?php if ($i === 0) { ?>active<?php } ?>">
+					<div class="carousel-item <?php if ($i === 0) {
+						?>active<?php
+											  } ?>">
 						<img class="d-block w-100"
 							 src="/assets/img/meet_slider_<?=str_pad($i + 1, 2, '0', STR_PAD_LEFT);?>.jpg"
 							 alt="MEET" />
@@ -68,7 +72,9 @@ $this->title = 'Főoldal';
 			</a>
 		</div>
 		<h3><a href="/aktivitas">Aktivitás</a></h3>
-		<p class="teaserText">A MEET program résztvevő gyülekezetei, iskolái, óvodái, diakóniai intézményei és minden típusú közösségei megosztják tapasztalataikat, jógyakorlataikat, segédanyagaikat, illetve a közösségben megvalósuló teremtésvédelmi eseményekről és rendezvényekről hírt adnak. Inspirációra vágysz? Te is szerveznél valamilyen teremtésvédelmi programot? Tallózz a résztvevők hírei, programjai, ötletei között, és küldd meg Te is közösséged híreit!</p>
+		<p class="teaserText">A MEET program résztvevő gyülekezetei, iskolái, óvodái, diakóniai intézményei és minden típusú közösségei megosztják tapasztalataikat,
+			jógyakorlataikat, segédanyagaikat, illetve a közösségben megvalósuló teremtésvédelmi eseményekről és rendezvényekről hírt adnak. Inspirációra vágysz? Te is szerveznél
+			valamilyen teremtésvédelmi programot? Tallózz a résztvevők hírei, programjai, ötletei között, és küldd meg Te is közösséged híreit!</p>
 		<a href="/aktivitas" class="moreLink">Bővebben >></a>
 	</div>
 

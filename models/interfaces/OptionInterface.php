@@ -15,7 +15,7 @@ interface OptionInterface {
 	/**
 	 * @return ActiveQuery
 	 */
-	public function getItem();
+	public function getItem(): ActiveQuery;
 
 
 	/**

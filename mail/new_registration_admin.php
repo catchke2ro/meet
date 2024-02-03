@@ -4,8 +4,8 @@
  * @var Organization $organization
  */
 
-use app\models\lutheran\Organization;
-use app\models\lutheran\Person;
+use app\models\Organization;
+use app\models\Person;
 
 ?>
 <p>Új regisztráció</p>
@@ -13,7 +13,7 @@ use app\models\lutheran\Person;
 <p>Adatok:</p>
 
 <ul>
-	<li>Név: <?=$person->nev_elotag ? $person->nev_elotag.' ' : '';?><?=$person->nev;?></li>
-	<li>E-mail: <?=$person->emailContact ? $person->emailContact->ertek1 : '';?></li>
-	<li>Szervezet: #<?=$organization->id;?> <?=$organization->nev;?></li>
+	<li>Név: <?=$person->name;?></li>
+	<li>E-mail: <?=$person->email?->email;?></li>
+	<li>Szervezet: #<?=$organization->id;?> <?=$organization->name;?></li>
 </ul>

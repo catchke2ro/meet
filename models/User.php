@@ -4,15 +4,10 @@ namespace app\models;
 
 use app\components\Email;
 use app\components\Pdf;
-use app\models\lutheran\Person;
-use app\modules\meet\models\interfaces\DataTableModelInterface;
+use app\models\interfaces\DataTableModelInterface;
 use Exception;
-use meetbase\models\lutheran\Event;
-use meetbase\models\lutheran\Organization;
-use Yii;
 use yii\base\NotSupportedException;
 use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
 /**
@@ -21,31 +16,29 @@ use yii\web\IdentityInterface;
  * @property int               id
  * @property string            username
  * @property string            password
- * @property array             email
- * @property string            registered_at
- * @property string            logged_in_at
- * @property bool              is_active
- * @property bool              is_admin
- * @property bool              is_approved_admin
- * @property bool              is_approved_boss
- * @property string            password_reset_token
- * @property string            password_reset_expires_at
- * @property int               person_id
+ * @property string            email
+ * @property string            registeredAt
+ * @property string            loggedInAt
+ * @property bool              isActive
+ * @property bool              isAdmin
+ * @property bool              isApprovedAdmin
+ * @property bool              isApprovedBoss
+ * @property string            passwordResetToken
+ * @property string            passwordResetExpiresAt
+ * @property int               personId
  * @property Person|null       person
  * @property Organization|null $organization
  *
  * @package app\models
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  */
-class User extends ActiveRecord implements DataTableModelInterface, IdentityInterface {
+class User extends BaseModel implements DataTableModelInterface, IdentityInterface {
+
 
 	/**
-	 * @var AdminOrganization|false|mixed
+	 * @return void
 	 */
-	private $organizationCache;
-
-
-	public function init() {
+	public function init(): void {
 		parent::init();
 		$this->on(self::EVENT_AFTER_UPDATE, [$this, 'sendEmails']);
 	}
@@ -55,7 +48,7 @@ class User extends ActiveRecord implements DataTableModelInterface, IdentityInte
 	 * @return string
 	 */
 	public static function tableName(): string {
-		return Yii::$app->params['table_prefix'] . 'users';
+		return 'users';
 	}
 
 
@@ -64,37 +57,37 @@ class User extends ActiveRecord implements DataTableModelInterface, IdentityInte
 	 */
 	public function getDataTableActions(): array {
 		return [
-			'edit' => '<a href="/meet/users/edit/' . $this->id . '" class="fa fa-pencil" title="Szerkesztés"></a>'
+			'edit' => '<a href="/admin/users/edit/' . $this->id . '" class="fa fa-pencil" title="Szerkesztés"></a>'
 		];
 	}
 
 
 	/**
-	 * @param $id
+	 * @param int $id
 	 *
 	 * @return User|IdentityInterface|null
 	 */
-	public static function findIdentity($id) {
+	public static function findIdentity($id): User|IdentityInterface|null {
 		return self::findOne(['id' => $id]);
 	}
 
 
 	/**
-	 * @param $token
-	 * @param $type
+	 * @param string $token
+	 * @param mixed  $type
 	 *
 	 * @return IdentityInterface|null
 	 * @throws NotSupportedException
 	 */
-	public static function findIdentityByAccessToken($token, $type = null) {
-		throw new NotSupportedException('"findIdentityByAccessToken" is not implemented . ');
+	public static function findIdentityByAccessToken($token, $type = null): ?IdentityInterface {
+		throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
 	}
 
 
 	/**
-	 * @return int|string
+	 * @return int
 	 */
-	public function getId() {
+	public function getId(): int {
 		return $this->id;
 	}
 
@@ -102,7 +95,7 @@ class User extends ActiveRecord implements DataTableModelInterface, IdentityInte
 	/**
 	 * @return null
 	 */
-	public function getAuthKey() {
+	public function getAuthKey(): null {
 		return null;
 	}
 
@@ -114,7 +107,7 @@ class User extends ActiveRecord implements DataTableModelInterface, IdentityInte
 	 *
 	 * @return bool if password provided is valid for current user
 	 */
-	public function validatePassword($password) {
+	public function validatePassword(string $password): bool {
 		return password_verify($password, $this->password);
 	}
 
@@ -122,14 +115,14 @@ class User extends ActiveRecord implements DataTableModelInterface, IdentityInte
 	/**
 	 * Validates password
 	 *
-	 * @return bool if password provided is valid for current user
+	 * @return int if password provided is valid for current user
 	 */
-	public function validateRegistration() {
+	public function validateRegistration(): int {
 		$organization = $this->getOrganization();
 		if (!$organization) {
 			return 0;
 		}
-		$approvedEvent = $this->getActiveMeetApprovedEvent($organization);
+		$approvedEvent = $this->isApprovedAdmin;
 		if (!$approvedEvent) {
 			return 1;
 		}
@@ -139,11 +132,11 @@ class User extends ActiveRecord implements DataTableModelInterface, IdentityInte
 
 
 	/**
-	 * @param $authKey
+	 * @param string $authKey
 	 *
 	 * @return null
 	 */
-	public function validateAuthKey($authKey) {
+	public function validateAuthKey($authKey): null {
 		return null;
 	}
 
@@ -156,9 +149,9 @@ class User extends ActiveRecord implements DataTableModelInterface, IdentityInte
 			'id'        => $this->id,
 			'username'  => $this->username,
 			'email'     => $this->email,
-			'name'      => $this->person ? $this->person->nev : null,
-			'is_active' => $this->is_active ? '<i class="fa fa-check"></i>' : '<i class="fa fa-close"></i>',
-			'is_admin'  => $this->is_admin ? '<i class="fa fa-check"></i>' : '<i class="fa fa-close"></i>'
+			'name'      => $this->person ? $this->person->name : null,
+			'is_active' => $this->isActive ? '<i class="fa fa-check"></i>' : '<i class="fa fa-close"></i>',
+			'is_admin'  => $this->isAdmin ? '<i class="fa fa-check"></i>' : '<i class="fa fa-close"></i>'
 		];
 	}
 
@@ -187,114 +180,26 @@ class User extends ActiveRecord implements DataTableModelInterface, IdentityInte
 
 
 	/**
-	 * @return Person|null
+	 * @return ActiveQuery
 	 */
-	public function getPerson() {
+	public function getPerson(): ActiveQuery {
 		return $this->hasOne(Person::class, ['id' => 'person_id']);
 	}
 
 
 	/**
-	 * @return mixed|null
-	 */
-	public function getEvents(): ?ActiveQuery {
-		return $this->person ? $this->person->getEvents() : null;
-	}
-
-
-	/**
-	 * @param bool $forceReload
-	 *
 	 * @return Organization|null
 	 */
-	public function getOrganization(bool $forceReload = false): ?Organization {
-		if (is_null($this->organizationCache) || $forceReload) {
-			if (!empty(($organizations = $this->getOrganizationsByPositionEvents()))) {
-				$this->organizationCache = reset($organizations);
-			}
-			if (is_null($this->organizationCache) && $this->isAdmin()) {
-				$this->organizationCache = new AdminOrganization();
-			}
-		}
-
-		return $this->organizationCache;
-	}
-
-
-	/**
-	 * @return Organization|null
-	 */
-	public function getAnyActiveOrganization(): ?Organization {
-		if (!empty(($organizations = $this->getOrganizationsByPositionEvents(true)))) {
-			return reset($organizations);
-		}
-
-		return null;
-	}
-
-
-	/**
-	 * @param bool $allowInactive
-	 *
-	 * @return array
-	 */
-	public function getOrganizationsByPositionEvents(bool $allowInactive = false): array {
-		$events = $this->getActivePositionEvents($allowInactive);
-
-		return array_map(function (Event $event) {
-			return $event->organization;
-		}, $events);
-	}
-
-
-	/**
-	 * @param bool $allowInactive
-	 *
-	 * @return array
-	 */
-	public function getActivePositionEvents(bool $allowInactive = false): array {
-		if (!$this->person) {
-			return [];
-		}
-		$conditions = [
-			'ref_tipus_id' => Yii::$app->params['event_type_pozicio'],
-			'ref2_id'      => Yii::$app->params['position_meet_referer'],
-		];
-		if (!$allowInactive) {
-			$conditions['erv_allapot'] = Yii::$app->params['org_position_valid_erv_allapot'];
-		}
-		$qb = $this->getEvents()->andOnCondition($conditions);
-
-		return $qb->all() ?: [];
-	}
-
-
-	/**
-	 * @param Organization $organization
-	 *
-	 * @return Event|null
-	 */
-	public function getActiveMeetApprovedEvent(Organization $organization): ?Event {
-		if (!$this->person) {
-			return null;
-		}
-		$qb = $this->getEvents()
-			->andOnCondition([
-				'ref_tipus_id'       => Yii::$app->params['event_type_meet_reg_approved'],
-				'erv_allapot'        => Yii::$app->params['org_meet_reg_valid_erv_allapot'],
-				'ref_szervegyseg_id' => $organization->id,
-				'ertek1'             => 1
-			]);
-
-		return $qb->one();
+	public function getOrganization(): ?Organization {
+		return $this->person?->getOrganization();
 	}
 
 
 	/**
 	 * @return string
 	 */
-	public function getName() {
-		return $this->person ? $this->person->nev : $this->username;
+	public function getName(): string {
+		return $this->person ? $this->person->name : $this->username;
 	}
 
 
@@ -302,19 +207,15 @@ class User extends ActiveRecord implements DataTableModelInterface, IdentityInte
 	 * @return bool
 	 */
 	public function isAdmin(): bool {
-		return $this->is_admin;
+		return $this->isAdmin;
 	}
 
 
 	/**
-	 * @return mixed|null
+	 * @return int|null
 	 */
 	public function getOrgTypeId(): ?int {
-		if (($organization = $this->getOrganization())) {
-			return $organization->orgType?->id;
-		}
-
-		return null;
+		return $this->getOrganization()?->organizationType?->id;
 	}
 
 
@@ -328,22 +229,16 @@ class User extends ActiveRecord implements DataTableModelInterface, IdentityInte
 		$changedApprovedAdmin = isset($event->changedAttributes) &&
 			isset($event->changedAttributes['is_approved_admin']) &&
 			$event->changedAttributes['is_approved_admin'] == 0 &&
-			$this->is_approved_admin == 1;
+			$this->isApprovedAdmin == 1;
 		if ($changedApprovedAdmin) {
 			try {
-				/** @var \app\models\lutheran\Event $positionEvent */
-				foreach ($this->getActivePositionEvents(true) as $positionEvent) {
-					$positionEvent->erv_allapot = 1;
-					$positionEvent->save();
-				}
-
 				$pdfFilename = (new Pdf())->generatePdf('@app/views/pdf/mustar', 'Mustarmag.pdf', [
 					'organization' => $this->organization
 				]);
 
 				(new Email())->sendEmail(
 					'approved_registration',
-					$this->person->getEmail(),
+					$this->person->getEmail()->email,
 					'MEET Értesítő sikeres regisztrációról',
 					['person' => $this->person, 'organization' => $this->organization],
 					[$pdfFilename]
@@ -368,27 +263,17 @@ class User extends ActiveRecord implements DataTableModelInterface, IdentityInte
 						]
 					);
 				}*/
-
-				$regEvents = \app\models\lutheran\Event::find()
-					->andWhere(['ref_tipus_id' => Yii::$app->params['event_type_meet_reg_approved']])
-					->andWhere(['ref_szervegyseg_id' => $this->organization->id])
-					->all();
-				if (empty($regEvents)) {
-					$regEvent = \app\models\lutheran\Event::createRegApprovedEvent($this->organization, $this->person);
-					$regEvent->save();
-				} else {
-					$regEvent = reset($regEvents);
-				}
-				$regEvent->ertek1 = 1;
-				$regEvent->ertek2 = 1;
-				$regEvent->save();
 			} catch (Exception $e) {
 				throw $e;
 				//Continue to next event on error
 			}
 
-			$this->is_active = 1;
+			$this->isActive = 1;
 			$this->save();
+			if ($this->organization) {
+				$this->organization->isActive = 1;
+				$this->save();
+			}
 		}
 	}
 

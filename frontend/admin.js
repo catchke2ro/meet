@@ -108,7 +108,7 @@ $(function () {
 				},
 				licenseKey: '',
 				simpleUpload: {
-					uploadUrl: '/meet/upload',
+					uploadUrl: '/admin/upload',
 					headers: {
 						'X-CSRF-Token': csrfToken,
 						'X-Upload-Type': uploadType

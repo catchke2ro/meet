@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use app\modules\meet\models\OrganizationType;
-use meetbase\models\lutheran\Organization as BaseOrganization;
 use Yii;
 
 /**
@@ -12,7 +10,7 @@ use Yii;
  * @package app\models
  * @author  Adam Balint <catchke2ro@miheztarto.hu>
  */
-class AdminOrganization extends BaseOrganization {
+class AdminOrganization extends Organization {
 
 
 	/**
@@ -23,24 +21,23 @@ class AdminOrganization extends BaseOrganization {
 	public function __construct($config = []) {
 		parent::__construct($config);
 
-		$orgType = Yii::$app->session->get('admin_org_type') ?: array_key_first(OrganizationType::getList());
+		$orgTypeId = Yii::$app->session->get('admin_org_type') ?: array_key_first(OrganizationType::getModelList());
+
 		$this->id = 0;
-		$this->ref_regi_id = 0;
-		$this->ref_kategoria_id = 0;
-		$this->ref_tipus_id = $orgType;
-		$this->nev = 'MEET Teszt Szervezet';
-		$this->erv_allapot = 1;
-		$this->kerulet_gen = 0;
+		$this->name = 'MEET Teszt Szervezet';
+		$this->organizationTypeId = $orgTypeId;
+		$this->isActive = true;
 	}
 
 
 	/**
 	 * @return Module|null
 	 */
-	public function getLatestApprovedModule(): ?\meetbase\models\Module {
+	public function getLatestApprovedModule(): ?Module {
 		if (($moduleId = Yii::$app->session->get('admin_active_module'))) {
 			return Module::findOne(['id' => $moduleId]);
 		}
+
 		return parent::getLatestApprovedModule();
 	}
 

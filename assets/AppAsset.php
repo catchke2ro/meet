@@ -8,9 +8,7 @@
 namespace app\assets;
 
 use Yii;
-use yii\base\InvalidConfigException;
 use yii\web\AssetBundle;
-use yii\web\AssetManager;
 
 /**
  * Main application asset bundle.
@@ -52,20 +50,20 @@ class AppAsset extends AssetBundle {
 
 		$baseDir = Yii::$app->getBasePath().'/web';
 
-		if (strpos(Yii::$app->requestedRoute, 'meet/') === 0) {
+		if (str_starts_with(Yii::$app->requestedRoute, 'admin/')) {
 			$this->js = [];
 			$this->css = [];
 		}
 
 		foreach ($this->js as &$js) {
 			$js = preg_replace('/\{siteKey\}/', Yii::$app->params['recaptcha_site_key'], $js);
-			if (strpos($js, '/') === 0 && file_exists($baseDir.$js)) {
+			if (str_starts_with($js, '/') && file_exists($baseDir.$js)) {
 				$js.='?'.filemtime($baseDir.$js);
 			}
 		}
 
 		foreach ($this->css as &$css) {
-			if (strpos($css, '/') === 0 && file_exists($baseDir.$css)) {
+			if (str_starts_with($css, '/') && file_exists($baseDir.$css)) {
 				$css.='?'.filemtime($baseDir.$css);
 			}
 		}

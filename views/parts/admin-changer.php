@@ -3,7 +3,7 @@
  * @var User $user
  */
 
-use app\modules\meet\models\OrganizationType;
+use app\models\OrganizationType;
 use app\models\User;
 use app\models\Module;
 

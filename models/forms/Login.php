@@ -20,30 +20,19 @@ class Login extends Model {
 	const NOT_EXISTS    = 2;
 	const NOT_ACTIVATED = 3;
 
-	/**
-	 * @var string
-	 */
-	public $email;
+	public ?string $email = null;
 
-	/**
-	 * @var  string
-	 */
-	public $password;
+	public ?string $password = null;
 
-	/**
-	 * @var string
-	 */
-	private $user;
+	private ?string $user = null;
 
 
 	/**
 	 * @inheritdoc
 	 */
-	public function rules() {
+	public function rules(): array {
 		return [
-			// email and password are both required
 			[['email', 'password'], 'required'],
-			// password is validated by validatePassword()
 			['password', 'validatePassword'],
 			['email', 'validateRegistration'],
 		];
@@ -56,7 +45,7 @@ class Login extends Model {
 	 * @param string $attribute the attribute currently being validated
 	 * @param array  $params    the additional name-value pairs given in the rule
 	 */
-	public function validatePassword($attribute, $params) {
+	public function validatePassword($attribute, $params): void {
 		if (!$this->hasErrors()) {
 			$user = $this->getUser();
 			if (!$user || !$user->validatePassword($this->password)) {
@@ -70,13 +59,12 @@ class Login extends Model {
 	 * Validates the password.
 	 *
 	 * @param string $attribute the attribute currently being validated
-	 * @param array  $params    the additional name-value pairs given in the rule
 	 */
-	public function validateRegistration($attribute, $params) {
+	public function validateRegistration(string $attribute): bool {
 		if (!$this->hasErrors()) {
 			/** @var User $user */
 			if (!($user = $this->getUser())) {
-				return;
+				return false;
 			}
 
 			if ($this->getUser()->isAdmin()) {
@@ -86,10 +74,18 @@ class Login extends Model {
 			switch ($registrationValid) {
 				case 0:
 					$this->addError($attribute, 'Hibás felhasználónév vagy jelszó!');
+
+					return false;
 				case 1:
 					$this->addError($attribute, 'A regisztráció még aktiválásra vár');
+
+					return false;
 			}
+
+			return true;
 		}
+
+		return false;
 	}
 
 
@@ -98,7 +94,7 @@ class Login extends Model {
 	 *
 	 * @return bool whether the user is logged in successfully
 	 */
-	public function login() {
+	public function login(): bool {
 		if ($this->validate()) {
 			return Yii::$app->user->login($this->getUser());
 		}
@@ -112,7 +108,7 @@ class Login extends Model {
 	 *
 	 * @return User|null
 	 */
-	protected function getUser() {
+	protected function getUser(): ?User {
 		if ($this->user === null) {
 			$this->user = User::findOne(['email' => $this->email]);
 		}

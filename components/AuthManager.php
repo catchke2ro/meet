@@ -4,7 +4,6 @@
 namespace app\components;
 
 use app\models\User;
-use Yii;
 use yii\rbac\PhpManager;
 
 /**

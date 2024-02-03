@@ -1,27 +1,18 @@
 import mapStyle from './mapStyle';
-import { Map, View, Feature, Overlay } from 'ol';
-import {defaults} from 'ol/interaction';
+import { Feature, Map, Overlay, View } from 'ol';
+import { defaults } from 'ol/interaction';
 import { Point } from 'ol/geom';
-import { Style, Icon } from 'ol/style';
+import { Icon, Style } from 'ol/style';
 import * as olProj from "ol/proj"
-import olms from 'ol-mapbox-style';
+import applyStyle from 'ol-mapbox-style';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import GeoJSON from 'ol/format/GeoJSON';
-import applyStyle from 'ol-mapbox-style';
 
 $(document).ready(function () {
 
 	const $mapDiv = $('#map');
 
 	if ($mapDiv.length) {
-
-		/*const mapLayer = new VectorLayer({
-			zIndex: 10,
-			source: new VectorSource({
-				format: new GeoJSON()
-			}),
-		});*/
 
 		const map = new Map({
 			target: 'map',
@@ -69,21 +60,21 @@ $(document).ready(function () {
 				const coordinates = feature.getGeometry().getCoordinates();
 				popup.setPosition(coordinates);
 				console.log(feature);
-				if (typeof feature.get('data').name !== 'undefined') {
-					$popupEl.find('span.name').text(feature.get('data').name);
+				if (typeof feature.getProperties().name !== 'undefined') {
+					$popupEl.find('span.name').text(feature.getProperties().name);
 				}
-				if (typeof feature.get('data').address !== 'undefined') {
-					$popupEl.find('span.address').text(feature.get('data').address);
+				if (typeof feature.getProperties().address !== 'undefined') {
+					$popupEl.find('span.address').text(feature.getProperties().address);
 				}
-				if (typeof feature.get('data').lastModuleName !== 'undefined') {
-					$popupEl.find('span.moduleName').text(feature.get('data').lastModuleName);
+				if (typeof feature.getProperties().lastModuleName !== 'undefined') {
+					$popupEl.find('span.moduleName').text(feature.getProperties().lastModuleName);
 				}
-				if (typeof feature.get('data').markerIcon !== 'undefined') {
-					$popupEl.append('<img src="' + feature.get('data').markerIcon + '" class="markerIcon"/>');
+				if (typeof feature.getProperties().markerIcon !== 'undefined') {
+					$popupEl.append('<img src="' + feature.getProperties().markerIcon + '" class="markerIcon"/>');
 				}
-				if (typeof feature.get('data').orgId !== 'undefined' && $popupEl.find('span.contact').length) {
+				if (typeof feature.getProperties().orgId !== 'undefined' && $popupEl.find('span.contact').length) {
 					$popupEl.find('span.contact').removeClass('d-none');
-					$popupEl.find('span.contact a').attr('href', $popupEl.find('a.contact').data('url')+feature.get('data').orgId);
+					$popupEl.find('span.contact a').attr('href', $popupEl.find('.contact a').data('url') + feature.getProperties().orgId);
 				} else {
 					$popupEl.find('span.contact').addClass('d-none');
 				}
@@ -120,11 +111,10 @@ $(document).ready(function () {
 });
 
 function addMarker (coordinates, data, layer) {
-
 	const iconFeature = new Feature({
-		geometry: new Point(coordinates),
-		data: data,
+		geometry: new Point(coordinates)
 	});
+	iconFeature.setProperties(data);
 	const iconStyle = new Style({
 		zIndex: 20,
 		image: new Icon({

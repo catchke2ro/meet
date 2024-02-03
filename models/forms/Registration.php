@@ -3,16 +3,18 @@
 namespace app\models\forms;
 
 use app\components\validators\recaptcha;
-use app\models\lutheran\Contact;
-use app\models\lutheran\ContactType;
-use app\models\lutheran\Event;
-use app\models\lutheran\Organization;
-use app\models\lutheran\Person;
+use app\lib\enums\PersonType;
+use app\models\Address;
+use app\models\Email;
+use app\models\Organization;
+use app\models\OrganizationType;
+use app\models\Person;
+use app\models\Phone;
 use app\models\User;
 use DateTime;
-use Exception;
 use Yii;
 use yii\base\Model;
+use yii\db\Exception;
 use yii\web\UploadedFile;
 
 /**
@@ -25,122 +27,100 @@ use yii\web\UploadedFile;
  */
 class Registration extends Model {
 
-	/**
-	 * @var string
-	 */
-	public $username;
+	public ?string $username = null;
 
-	/**
-	 * @var string
-	 */
-	public $email;
+	public ?string $refereeEmail = null;
 
-	/**
-	 * @var string
-	 */
-	public $name;
+	public ?string $refereeName = null;
 
-	/**
-	 * @var string
-	 */
-	public $namePrefix;
+	public ?string $password = null;
 
-	/**
-	 * @var  string
-	 */
-	public $password;
+	public ?string $passwordConfirm = null;
 
-	/**
-	 * @var  string
-	 */
-	public $passwordConfirm;
+	public ?string $orgName = null;
 
-	/**
-	 * @var string
-	 */
-	public $orgName;
+	public ?string $orgAddressZip = null;
 
-	/**
-	 * @var string
-	 */
-	public $orgAddressZip;
+	public ?string $orgAddressCity = null;
 
-	/**
-	 * @var string
-	 */
-	public $orgAddressCity;
+	public ?string $orgAddressStreet = null;
 
-	/**
-	 * @var string
-	 */
-	public $orgAddressStreet;
+	public ?string $orgPhone = null;
 
-	/**
-	 * @var string
-	 */
-	public $orgPhone;
+	public ?string $orgEmail = null;
 
-	/**
-	 * @var int
-	 */
-	public $orgRemoteId;
+	public ?string $orgType = null;
 
-	/**
-	 * @var UploadedFile
-	 */
-	public $pdf;
+	public ?string $pastorName = null;
 
-	/**
-	 * @var string
-	 */
-	public $terms;
+	public ?string $pastorEmail = null;
 
-	/**
-	 * @var string
-	 */
-	public $terms2;
+	public ?string $superintendentName = null;
 
-	/**
-	 * @var string
-	 */
-	public $recaptcha_response;
+	public string|UploadedFile|null $pdf = null;
+
+	public ?string $terms = null;
+
+	public ?string $terms2 = null;
+
+	public ?string $recaptchaResponse = null;
 
 
 	/**
 	 * @inheritdoc
 	 */
-	public function rules() {
-		$whenRemoteIdEmpty = function (Registration $model) {
-			return empty($model->orgRemoteId);
-		};
+	public function rules(): array {
+
+		$emailRules = fn($slug) => [
+			[$slug, 'trim'],
+			[$slug, 'required'],
+			[$slug, 'email'],
+			[$slug, 'string', 'max' => 255]
+		];
+		$nameRules = fn($slug) => [
+			[$slug, 'trim'],
+			[$slug, 'required'],
+			[$slug, 'string', 'max' => 1024]
+		];
 
 		return [
-			['name', 'trim'],
-			['name', 'required'],
-			['namePrefix', 'trim'],
+			...$nameRules('refereeName'),
 
-			['email', 'trim'],
-			['email', 'required'],
-			['email', 'email'],
-			['email', 'string', 'max' => 255],
-			['email', 'unique', 'targetClass' => User::class, 'message' => 'Az e-mail címmel már van regisztráció'],
+			...$emailRules('refereeEmail'),
+			['refereeEmail', 'unique', 'targetClass' => User::class, 'targetAttribute' => 'email', 'message' => 'Az e-mail címmel már van regisztráció'],
+
 			['password', 'required'],
 			['password', 'string', 'min' => 6],
 			['password', 'compare', 'compareAttribute' => 'passwordConfirm'],
-			['orgName', 'required', 'when' => $whenRemoteIdEmpty, 'message' => 'Kötelező, amennyiben nem szerepel az adatbázisban'],
-			['orgAddressZip', 'required', 'when' => $whenRemoteIdEmpty, 'message' => 'Kötelező, amennyiben nem szerepel az adatbázisban'],
-			['orgAddressCity', 'required', 'when' => $whenRemoteIdEmpty, 'message' => 'Kötelező, amennyiben nem szerepel az adatbázisban'],
-			['orgAddressStreet', 'required', 'when' => $whenRemoteIdEmpty, 'message' => 'Kötelező, amennyiben nem szerepel az adatbázisban'],
-			['orgPhone', 'required', 'when' => $whenRemoteIdEmpty, 'message' => 'Kötelező, amennyiben nem szerepel az adatbázisban'],
-			['orgCompanyNumber', 'safe'],
-			['orgTaxNumber', 'safe'],
-			['orgRemoteId', 'safe'],
+
+			['orgName', 'required'],
+			['orgName', 'trim'],
+			['orgName', 'string', 'max' => 1024],
+			['orgAddressZip', 'required'],
+			['orgAddressZip', 'trim'],
+			['orgAddressZip', 'string', 'max' => 10],
+			['orgAddressCity', 'required'],
+			['orgAddressCity', 'trim'],
+			['orgAddressCity', 'string', 'max' => 255],
+			['orgAddressStreet', 'required'],
+			['orgAddressStreet', 'trim'],
+			['orgAddressStreet', 'string', 'max' => 1024],
+			['orgPhone', 'string', 'max' => 100],
+			...$emailRules('orgEmail'),
+			['orgType', 'required'],
+			['orgType', 'in', 'range' => array_keys(OrganizationType::getList())],
+
+			...$nameRules('pastorName'),
+			...$emailRules('pastorEmail'),
+
+			...$nameRules('superintendentName'),
+
 			['pdf', 'required'],
 			['pdf', 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf', 'checkExtensionByMimeType' => false],
 			['terms', 'required', 'requiredValue' => 1, 'message' => 'A szabályzat elfogadása kötelező!'],
 			['terms2', 'required', 'requiredValue' => 1, 'message' => 'A feltételek elfogadása kötelező!'],
-			['recaptcha_response', 'required', 'message' => 'CAPTCHA hiba'],
-			['recaptcha_response', recaptcha::class],
+			['recaptchaResponse', 'required', 'message' => 'CAPTCHA hiba'],
+			['recaptchaResponse', recaptcha::class],
 
 			['passwordConfirm', 'safe'],
 		];
@@ -153,7 +133,7 @@ class Registration extends Model {
 	 *
 	 * @return bool
 	 */
-	public function load($data, $formName = null) {
+	public function load($data, $formName = null): bool {
 		$result = parent::load($data, $formName);
 		if ($result) {
 			$this->pdf = UploadedFile::getInstance($this, 'pdf');
@@ -167,8 +147,9 @@ class Registration extends Model {
 	 * Signs user up.
 	 *
 	 * @return bool|array|null
+	 * @throws Exception
 	 */
-	public function signup() {
+	public function signup(): bool|array|null {
 		if (!$this->validate()) {
 			return false;
 		}
@@ -182,87 +163,72 @@ class Registration extends Model {
 		try {
 			$success = true;
 
-			if (!$this->orgRemoteId) {
-				$organization = new Organization();
-				$organization->nev = $this->orgName;
-				$organization->ref_regi_id = 0;
-				$organization->ref_kategoria_id = Yii::$app->params['new_org_kategoria_id']; //Névtári bejegyzés Küld
-				$organization->ref_tipus_id = Yii::$app->params['new_org_default_tipus_id']; //Egyházközszég
-				$organization->erv_allapot = Yii::$app->params['new_org_erv_allapot'];
-				$success &= $organization->save();
+			$organization = new Organization();
+			$organization->name = $this->orgName;
+			$organization->organizationTypeId = $this->orgType;
+			$organization->isActive = false;
+			$success &= $organization->save();
 
-				$orgAddressContact = new Contact();
-				$orgAddressContact->ref_tipus_id = ContactType::ID_ADDRESS;
-				$orgAddressContact->ref_tabla = Organization::tableName();
-				$orgAddressContact->ref_szervegyseg_id = $organization->id;
-				$orgAddressContact->ref_id = $organization->id;
-				$orgAddressContact->ertek1 = $this->orgAddressZip;
-				$orgAddressContact->ertek2 = $this->orgAddressCity;
-				$orgAddressContact->ertek3 = $this->orgAddressStreet;
-				$success &= $orgAddressContact->save();
+			$address = new Address;
+			$address->zip = $this->orgAddressZip;
+			$address->city = $this->orgAddressCity;
+			$address->address = $this->orgAddressStreet;
+			$success &= $address->save();
+			$organization->link('addresses', $address);
 
-				$orgPhoneContact = new Contact();
-				$orgPhoneContact->ref_tipus_id = ContactType::ID_PHONE;
-				$orgPhoneContact->ref_tabla = Organization::tableName();
-				$orgPhoneContact->ref_szervegyseg_id = $organization->id;
-				$orgPhoneContact->ref_id = $organization->id;
-				$orgPhoneContact->ertek1 = $this->orgPhone;
-				$success &= $orgPhoneContact->save();
+			$phone = new Phone();
+			$phone->number = $this->orgPhone;
+			$success &= $phone->save();
+			$organization->link('phones', $phone);
 
-				$orgEmailContanct = new Contact();
-				$orgEmailContanct->ref_tipus_id = ContactType::ID_EMAIL;
-				$orgEmailContanct->ref_tabla = Organization::tableName();
-				$orgEmailContanct->ref_szervegyseg_id = $organization->id;
-				$orgEmailContanct->ref_id = $organization->id;
-				$orgEmailContanct->ertek1 = $this->email;
-				$success &= $orgEmailContanct->save();
-			} else {
-				$organization = Organization::findOne(['id' => (int) $this->orgRemoteId]);
-			}
+			$orgEmail = new Email();
+			$orgEmail->email = $this->orgEmail;
+			$success &= $orgEmail->save();
+			$organization->link('emails', $orgEmail);
 
-			if (!$organization) {
-				throw new Exception('Invalid organization');
-			}
+			$meetReferee = new Person();
+			$meetReferee->type = PersonType::MeetReferee;
+			$meetReferee->name = $this->refereeName;
+			$meetReferee->isActive = true;
+			$success &= $meetReferee->save();
+			$organization->link('people', $meetReferee);
 
-			$person = new Person();
-			$person->ref_kategoria_id = Yii::$app->params['new_person_kategoria_id'];
-			$person->nev_elotag = $this->namePrefix;
-			$person->nev = $this->name;
-			$person->erv_allapot = Yii::$app->params['new_person_erv_allapot'];
-			$success &= $person->save();
+			$meetRefereeEmail = new Email();
+			$meetRefereeEmail->email = $this->refereeEmail;
+			$success &= $meetRefereeEmail->save();
+			$meetReferee->link('emails', $meetRefereeEmail);
 
-			$personEmailContanct = new Contact();
-			$personEmailContanct->ref_tipus_id = ContactType::ID_EMAIL;
-			$personEmailContanct->ref_tabla = Person::tableName();
-			$personEmailContanct->ref_szemely_id = $person->id;
-			$personEmailContanct->publikus = 0;
-			$personEmailContanct->ref_id = $person->id;
-			$personEmailContanct->ertek1 = $this->email;
-			$success &= $personEmailContanct->save();
+			$pastor = new Person();
+			$pastor->type = PersonType::Pastor;
+			$pastor->name = $this->pastorName;
+			$pastor->isActive = true;
+			$success &= $pastor->save();
+			$organization->link('people', $pastor);
 
-			$newPositionEvent = Event::createNewPositionEvent($organization, $person);
-			$newRegistrationEvent = Event::createNewRegistrationEvent(
-				$organization,
-				$person,
-				$personEmailContanct,
-				$targetFileId
-			);
+			$pastorEmail = new Email();
+			$pastorEmail->email = $this->pastorEmail;
+			$success &= $pastorEmail->save();
+			$pastor->link('emails', $pastorEmail);
+
+			$superintendent = new Person();
+			$superintendent->type = PersonType::Superintendent;
+			$superintendent->name = $this->superintendentName;
+			$superintendent->isActive = true;
+			$success &= $superintendent->save();
+			$organization->link('people', $superintendent);
 
 			$user = new User();
-			$user->email = $this->email;
-			$user->username = $this->generateUsername($this->name);
+			$user->email = $this->refereeEmail;
+			$user->username = $this->generateUsername($this->refereeName);
 			$user->password = password_hash($this->password, PASSWORD_DEFAULT);
-			$user->registered_at = (new DateTime())->format('Y-m-d H:i:s');
-			$user->is_active = false;
-			$user->person_id = $person->id;
+			$user->registeredAt = (new DateTime())->format('Y-m-d H:i:s');
+			$user->isActive = false;
+			$user->personId = $meetReferee->id;
 			$success &= $user->save();
-
-			$success &= $newPositionEvent->save();
-			$success &= $newRegistrationEvent->save();
 
 			$transaction->commit();
 
-			return $success ? [$person->id, $organization->id, $targetFile] : false;
+			return $success ? [$meetReferee->id, $organization->id, $targetFile] : false;
 		} catch (\Exception $exception) {
 			$transaction->rollBack();
 			throw $exception;
@@ -273,22 +239,25 @@ class Registration extends Model {
 	/**
 	 * @return array
 	 */
-	public function attributeLabels() {
+	public function attributeLabels(): array {
 		return [
-			'email'            => 'E-mail cím',
-			'password'         => 'Jelszó',
-			'passwordConfirm'  => 'Jelszó megerősítése',
-			'orgName'          => 'Szervezet neve',
-			'orgAddressZip'    => 'Irányítószám',
-			'orgAddressCity'   => 'Város',
-			'orgAddressStreet' => 'Utca, házszám...',
-			'orgPhone'         => 'Szervezet telefonszáma',
-			'orgCompanyNumber' => 'Szervezet cégjegyzékszáma',
-			'orgTaxNumber'     => 'Szervezet adószáma',
-			'orgRemoteId'      => 'Szervezeti egység',
-			'pdf'              => 'Meghatalmazás',
-			'terms'            => 'Adatkezelési szabályzat',
-			'terms2'           => 'Általános Együttműködési Feltételek'
+			'refereeEmail'       => 'E-mail cím',
+			'refereeName'        => 'Név',
+			'password'           => 'Jelszó',
+			'passwordConfirm'    => 'Jelszó megerősítése',
+			'orgName'            => 'Szervezet neve',
+			'orgAddressZip'      => 'Irányítószám',
+			'orgAddressCity'     => 'Város',
+			'orgAddressStreet'   => 'Utca, házszám...',
+			'orgPhone'           => 'Szervezet telefonszáma',
+			'orgEmail'           => 'E-mail',
+			'orgType'            => 'Szervezet típusa',
+			'pastorName'         => 'Név',
+			'pastorEmail'        => 'E-mail cím',
+			'superintendentName' => 'Név',
+			'pdf'                => 'Meghatalmazás',
+			'terms'              => 'Adatkezelési szabályzat',
+			'terms2'             => 'Általános Együttműködési Feltételek'
 		];
 	}
 
@@ -298,7 +267,7 @@ class Registration extends Model {
 	 *
 	 * @return string
 	 */
-	protected function generateUsername(string $name) {
+	protected function generateUsername(string $name): string {
 		$usernames = User::find()
 			->select('username')
 			->asArray()->column();

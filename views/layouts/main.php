@@ -4,8 +4,6 @@
 
 /* @var $content string */
 
-use yii\bootstrap4\Nav;
-use yii\bootstrap4\NavBar;
 use yii\helpers\Html;
 use app\assets\AppAsset;
 
@@ -56,7 +54,7 @@ $lang = Yii::$app->language;
 						<div class="user">
 							<p class="text-small loggedInName">Belépve: <span><?=Yii::$app->getUser()->getIdentity()->getName();?></span></p>
 							<?php if (Yii::$app->getUser()->getIdentity()->isAdmin()) {?>
-								<a href="/meet" class="btn btn-sm btn-secondary">Admin</a>
+								<a href="/admin" class="btn btn-sm btn-secondary">Admin</a>
 							<?php } ?>
 							<?php echo Html::beginForm(['/user/logout'], 'post', ['id' => 'logoutForm']) . Html::endForm(); ?>
 							<a href="javascript:void(0)" class="btn btn-sm btn-primary logoutLink">Kilépés</a>

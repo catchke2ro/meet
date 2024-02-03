@@ -283,7 +283,7 @@ $(function () {
 		});
 	}
 
-	$('input[name*="[recaptcha_response]"]').each(function (index, e) {
+	$('input[name*="[recaptchaResponse]"]').each(function (index, e) {
 		const $input = $(this),
 			$form = $input.closest('form');
 

@@ -1,18 +1,13 @@
 <?php
 
 $params = require __DIR__ . '/params.php';
-if (file_exists(__DIR__.'/params.local.php')) {
+if (file_exists(__DIR__ . '/params.local.php')) {
 	$params = array_replace_recursive($params, require __DIR__ . '/params.local.php');
 }
 
 $db = require __DIR__ . '/db.php';
-if (file_exists(__DIR__.'/db.local.php')) {
+if (file_exists(__DIR__ . '/db.local.php')) {
 	$db = array_replace_recursive($db, require __DIR__ . '/db.local.php');
-}
-
-$dbTk = require __DIR__ . '/dbtk.php';
-if (file_exists(__DIR__.'/dbtk.local.php')) {
-	$dbTk = array_replace_recursive($dbTk, require __DIR__ . '/dbtk.local.php');
 }
 
 $config = [
@@ -26,10 +21,10 @@ $config = [
 		'@tests' => '@app/tests',
 	],
 	'components'          => [
-		'cache'       => [
+		'cache'  => [
 			'class' => 'yii\caching\FileCache',
 		],
-		'log'         => [
+		'log'    => [
 			'targets' => [
 				[
 					'class'  => 'yii\log\FileTarget',
@@ -37,13 +32,12 @@ $config = [
 				],
 			],
 		],
-		'db'          => $db,
-		'dbtk'          => $dbTk,
-		'mailer'       => [
+		'db'     => $db,
+		'mailer' => [
 			'class'            => 'yii\swiftmailer\Mailer',
 			'useFileTransport' => false,
-			'transport' => [
-				'class' => 'Swift_SmtpTransport',
+			'transport'        => [
+				'class'      => 'Swift_SmtpTransport',
 				'encryption' => 'tls',
 				//'host'       => 'smtp.lutheran.hu',
 				'host'       => 'in.mailjet.com',
@@ -56,13 +50,6 @@ $config = [
 		],
 	],
 	'params'              => $params,
-	/*
-	'controllerMap' => [
-		'fixture' => [ // Fixture generation command line.
-			'class' => 'yii\faker\FixtureController',
-		],
-	],
-	*/
 ];
 
 if (YII_ENV_DEV) {

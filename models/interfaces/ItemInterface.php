@@ -15,7 +15,7 @@ interface ItemInterface {
 	/**
 	 * @return ActiveQuery
 	 */
-	public function getCategory();
+	public function getCategory(): ActiveQuery;
 
 
 	/**
@@ -27,7 +27,7 @@ interface ItemInterface {
 	/**
 	 * Returns true if question/commitment has only one input, which is a custom text
 	 */
-	public function isOnlyCustomInput();
+	public function isOnlyCustomInput(): bool;
 
 
 	/**
@@ -42,7 +42,7 @@ interface ItemInterface {
 	 * @return ActiveQuery
 	 * @throws \ReflectionException
 	 */
-	public function getOptions();
+	public function getOptions(): ActiveQuery;
 
 
 }

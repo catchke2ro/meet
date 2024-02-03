@@ -15,37 +15,25 @@ use yii\base\Model;
  */
 class ResetPassword extends Model {
 
-	/**
-	 * @var  string
-	 */
-	public $password;
+	public ?string $password;
 
-	/**
-	 * @var  string
-	 */
-	public $passwordConfirm;
+	public ?string $passwordConfirm;
 
-	/**
-	 * @var  string
-	 */
-	public $token;
+	public ?string $token;
 
-	/**
-	 * @var string
-	 */
-	public $recaptcha_response;
+	public ?string $recaptchaResponse;
 
 
 	/**
 	 * @inheritdoc
 	 */
-	public function rules() {
+	public function rules(): array {
 		return [
 			['password', 'required'],
 			['password', 'string', 'min' => 6],
 			['password', 'compare', 'compareAttribute' => 'passwordConfirm'],
-			['recaptcha_response', 'required', 'message' => 'CAPTCHA hiba'],
-			['recaptcha_response', recaptcha::class],
+			['recaptchaResponse', 'required', 'message' => 'CAPTCHA hiba'],
+			['recaptchaResponse', recaptcha::class],
 			['passwordConfirm', 'safe'],
 			['token', 'safe'],
 		];
@@ -55,9 +43,9 @@ class ResetPassword extends Model {
 	/**
 	 * Signs user up.
 	 *
-	 * @return bool|array|null
+	 * @return bool|string
 	 */
-	public function reset() {
+	public function reset(): bool|string {
 		if (!$this->validate()) {
 			return false;
 		}
@@ -69,11 +57,12 @@ class ResetPassword extends Model {
 	/**
 	 * @return array
 	 */
-	public function attributeLabels() {
+	public function attributeLabels(): array {
 		return [
 			'password'        => 'Jelszó',
 			'passwordConfirm' => 'Jelszó megerősítése'
 		];
 	}
+
 
 }

@@ -7,17 +7,17 @@ use app\models\forms\ForgotPassword;
 use app\models\forms\Login;
 use app\models\forms\Registration;
 use app\models\forms\ResetPassword;
-use app\models\lutheran\Organization;
-use app\models\lutheran\Person;
+use app\models\Organization;
+use app\models\Person;
 use app\models\User;
 use Yii;
 use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\HttpException;
-use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 /**
@@ -32,10 +32,10 @@ class UserController extends Controller {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function behaviors() {
+	public function behaviors(): array {
 		return [
 			'access' => [
-				'class' => AccessControl::className(),
+				'class' => AccessControl::class,
 				'rules' => [
 					[
 						'actions' => ['login', 'registration', 'get-authorization-file', 'forgot-password', 'reset-password'],
@@ -49,7 +49,7 @@ class UserController extends Controller {
 				],
 			],
 			'verbs'  => [
-				'class'   => VerbFilter::className(),
+				'class'   => VerbFilter::class,
 				'actions' => [
 					'logout' => ['post'],
 				],
@@ -61,15 +61,17 @@ class UserController extends Controller {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function actions() {
+	public function actions(): array {
 		return [];
 	}
 
 
 	/**
-	 * @return string|Response
+	 * @return Response|string
+	 * @throws InvalidConfigException
+	 * @throws \yii\db\Exception
 	 */
-	public function actionRegistration() {
+	public function actionRegistration(): Response|string {
 		$model = new Registration();
 
 		if ($model->load(Yii::$app->request->post())) {
@@ -79,14 +81,14 @@ class UserController extends Controller {
 				$organization = Organization::findOne(['id' => $orgId]);
 				$email = $person->getEmail();
 
-				(new Email())->sendEmail('new_registration', $email, 'MEET Értesítő regisztráció kezdeményezésről', [
+				(new Email())->sendEmail('new_registration', $email->email, 'MEET Értesítő regisztráció kezdeményezésről', [
 					'person' => $person
 				]);
 
 				(new Email())->sendEmail('new_registration_admin', 'meet@lutheran.hu', 'Új regisztráció', [
 					'person'       => $person,
 					'organization' => $organization
-				], [
+					], [
 					$attachment
 				]);
 
@@ -105,9 +107,9 @@ class UserController extends Controller {
 
 
 	/**
-	 * @return string|Response
+	 * @return Response|string
 	 */
-	public function actionLogin() {
+	public function actionLogin(): Response|string {
 		if (!Yii::$app->user->isGuest) {
 			return $this->goHome();
 		}
@@ -127,18 +129,18 @@ class UserController extends Controller {
 
 
 	/**
-	 * @return string|Response
+	 * @return Response|string
 	 * @throws Exception
 	 */
-	public function actionForgotPassword() {
+	public function actionForgotPassword(): Response|string {
 		$model = new ForgotPassword();
 
 		if ($model->load(Yii::$app->request->post())) {
 			if (($email = $model->submit())) {
 				$user = User::findOne(['email' => $email]);
 
-				$user->password_reset_token = uniqid(Yii::$app->security->generateRandomString(), true);
-				$user->password_reset_expires_at = date('Y-m-d H:i:s', time() + 3600);
+				$user->passwordResetToken = uniqid(Yii::$app->security->generateRandomString(), true);
+				$user->passwordResetExpiresAt = date('Y-m-d H:i:s', time() + 3600);
 				$user->save();
 
 				(new Email())->sendEmail('forgot_password', $email, 'MEET Elfelejtett jelszó', [
@@ -159,16 +161,16 @@ class UserController extends Controller {
 
 
 	/**
-	 * @return string|Response
-	 * @throws Exception
+	 * @return Response|string
+	 * @throws HttpException
 	 */
-	public function actionResetPassword() {
+	public function actionResetPassword(): Response|string {
 		$model = new ResetPassword();
 
 		if ($model->load(Yii::$app->request->post())) {
 			if (($passwordHash = $model->reset()) && ($user = User::findOne(['password_reset_token' => $model->token]))) {
-				$user->password_reset_token = null;
-				$user->password_reset_expires_at = null;
+				$user->passwordResetToken = null;
+				$user->passwordResetExpiresAt = null;
 				$user->password = $passwordHash;
 				$user->save();
 				Yii::$app->session->setFlash('success', 'Sikeresen megváltoztattad a jelszavad. Most már bejelentkezhetsz.');
@@ -183,7 +185,7 @@ class UserController extends Controller {
 			throw new HttpException(404);
 		}
 		$user = User::findOne(['password_reset_token' => $token]);
-		if (!$user || $user->password_reset_expires_at < time()) {
+		if (!$user || $user->passwordResetExpiresAt < time()) {
 			Yii::$app->session->setFlash('error', 'A jelszó visszaállítási link lejárt vagy érvénytelen.');
 
 			return $this->redirect(Url::toRoute('user/login'));
@@ -199,30 +201,12 @@ class UserController extends Controller {
 
 
 	/**
-	 * @return string|Response
+	 * @return Response
 	 */
-	public function actionLogout() {
+	public function actionLogout(): Response {
 		Yii::$app->user->logout();
 
 		return $this->goHome();
-	}
-
-
-	/**
-	 * @param $id
-	 * @param $token
-	 *
-	 * @return \yii\console\Response|Response
-	 * @throws NotFoundHttpException
-	 */
-	public function actionGetAuthorizationFile($id, $token) {
-		$validToken = Yii::$app->params['token'];
-		$baseDir = Yii::$app->getBasePath() . '/storage/authorizations';
-		if (!(!empty($id) && $token && $validToken === $token && file_exists($baseDir . '/' . $id . '.pdf'))) {
-			throw new NotFoundHttpException();
-		}
-
-		return Yii::$app->response->sendFile($baseDir . '/' . $id . '.pdf');
 	}
 
 

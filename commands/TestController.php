@@ -8,11 +8,10 @@
 namespace app\commands;
 
 use app\components\Email;
-use app\models\lutheran\Organization;
-use app\models\lutheran\Person;
+use app\components\Pdf;
+use app\models\Organization;
 use Yii;
-use yii\base\View;
-use yii\base\ViewEvent;
+use yii\base\InvalidConfigException;
 use yii\console\Controller;
 
 /**
@@ -30,30 +29,34 @@ class TestController extends Controller {
 	 *
 	 * @return array|string[]
 	 */
-	public function options($actionID) {
+	public function options($actionID): array {
 		return [];
 	}
 
 
+	/**
+	 * @return void
+	 * @throws InvalidConfigException
+	 */
 	public function actionTest() {
-		$organization = Organization::findOne(['id' => 11801]);
+		/** @var Organization $org */
+		$org = Organization::findOne(4);
+		$person = $org->meetReferee;
 
-		echo "Pastor general {$organization->getPastorGeneral()?->nev}\n";
-		echo "Pastor {$organization->getPastor()?->nev}\n";
-		echo "Super {$organization->getSuperintendent()?->nev}\n";
-		echo "Meet {$organization->getMeetReferer()?->nev}\n";
+		$pdfFilename = (new Pdf())->generatePdf('@app/views/pdf/mustar', 'Mustarmag.pdf', [
+			'organization' => $org
+		]);
 
-		die();
+		rename($pdfFilename, Yii::$app->basePath . '/web/Mustarmag.pdf');
 
-
-		$person = Person::findOne(['id' => 213766]);
-		$email = $person->getEmail();
+		return;
 
 		(new Email())->sendEmail(
-			'new_registration',
-			$email,
-			'MEET - Új regisztráció',
-			['person' => $person]
+			'approved_registration',
+			$person->getEmail()->email,
+			'MEET Értesítő sikeres regisztrációról',
+			['person' => $person, 'organization' => $org],
+			[$pdfFilename]
 		);
 	}
 

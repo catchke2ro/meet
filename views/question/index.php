@@ -17,7 +17,7 @@ $this->title = 'Kérdések';
 	'user' => $user,
 ]);?>
 
-<form method="post" action="">
+<form method="post" action="" novalidate>
 	<input type="hidden" name="_csrf" value="<?=Yii::$app->request->getCsrfToken()?>" />
 	<input type="hidden" name="orgType" value="<?=Yii::$app->user->getIdentity()->getOrgTypeId();?>" />
 

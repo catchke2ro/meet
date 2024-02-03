@@ -3,10 +3,10 @@
  * @var Person $person
  */
 
-use app\models\lutheran\Person;
+use app\models\Person;
 
 ?>
-<p>Kedves <?=$person->nev;?></p>
+<p>Kedves <?=$person->name;?></p>
 
 <p>Tájékoztatunk, hogy sikeresen kezdeményezted felvételedet a Műveld és őrizd! Evangélikus Egyházi Teremtésvédelmi (MEET) program referensei közé. A program tervezői felületéhez való hozzáférési jogot az általad megküldött adatok és dokumentumok alapján ellenőrizzük. <strong>A jóváhagyásról és a belépés lehetőségéről külön e-mailben fogunk értesíteni.</strong></p>
 

@@ -3,18 +3,18 @@
 namespace app\controllers;
 
 use app\lib\TreeLib;
-use app\models\lutheran\Organization;
-use app\models\QuestionCategory;
-use app\models\QuestionInstance;
+use app\models\Organization;
 use app\models\OrgQuestionAnswer;
 use app\models\OrgQuestionFill;
+use app\models\QuestionCategory;
+use app\models\QuestionInstance;
+use app\models\User;
 use DateTime;
 use Exception;
-use http\Exception\InvalidArgumentException;
-use app\models\User;
+use InvalidArgumentException;
+use Throwable;
 use Yii;
 use yii\filters\AccessControl;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Request;
 
@@ -26,11 +26,6 @@ use yii\web\Request;
  */
 class QuestionController extends BaseController {
 
-	/**
-	 * @var TreeLib
-	 */
-	private $treeLib;
-
 
 	/**
 	 * CommitmentController constructor.
@@ -40,24 +35,23 @@ class QuestionController extends BaseController {
 	 * @param TreeLib $treeLib
 	 * @param array   $config
 	 */
-	public function __construct($id, $module, TreeLib $treeLib, $config = []) {
+	public function __construct($id, $module, protected TreeLib $treeLib, array $config = []) {
 		parent::__construct($id, $module, $config);
-		$this->treeLib = $treeLib;
 	}
 
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function behaviors() {
+	public function behaviors(): array {
 		return [
 			'access' => [
-				'class' => AccessControl::className(),
+				'class' => AccessControl::class,
 				'rules' => [
 					[
 						'actions' => ['index'],
-						'allow' => true,
-						'roles' => ['@'],
+						'allow'   => true,
+						'roles'   => ['@'],
 					],
 				],
 			],
@@ -68,7 +62,7 @@ class QuestionController extends BaseController {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function actions() {
+	public function actions(): array {
 		return [];
 	}
 
@@ -77,9 +71,9 @@ class QuestionController extends BaseController {
 	 * Displays question form
 	 *
 	 * @return string
-	 * @throws Exception
+	 * @throws Throwable
 	 */
-	public function actionIndex() {
+	public function actionIndex(): string {
 		$user = Yii::$app->user->getIdentity();
 		$questionCategories = QuestionCategory::find()
 			->innerJoinWith(['orgTypes as orgTypes'])->andWhere(['orgTypes.org_type_id' => Yii::$app->user->getIdentity()->getOrgTypeId()])
@@ -91,8 +85,9 @@ class QuestionController extends BaseController {
 		$request = Yii::$app->request;
 		if ($request->isPost) {
 			$questionFillId = $this->save($request, $categoriesByQuestions);
-			$this->redirect('/vallalasok?qf='.$questionFillId);
+			$this->redirect('/vallalasok?qf=' . $questionFillId);
 		}
+
 		return $this->render('index', compact(
 			'questionCategories',
 			'user'
@@ -107,10 +102,12 @@ class QuestionController extends BaseController {
 	 *
 	 * @param array   $categoriesByQuestions
 	 *
-	 * @return string
-	 * @throws Exception
+	 * @return int
+	 * @throws NotFoundHttpException
+	 * @throws Throwable
+	 * @throws \yii\db\Exception
 	 */
-	protected function save(Request $request, array $categoriesByQuestions) {
+	protected function save(Request $request, array $categoriesByQuestions): int {
 		try {
 			$transaction = Yii::$app->db->beginTransaction();
 
@@ -121,13 +118,13 @@ class QuestionController extends BaseController {
 				throw new NotFoundHttpException();
 			}
 			$orgType = $request->getBodyParam('orgType');
-			if (!($orgType && $orgType == $organization->orgType->id)) {
+			if (!($orgType && $orgType == $organization->organizationTypeId)) {
 				throw new InvalidArgumentException('Invalid input parameters');
 			}
 
 			$fill = (new OrgQuestionFill());
-			$fill->org_id = $organization->id;
-			$fill->org_type = $orgType;
+			$fill->orgId = $organization->id;
+			$fill->orgTypeId = $orgType;
 			$fill->date = (new DateTime())->format('Y-m-d H:i:s');
 			$fill->save();
 
@@ -140,25 +137,26 @@ class QuestionController extends BaseController {
 				foreach ($categoryInstances as $num => $instanceName) {
 					$instance = new QuestionInstance();
 					$instance->name = $instanceName ?: $num;
-					$instance->question_category_id = $categoryId;
+					$instance->questionCategoryId = $categoryId;
 					$instance->save();
-					$instanceNumsToIds[$categoryId.'_'.$num] = $instance->id;
+					$instanceNumsToIds[$categoryId . '_' . $num] = $instance->id;
 				}
 			}
 			foreach ($options as $questionId => $instances) {
 				$categoryId = $categoriesByQuestions[$questionId] ?? null;
 				foreach ($instances ?: [] as $instanceNumber => $optionId) {
 					$answer = new OrgQuestionAnswer();
-					$answer->org_question_fill_id = $fill->id;
-					$answer->custom_input = $customInputs[$questionId][$optionId][$instanceNumber] ?? null;
-					$answer->question_option_id = $optionId;
-					if (isset($instanceNumsToIds[$categoryId.'_'.$instanceNumber])) {
-						$answer->instance_id = $instanceNumsToIds[$categoryId.'_'.$instanceNumber];
+					$answer->orgQuestionFillId = $fill->id;
+					$answer->customInput = $customInputs[$questionId][$optionId][$instanceNumber] ?? null;
+					$answer->questionOptionId = $optionId;
+					if (isset($instanceNumsToIds[$categoryId . '_' . $instanceNumber])) {
+						$answer->instanceId = $instanceNumsToIds[$categoryId . '_' . $instanceNumber];
 					}
 					$answer->save();
 				}
 			}
 			$transaction->commit();
+
 			return $fill->id;
 		} catch (Exception $exception) {
 			$transaction->rollBack();

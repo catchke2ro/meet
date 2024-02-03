@@ -2,7 +2,6 @@
 
 use app\models\CommitmentCategory;
 use app\models\interfaces\FillInterface;
-use app\models\OrgQuestionFill;
 
 /**
  * @var $commitmentCategory                       CommitmentCategory
@@ -12,7 +11,7 @@ use app\models\OrgQuestionFill;
  */
 
 $catId = $commitmentCategory->id;
-$hasInstances = $commitmentCategory->has_instances;
+$hasInstances = $commitmentCategory->hasInstances;
 
 $instanceCountRequest = $commitmentCategory->getInstanceCount(Yii::$app->request);
 $instanceCountQuestion = $fill ? $fill->getInstanceCountForCategory($commitmentCategory) : 1;
