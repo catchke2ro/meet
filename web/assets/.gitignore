@@ -4,3 +4,6 @@
 !/fonts/**
 !/img/
 !/img/**
+
+/img/posts
+/img/posts/*
