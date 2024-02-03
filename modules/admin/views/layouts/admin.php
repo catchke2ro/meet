@@ -28,7 +28,7 @@ AppAsset::register($this);
 
 <div class="wrapper">
 	<aside class="main-sidebar sidebar-dark-primary elevation-4">
-		<a href="index3.html" class="brand-link">
+		<a href="/admin" class="brand-link">
 			<img src="/assets/img/meet_logo_webre_fektetett.png" alt="AdminLTE Logo" class="brand-image"/>
 			<span class="brand-text font-weight-light">MEETAdmin</span>
 		</a>

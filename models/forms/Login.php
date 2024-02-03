@@ -24,7 +24,7 @@ class Login extends Model {
 
 	public ?string $password = null;
 
-	private ?string $user = null;
+	private string|User|null $user = null;
 
 
 	/**
